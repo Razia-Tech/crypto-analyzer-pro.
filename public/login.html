@@ -1,1 +1,47 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - Crypto Analyzer Pro</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="card auth-card">
+    <h2>Login</h2>
+    <div id="login-error" class="msg err" style="display:none"></div>
+
+    <label>Email</label>
+    <input id="login-email" type="email" placeholder="you@example.com" />
+    <label>Password</label>
+    <input id="login-password" type="password" placeholder="password" />
+
+    <button id="btn-login" class="btn">Login</button>
+    <p>Belum punya akun? <a href="register.html">Register</a></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // login page wiring
+    const btn = document.getElementById('btn-login');
+    const errEl = document.getElementById('login-error');
+
+    btn.addEventListener('click', async () => {
+      errEl.style.display = 'none';
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-password').value;
+      try {
+        const r = await supaAuth.login(email, pass);
+        if (r.error) throw r.error;
+        // redirect on success
+        window.location.href = 'dashboard.html';
+      } catch (e) {
+        errEl.textContent = e.message || e;
+        errEl.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
