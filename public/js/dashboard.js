@@ -1,6 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
     const navButtons = document.querySelectorAll("#dashboard-nav button");
     const contentArea = document.getElementById("dashboard-content");
+// Ambil client dari window
+const supaAuth = window.supaAuth;
+
+async function getUserProfile() {
+  const { data, error } = await supaAuth.auth.getUser();
+  if (error) {
+    console.error("Error ambil user:", error.message);
+    return;
+  }
+  console.log("User login:", data.user);
+}
+
+getUserProfile();
 
     navButtons.forEach(btn => {
         btn.addEventListener("click", async () => {
