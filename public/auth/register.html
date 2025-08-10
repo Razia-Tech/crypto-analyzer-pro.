@@ -3,39 +3,57 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Register - Crypto Analyzer Pro</title>
-<link rel="stylesheet" href="../style.css" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth.js" defer></script>
+<title>Register Crypto Analyzer Pro</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 400px; margin: 2rem auto; }
+  label, input, button { display: block; width: 100%; margin-bottom: 1rem; }
+  button { padding: 0.5rem; }
+  .msg { color: red; margin-bottom: 1rem; }
+</style>
 </head>
 <body>
-<main class="auth-container">
-  <h1>Daftar Akun Baru</h1>
 
-  <form id="registerForm">
-    <label>Email:</label>
-    <input type="email" id="email" required placeholder="email@example.com" />
-    <label>Password:</label>
-    <input type="password" id="password" required placeholder="Password" />
-    <button type="submit">Daftar</button>
-  </form>
+<h2>Register Crypto Analyzer Pro</h2>
 
-  <p>Sudah punya akun? <a href="login.html">Login di sini</a></p>
-</main>
+<div class="msg" id="message"></div>
 
+<form id="register-form">
+  <label>Email</label>
+  <input type="email" id="email" required />
+  
+  <label>Password</label>
+  <input type="password" id="password" required minlength="6" />
+  
+  <button type="submit">Register</button>
+</form>
+
+<p><a href="login.html">Back to Login</a></p>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  const supabaseUrl = 'https://ibzgmeooqxmbcnmovlbi.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY';
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+  const registerForm = document.getElementById('register-form');
+  const messageDiv = document.getElementById('message');
+
+  registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const { data, error } = await signUp(email, password);
+    messageDiv.textContent = '';
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    const { error } = await supabase.auth.signUp({ email, password });
     if (error) {
-      alert("Registrasi gagal: " + error.message);
+      messageDiv.textContent = error.message;
     } else {
-      alert("Registrasi berhasil! Cek email untuk verifikasi.");
-      window.location.href = "login.html";
+      messageDiv.style.color = 'green';
+      messageDiv.textContent = 'Registration successful! Please check your email to confirm.';
     }
   });
 </script>
+
 </body>
 </html>
+
