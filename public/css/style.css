@@ -1,158 +1,146 @@
-/* === Global Styles === */
 :root {
-    --gold: #f4c542;
-    --gold-light: #ffe278;
-    --gold-dark: #d4a017;
-    --black: #0a0a0a;
-    --gray: #1a1a1a;
-    --white: #ffffff;
-    --glass: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-    --radius: 16px;
+  --gold: #f4c542;
+  --gold-light: #ffe278;
+  --gold-dark: #d4a017;
+  --black: #0a0a0a;
+  --gray: #1a1a1a;
+  --white: #ffffff;
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  --radius: 16px;
 }
 
-/* === Reset & Fonts === */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, var(--black), #141414, var(--gray));
-    color: var(--white);
-    min-height: 100vh;
-    overflow-x: hidden;
+  background: linear-gradient(135deg, var(--black), #141414, var(--gray));
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* === Navbar === */
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 2px solid var(--gold);
+  align-items: center;
+  font-weight: 600;
+}
+
+.logo {
+  font-size: 1.5rem;
+  color: var(--gold);
+}
+
+.user-info {
+  color: var(--gold-light);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-info button {
+  background: var(--gold);
+  color: var(--black);
+  border: none;
+  padding: 6px 15px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.user-info button:hover {
+  background: var(--gold-light);
+}
+
 .navbar {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--gold-dark);
-    backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px 40px;
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid var(--gold-dark);
+  backdrop-filter: blur(10px);
 }
 
-.navbar h1 {
-    color: var(--gold);
-    font-size: 1.8rem;
-    font-weight: bold;
-    letter-spacing: 2px;
+.navbar button {
+  background: var(--gray);
+  color: var(--gold-light);
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-.navbar .user-info {
-    font-size: 0.9rem;
-    color: var(--gold-light);
+.navbar button.active,
+.navbar button:hover {
+  background: var(--gold);
+  color: var(--black);
 }
 
-/* === Container === */
-.container {
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
+main {
+  padding: 30px 40px;
+  min-height: 75vh;
 }
 
-/* === Card Glass Effect === */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
 .card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    transition: all 0.3s ease-in-out;
-    backdrop-filter: blur(12px);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease-in-out;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
 }
 
-.card h2 {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: var(--gold);
+.card img {
+  max-width: 40px;
+  margin-bottom: 10px;
 }
 
-/* === Table === */
-table {
-    width: 100%;
-    border-collapse: collapse;
+.card h3,
+.card h4 {
+  margin-bottom: 8px;
+  color: var(--gold);
 }
 
-table th, table td {
-    padding: 8px 12px;
-    text-align: left;
+.card p {
+  margin-bottom: 6px;
 }
 
-table thead {
-    background-color: var(--gold-dark);
-    color: var(--black);
-}
-
-table tbody tr {
-    border-bottom: 1px solid var(--glass-border);
-}
-
-table tbody tr:hover {
-    background: rgba(255, 215, 0, 0.05);
-}
-
-/* === Buttons === */
-.btn {
-    background: var(--gold);
-    color: var(--black);
-    padding: 10px 15px;
-    border: none;
-    border-radius: var(--radius);
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn:hover {
-    background: var(--gold-light);
-}
-
-/* === Tabs === */
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.tab {
-    padding: 10px 15px;
-    border-radius: var(--radius);
-    background: var(--gray);
-    color: var(--gold-light);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.tab.active {
-    background: var(--gold);
-    color: var(--black);
-    font-weight: bold;
-}
-
-.tab:hover {
-    background: var(--gold-dark);
-}
-
-/* === Footer === */
 .footer {
-    text-align: center;
-    padding: 15px;
-    font-size: 0.8rem;
-    color: var(--gold-light);
-    border-top: 1px solid var(--glass-border);
-    margin-top: 20px;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9rem;
+  color: var(--gold-light);
+  border-top: 1px solid var(--glass-border);
 }
