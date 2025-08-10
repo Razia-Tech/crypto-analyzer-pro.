@@ -2,8 +2,8 @@
 // Simple Supabase auth wrapper for client-side usage.
 // Replace placeholders below with your Supabase values.
 
-const SUPABASE_URL = "https://YOUR_SUPABASE_PROJECT.supabase.co"; // <-- GANTI
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY"; // <-- GANTI
+const SUPABASE_URL = "https://ibzgmeooqxmbcnmovlbi.supabase.co"; // <-- GANTI
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY"; // <-- GANTI
 
 // init supabase client (UMD build exposed as supabase)
 const supabase = supabasejs.createClient
