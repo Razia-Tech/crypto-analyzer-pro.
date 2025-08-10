@@ -1,58 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Dashboard - Crypto Analyzer Pro</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Analyzer Pro - Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="logo">
-      <img src="assets/logo.png" alt="Logo" onerror="this.style.display='none'">
-      <span>Crypto Analyzer Pro</span>
-    </div>
-    <div class="user-controls">
-      <span id="user-email"></span>
-      <button id="btn-logout" class="btn small">Logout</button>
-    </div>
+  <header>
+    <h1>Crypto Analyzer Dashboard</h1>
   </header>
 
-  <main class="container-grid">
-    <aside class="sidebar">
-      <h3>Menu</h3>
-      <ul>
-        <li><a href="#market">Market Fundamentals</a></li>
-        <li><a href="#sentiment">Sentiment Analyzer</a></li>
-      </ul>
-    </aside>
+  <nav id="dashboard-nav">
+    <button data-module="market-fundamentals">Market Fundamentals</button>
+    <button data-module="sentiment-analyzer">Sentiment Analyzer</button>
+    <button data-module="wallet-tracker">Wallet Tracker</button>
+  </nav>
 
-    <section class="content">
-      <section id="market" class="card-section">
-        <h2>Market Fundamentals</h2>
-        <div id="market-list" class="grid-cards"></div>
-      </section>
-
-      <section id="sentiment" class="card-section">
-        <h2>Sentiment Analyzer (20 coin)</h2>
-        <p class="muted">Auto-refresh setiap 3 jam (server-side recommended). Sementara ini: manual refresh.</p>
-        <button id="btn-refresh-sentiment" class="btn">Refresh Sentiment</button>
-        <div id="sentiment-output"></div>
-      </section>
-    </section>
+  <main id="dashboard-content">
+    <p>Pilih fitur dari menu di atas</p>
   </main>
 
-  <footer class="footer">
-    <small>© Crypto Analyzer Pro</small>
-  </footer>
-
-  <!-- libs -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
-
-  <!-- app scripts -->
-  <script src="js/auth.js"></script>
-  <script src="js/market-fundamentals.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>
+
 
