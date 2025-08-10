@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crypto Analyzer Pro</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Analyzer Pro</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <h1>Crypto Analyzer Pro</h1>
+    <header>
+        <img src="assets/logo.png" alt="Logo" class="logo">
+        <h1>Crypto Analyzer Pro</h1>
+    </header>
+
     <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="#">Login</a>
+        <button data-module="marketFundamentals">Market Fundamentals</button>
+        <button data-module="sentimentAnalyzer">Sentiment Analyzer</button>
+        <button data-module="walletTracker">Wallet Tracker</button>
+        <button data-module="badWalletTracker">Bad Wallet Tracker</button>
+        <button data-module="aiCoinRating">AI Coin Rating</button>
+        <button data-module="smartAlerts">Smart Alerts</button>
+        <button data-module="portfolioAnalyzer">Portfolio Analyzer</button>
+        <button data-module="globalRegulation">Global Regulation</button>
+        <button data-module="exchangeConnector">Exchange Connector</button>
     </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Solusi Analisis Crypto Lengkap</h2>
-      <p>Market fundamentals, sentiment analyzer, wallet tracker, dan lebih banyak lagi.</p>
-    </section>
-  </main>
+
+    <main id="content-area">
+        <p>Silakan pilih fitur dari menu di atas.</p>
+    </main>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
-
-
