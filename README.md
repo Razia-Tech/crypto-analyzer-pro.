@@ -1,2 +1,3 @@
-# crypto-analyzer-pro.
-Crypto Analyzer Pro - Live Deployment with Netlify &amp; Supabase
+# Crypto Analyzer Pro
+
+This is a starter template for Crypto Analyzer Pro.
