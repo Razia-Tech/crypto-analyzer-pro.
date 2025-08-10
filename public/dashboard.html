@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crypto Analyzer Pro - Dashboard</title>
-  <link rel="stylesheet" href="js/modules/market-fundamentals/market.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-   <div id="market-section"></div>
   <header>
-    <h1>Crypto Analyzer Dashboard</h1>
+    <h1>Crypto Analyzer Pro</h1>
+    <nav>
+      <!-- Menu navigasi -->
+    </nav>
   </header>
-
-  <nav id="dashboard-nav">
-    <button data-module="market-fundamentals">Market Fundamentals</button>
-    <button data-module="sentiment-analyzer">Sentiment Analyzer</button>
-    <button data-module="wallet-tracker">Wallet Tracker</button>
-  </nav>
 
   <main id="dashboard-content">
     <p>Pilih fitur dari menu di atas</p>
   </main>
-   <!-- Supabase JS CDN -->
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Auth script -->
+
+  <!-- Supabase JS CDN harus dimuat sebelum auth.js dan dashboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <!-- Auth Config agar supabase client global -->
+  <script>
+    window.supaAuth = supabase.createClient(
+      'https://ibzgmeooqxmbcnmovlbi.supabase.co', 
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY'
+    );
+  </script>
+
+  <!-- File JS -->
   <script src="js/auth.js"></script>
-    <!-- Dashboard script -->
-   <script src="js/dashboard.js"></script>
   <script src="js/dashboard.js"></script>
- <script src="js/modules/market-fundamentals/market.js"></script>
+  <script src="js/modules/market-fundamentals/market.js"></script>
 </body>
 </html>
-
-
