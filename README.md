@@ -9,8 +9,8 @@ Template ini berisi file minimal namun *live-ready*:
 ## Cara pakai singkat
 1. Buat project Supabase → catat `SUPABASE_URL` dan `anon key`.
 2. Edit `js/auth.js` → ganti:
-   - `SUPABASE_URL = "https://YOUR_PROJECT.supabase.co"`
-   - `SUPABASE_ANON_KEY = "YOUR_ANON_KEY"`
+   - `SUPABASE_URL = "https://ibzgmeooqxmbcnmovlbi.supabase.co"`
+   - `SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY"`
 3. Upload semua file ke GitHub repo.
 4. Hubungkan repo ke Netlify (Import from Git):
    - Build command: ``
