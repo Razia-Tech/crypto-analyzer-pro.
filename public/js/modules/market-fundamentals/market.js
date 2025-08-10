@@ -1,29 +1,37 @@
-async function loadMarketFundamentals() {
-    const apiUrl = 'https://api.coingecko.com/api/v3/coins/markets';
-    const params = '?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false';
-    
+document.addEventListener("DOMContentLoaded", () => {
+    fetchMarketData();
+});
+
+async function fetchMarketData() {
     try {
-        const response = await fetch(apiUrl + params);
-        const data = await response.json();
-
-        const container = document.getElementById('market-data');
-        container.innerHTML = '';
-
-        data.forEach(coin => {
-            const card = document.createElement('div');
-            card.className = 'market-card';
-            card.innerHTML = `
-                <img src="${coin.image}" width="40" height="40">
-                <h3>${coin.name} (${coin.symbol.toUpperCase()})</h3>
-                <p>Price: $${coin.current_price.toLocaleString()}</p>
-                <p>Market Cap: $${coin.market_cap.toLocaleString()}</p>
-            `;
-            container.appendChild(card);
-        });
+        const res = await fetch(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,binancecoin,ripple,solana,cardano,tron&order=market_cap_desc&per_page=7&page=1&sparkline=false"
+        );
+        const data = await res.json();
+        renderMarketData(data);
     } catch (error) {
-        console.error('Error fetching market data:', error);
+        console.error("Error fetching market data:", error);
+        document.getElementById("market-data").innerHTML =
+            `<tr><td colspan="5">Failed to load data</td></tr>`;
     }
 }
 
-// Jalankan otomatis saat file ini dimuat
-loadMarketFundamentals();
+function renderMarketData(coins) {
+    const tbody = document.getElementById("market-data");
+    tbody.innerHTML = coins.map(coin => `
+        <tr>
+            <td>
+                <img src="${coin.image}" alt="${coin.name}" width="20">
+                ${coin.name}
+            </td>
+            <td>$${coin.current_price.toLocaleString()}</td>
+            <td>$${coin.market_cap.toLocaleString()}</td>
+            <td style="color:${coin.price_change_percentage_24h >= 0 ? 'lightgreen' : 'red'};">
+                ${coin.price_change_percentage_24h.toFixed(2)}%
+            </td>
+            <td>
+                <a class="view-btn" href="https://www.coingecko.com/en/coins/${coin.id}" target="_blank">View</a>
+            </td>
+        </tr>
+    `).join("");
+}
