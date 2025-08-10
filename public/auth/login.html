@@ -3,59 +3,72 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login - Crypto Analyzer Pro</title>
-<link rel="stylesheet" href="../style.css" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth.js" defer></script>
+<title>Login Crypto Analyzer Pro</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 400px; margin: 2rem auto; }
+  label, input, button { display: block; width: 100%; margin-bottom: 1rem; }
+  button { padding: 0.5rem; }
+  .msg { color: red; margin-bottom: 1rem; }
+</style>
 </head>
 <body>
-<main class="auth-container">
-  <h1>Login Crypto Analyzer Pro</h1>
 
-  <form id="loginForm">
-    <label>Email:</label>
-    <input type="email" id="email" required placeholder="email@example.com" />
-    <label>Password:</label>
-    <input type="password" id="password" required placeholder="Password" />
-    <button type="submit">Login</button>
-  </form>
+<h2>Login Crypto Analyzer Pro</h2>
 
-  <hr />
+<div class="msg" id="message"></div>
 
-  <h2>Login dengan Magic Link</h2>
-  <form id="magicLinkForm">
-    <label>Email:</label>
-    <input type="email" id="magicEmail" required placeholder="email@example.com" />
-    <button type="submit">Kirim Magic Link</button>
-  </form>
+<form id="login-form">
+  <label>Email</label>
+  <input type="email" id="email" required />
+  
+  <label>Password</label>
+  <input type="password" id="password" required />
+  
+  <button type="submit">Login</button>
+</form>
 
-  <p><a href="register.html">Daftar Baru</a> | <a href="forgot-password.html">Lupa Password?</a></p>
-</main>
+<button id="magic-link-btn">Login with Magic Link</button>
+<p><a href="register.html">Register</a> | <a href="reset-password.html">Forgot Password?</a></p>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  const supabaseUrl = 'https://ibzgmeooqxmbcnmovlbi.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY';
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+  const loginForm = document.getElementById('login-form');
+  const messageDiv = document.getElementById('message');
+  const magicLinkBtn = document.getElementById('magic-link-btn');
+
+  loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const { data, error } = await signInWithPassword(email, password);
+    messageDiv.textContent = '';
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      alert("Login gagal: " + error.message);
+      messageDiv.textContent = error.message;
     } else {
-      alert("Login berhasil!");
-      window.location.href = "../dashboard.html";
+      messageDiv.style.color = 'green';
+      messageDiv.textContent = 'Login successful! Redirecting...';
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
     }
   });
 
-  document.getElementById("magicLinkForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("magicEmail").value;
-    const { error } = await signInWithMagicLink(email);
+  magicLinkBtn.addEventListener('click', async () => {
+    const email = prompt('Enter your email for magic link login:');
+    if (!email) return;
+    messageDiv.textContent = '';
+    const { error } = await supabase.auth.signInWithOtp({ email });
     if (error) {
-      alert("Gagal mengirim magic link: " + error.message);
+      messageDiv.textContent = error.message;
     } else {
-      alert("Magic link sudah dikirim ke email Anda. Cek inbox email.");
+      messageDiv.style.color = 'green';
+      messageDiv.textContent = 'Magic link sent! Check your email.';
     }
   });
 </script>
+
 </body>
 </html>
