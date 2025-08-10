@@ -1,9 +1,10 @@
-// Tambahan script jika dibutuhkan
-// Misal scroll smooth navigation atau interaksi lain
-document.querySelectorAll('nav a').forEach(link => {
-  link.addEventListener('click', (e) => {
-    // Contoh smooth scroll ke section kalau satu page app
-    // e.preventDefault();
-    // document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-  });
+// Toggle dark mode tombol
+const darkModeToggle = document.getElementById('darkModeToggle');
+darkModeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
 });
+
+// Dummy data dan chart sudah di inline script index.html
+// Jika mau tambah interaksi lain bisa ditambahkan di sini
+
