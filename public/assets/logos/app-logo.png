@@ -1,1 +1,4 @@
-
+<!-- Logo utama di header / footer -->
+<div class="logo">
+  <img src="assets/logo/app-logo.png" alt="Crypto Analyzer Pro Logo" width="140" height="40" />
+</div>
