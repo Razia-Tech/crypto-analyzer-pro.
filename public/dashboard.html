@@ -1,76 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Crypto Analyzer Pro - Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard - Crypto Analyzer Pro</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth/auth.js" defer></script>
+<script src="js/dashboard.js" defer></script>
+<script src="js/modules/market-fundamentals/market.js" defer></script>
 </head>
 <body>
-  <header class="header">
-    <div class="logo">🚀 Crypto Analyzer Pro</div>
-    <div class="user-info">
-      <span id="username">Loading...</span>
-      <button id="btn-logout">Logout</button>
-    </div>
-  </header>
-
-  <nav class="navbar">
-    <button class="tab-btn active" data-tab="marketFundamentals">📊 Market Fundamentals</button>
-    <button class="tab-btn" data-tab="onChainAnalytics">🔗 On-Chain Analytics</button>
-    <button class="tab-btn" data-tab="walletTracker">💼 Wallet Tracker</button>
-    <button class="tab-btn" data-tab="aiCoinRating">🤖 AI Coin Rating</button>
-    <button class="tab-btn" data-tab="smartAlerts">⚡ Smart Alerts</button>
-  </nav>
-
-  <main>
-    <section id="marketFundamentals" class="tab-content active">
-      <h2>Market Fundamentals</h2>
-      <div id="marketDataContainer" class="card-grid"></div>
-    </section>
-
-    <section id="onChainAnalytics" class="tab-content">
-      <h2>On-Chain Analytics</h2>
-      <iframe src="https://dune.com/embeds/your-dune-chart" width="100%" height="400" frameborder="0"></iframe>
-      <div id="whaleTracker"></div>
-    </section>
-
-    <section id="walletTracker" class="tab-content">
-      <h2>Wallet Tracker</h2>
-      <div id="walletList"></div>
-    </section>
-
-    <section id="aiCoinRating" class="tab-content">
-      <h2>AI Coin Rating</h2>
-      <canvas id="aiRatingChart" height="200"></canvas>
-    </section>
-
-    <section id="smartAlerts" class="tab-content">
-      <h2>Smart Alerts</h2>
-      <div id="alertList"></div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <p>© 2025 Crypto Analyzer Pro - Powered by Supabase & CoinGecko</p>
-  </footer>
-
-  <script src="dashboard.js"></script>
-  <script>
-    // Tab switching logic
-    document.querySelectorAll(".tab-btn").forEach(button => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-        document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
-
-        button.classList.add("active");
-        document.getElementById(button.dataset.tab).classList.add("active");
-      });
-    });
-  </script>
+<header>
+  <h1>Crypto Analyzer Pro Dashboard</h1>
+  <button id="btnLogout">Logout</button>
+</header>
+<main id="dashboard-content">
+  <p>Loading...</p>
+</main>
 </body>
 </html>
 
