@@ -1,83 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login - Crypto Analyzer Pro</title>
-<link rel="stylesheet" href="../style.css" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body>
-  <main class="auth-container">
-    <h1>Login Crypto Analyzer Pro</h1>
+// auth.js - Supabase Authentication Helper
 
-    <form id="loginForm">
-      <label for="email">Email:</label>
-      <input type="email" id="email" placeholder="email@example.com" required />
-      
-      <label for="password">Password:</label>
-      <input type="password" id="password" placeholder="Password" required />
-      
-      <button type="submit">Login</button>
-    </form>
+const supabaseUrl = "https://ibzgmeooqxmbcnmovlbi.supabase.co"; // ganti sesuai project kamu
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";        // ganti sesuai project kamu
+const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    <hr />
+// Kirim Magic Link untuk login/register
+async function signInWithMagicLink(email) {
+  const { error } = await supabase.auth.signInWithOtp({ email });
+  return error;
+}
 
-    <h2>Atau Login dengan Magic Link</h2>
-    <form id="magicLinkForm">
-      <label for="magicEmail">Email:</label>
-      <input type="email" id="magicEmail" placeholder="email@example.com" required />
-      <button type="submit">Kirim Magic Link</button>
-    </form>
+// Register user baru dengan email & password
+async function signUp(email, password) {
+  const { data, error } = await supabase.auth.signUp({ email, password }, { emailRedirectTo: window.location.origin + '/auth/verify-email.html' });
+  return { data, error };
+}
 
-    <p><a href="register.html">Daftar Baru</a> | <a href="forgot-password.html">Lupa Password?</a></p>
-  </main>
+// Login user dengan email & password
+async function signIn(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  return { data, error };
+}
 
-  <script>
-    // Ganti dengan konfigurasi project Supabase kamu
-    const supabaseUrl = "https://ibzgmeooqxmbcnmovlbi.supabase.co";
-    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";
+// Logout user
+async function signOut() {
+  await supabase.auth.signOut();
+}
 
-    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+// Kirim reset password email
+async function sendResetEmail(email) {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/auth/reset-password.html' });
+  return { data, error };
+}
 
-    // Login dengan email + password
-    const loginForm = document.getElementById("loginForm");
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+// Periksa user session
+async function getSession() {
+  const { data } = await supabase.auth.getSession();
+  return data.session;
+}
 
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-      if (error) {
-        alert("Login gagal: " + error.message);
-      } else {
-        alert("Login berhasil!");
-        window.location.href = "../dashboard.html";
-      }
-    });
-
-    // Login dengan Magic Link
-    const magicLinkForm = document.getElementById("magicLinkForm");
-    magicLinkForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const email = document.getElementById("magicEmail").value;
-
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: window.location.origin + "/dashboard.html"
-        }
-      });
-
-      if (error) {
-        alert("Gagal mengirim magic link: " + error.message);
-      } else {
-        alert("Magic link sudah dikirim ke email Anda. Cek inbox email.");
-      }
-    });
-  </script>
-</body>
-</html>
