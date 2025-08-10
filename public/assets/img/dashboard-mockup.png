@@ -1,1 +1,145 @@
+<!-- dashboard-mockup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard Mockup</title>
+<style>
+  body {
+    margin: 0; background: #121212; color: #f0e6d2; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex; justify-content: center; align-items: center; height: 100vh;
+  }
+  .dashboard {
+    width: 800px; max-width: 95vw;
+    background: #1e1e1e;
+    border-radius: 15px;
+    box-shadow: 0 0 30px #d4af37cc;
+    padding: 24px;
+  }
+  .header {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #d4af37;
+    margin-bottom: 20px;
+  }
+  .chart {
+    background: #272727;
+    border-radius: 12px;
+    height: 180px;
+    margin-bottom: 20px;
+    position: relative;
+    box-shadow: inset 0 0 10px #b99427aa;
+  }
+  .chart svg {
+    width: 100%; height: 100%;
+  }
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .table th, .table td {
+    padding: 10px 12px;
+    text-align: left;
+  }
+  .table thead {
+    background-color: #b99427cc;
+    color: #121212;
+    border-radius: 8px 8px 0 0;
+  }
+  .table tbody tr:nth-child(even) {
+    background: rgba(185, 156, 65, 0.15);
+  }
+  .price-up {
+    color: #27ae60;
+    font-weight: 700;
+  }
+  .price-down {
+    color: #c0392b;
+    font-weight: 700;
+  }
+  .btn-view {
+    margin-top: 15px;
+    background-color: #d4af37;
+    border: none;
+    color: #121212;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #b99427cc;
+    transition: background-color 0.3s ease;
+  }
+  .btn-view:hover {
+    background-color: #b99427;
+  }
+</style>
+</head>
+<body>
+  <div class="dashboard" role="main" aria-label="Crypto Analyzer Pro Dashboard Mockup">
+    <div class="header">Crypto Analyzer Pro Dashboard</div>
+    <div class="chart" aria-label="Price Trend Chart">
+      <svg viewBox="0 0 800 180" preserveAspectRatio="none" role="img" aria-hidden="true">
+        <polyline
+          fill="none" stroke="#d4af37" stroke-width="3"
+          points="
+          0,140 50,110 100,80 150,90 200,70 250,60
+          300,75 350,55 400,40 450,50 500,60 550,70
+          600,50 650,65 700,40 750,55 800,45
+          " />
+      </svg>
+    </div>
+    <table class="table" aria-describedby="tableDescription">
+      <caption id="tableDescription" class="visually-hidden">New crypto listings with price, change percent, market cap and recommendation</caption>
+      <thead>
+        <tr>
+          <th>Coin</th>
+          <th>Price</th>
+          <th>Change %</th>
+          <th>Market Cap</th>
+          <th>Recommendation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bitcoin (BTC)</td>
+          <td>$27,500</td>
+          <td class="price-up">+2.8%</td>
+          <td>$530B</td>
+          <td class="buy">BUY</td>
+        </tr>
+        <tr>
+          <td>Ethereum (ETH)</td>
+          <td>$1,900</td>
+          <td class="price-up">+3.1%</td>
+          <td>$230B</td>
+          <td class="buy">BUY</td>
+        </tr>
+        <tr>
+          <td>Cardano (ADA)</td>
+          <td>$0.45</td>
+          <td class="price-down">-1.2%</td>
+          <td>$15B</td>
+          <td class="hold">HOLD</td>
+        </tr>
+        <tr>
+          <td>Solana (SOL)</td>
+          <td>$22</td>
+          <td class="price-up">+1.8%</td>
+          <td>$8.5B</td>
+          <td class="buy">BUY</td>
+        </tr>
+        <tr>
+          <td>Polkadot (DOT)</td>
+          <td>$6.3</td>
+          <td class="price-down">-0.5%</td>
+          <td>$7B</td>
+          <td class="hold">HOLD</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn-view" aria-label="View all data">Lihat Semua Data</button>
+  </div>
+</body>
+</html>
 
