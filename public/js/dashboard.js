@@ -1,36 +1,60 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const navButtons = document.querySelectorAll("#dashboard-nav button");
-    const contentArea = document.getElementById("dashboard-content");
-// Ambil client dari window
-const supaAuth = window.supaAuth;
+// dashboard.js
 
-// Gunakan supabase global dari window
-const supabase = window.supaAuth;
+// Pastikan supabase client & auth global
+window.supaAuth = window.supaAuth || window.supabase?.auth || null;
 
-async function checkUser() {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    window.location.href = 'login.html';
-  } else {
-    console.log('User login:', user.email);
-  }
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("Dashboard loaded");
+
+    // 🔹 Cek apakah supabase auth sudah terhubung
+    if (!window.supaAuth) {
+        console.warn("supaAuth not found - auth features disabled.");
+    } else {
+        try {
+            const { data: { user } } = await window.supaAuth.getUser();
+            if (!user) {
+                console.log("No user session found, redirecting to login...");
+                window.location.href = "/login.html";
+                return;
+            }
+            console.log("User logged in:", user.email);
+            document.querySelector("#user-email").textContent = user.email;
+        } catch (err) {
+            console.error("Error fetching user:", err);
+        }
+    }
+
+    // 🔹 Inisialisasi fitur dashboard
+    initMarketFundamentals();
+    initSentimentAnalyzer();
+    initWalletTracker();
+    initWhaleAlert();
+    initSmartAlerts();
+    // Tambahkan init fungsi lain sesuai kebutuhan
+});
+
+async function initMarketFundamentals() {
+    console.log("Market Fundamentals initialized");
+    // Panggil API CoinGecko dan update DOM
 }
 
-checkUser();
-getUserProfile();
+async function initSentimentAnalyzer() {
+    console.log("Sentiment Analyzer initialized");
+    // Panggil API sentiment dan update grafik
+}
 
-    navButtons.forEach(btn => {
-        btn.addEventListener("click", async () => {
-            const moduleName = btn.dataset.module;
-            try {
-                contentArea.innerHTML = `<p>Loading ${moduleName}...</p>`;
-                const module = await import(`./modules/${moduleName}.js`);
-                contentArea.innerHTML = "";
-                module.render(contentArea);
-            } catch (error) {
-                console.error("Error loading module:", error);
-                contentArea.innerHTML = `<p>Error loading ${moduleName}</p>`;
-            }
-        });
-    });
-});
+async function initWalletTracker() {
+    console.log("Wallet Tracker initialized");
+    // Load wallet favorit user
+}
+
+async function initWhaleAlert() {
+    console.log("Whale Alert initialized");
+    // Integrasi Whale Alert API
+}
+
+async function initSmartAlerts() {
+    console.log("Smart Alerts initialized");
+    // Cek kondisi auto trading / alert
+}
+
