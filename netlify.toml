@@ -1,4 +1,6 @@
 [build]
   publish = "."
-  command = ""
+  command = ""  # no build step for plain static site
 
+[dev]
+  port = 8888
