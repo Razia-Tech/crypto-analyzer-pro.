@@ -4,15 +4,19 @@ document.addEventListener("DOMContentLoaded", () => {
 // Ambil client dari window
 const supaAuth = window.supaAuth;
 
-async function getUserProfile() {
-  const { data, error } = await supaAuth.auth.getUser();
-  if (error) {
-    console.error("Error ambil user:", error.message);
-    return;
+// Gunakan supabase global dari window
+const supabase = window.supaAuth;
+
+async function checkUser() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    window.location.href = 'login.html';
+  } else {
+    console.log('User login:', user.email);
   }
-  console.log("User login:", data.user);
 }
 
+checkUser();
 getUserProfile();
 
     navButtons.forEach(btn => {
