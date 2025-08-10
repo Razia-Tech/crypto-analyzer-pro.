@@ -1,1 +1,12 @@
-
+{
+  "name": "crypto-analyzer-pro",
+  "version": "1.0.0",
+  "description": "Crypto Analyzer Pro - Web App for crypto market fundamentals and analytics",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo \"No build step required\""
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {}
+}
