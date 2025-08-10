@@ -1,61 +1,19 @@
-// js/dashboard.js
-// Basic dashboard wiring: auth check + market fundamentals load
+document.addEventListener("DOMContentLoaded", () => {
+    const navButtons = document.querySelectorAll("#dashboard-nav button");
+    const contentArea = document.getElementById("dashboard-content");
 
-(async function(){
-  // ensure supaAuth exists
-  if(!window.supaAuth) {
-    console.warn('supaAuth not found - auth features disabled.');
-  } else {
-    // show user info if logged in
-    try {
-      const session = await supaAuth.getSession();
-      let user = null;
-      if(session && session.user) user = session.user;
-      else if(window.supabase && window.supabase.auth && window.supabase.auth.user) user = window.supabase.auth.user();
-      if(user) {
-        document.getElementById('user-email').textContent = user.email;
-      } else {
-        // not logged in -> optionally redirect to login
-        // window.location.href = 'login.html';
-      }
-    } catch(e) {
-      console.warn('Could not get session', e);
-    }
-  }
-
-  // Logout button
-  const btnLogout = document.getElementById('btn-logout');
-  if(btnLogout) btnLogout.addEventListener('click', async () => {
-    if(window.supaAuth) {
-      await supaAuth.logout();
-    }
-    window.location.href = 'index.html';
-  });
-
-  // Load market fundamentals
-  if(window.MarketFundamentals) {
-    MarketFundamentals.loadTo('market-list', 7);
-  }
-
-  // sentiment refresh (simple simulation)
-  const btnSent = document.getElementById('btn-refresh-sentiment');
-  if(btnSent){
-    btnSent.addEventListener('click', async () => {
-      btnSent.disabled = true;
-      btnSent.textContent = 'Refreshing...';
-      // For live: call server-side job to compute sentiment.
-      // For now: simple placeholder demo using CoinGecko top 7 as "sentiment"
-      try {
-        await MarketFundamentals.loadTo('market-list', 7);
-        const out = document.getElementById('sentiment-output');
-        out.innerHTML = '<div class="card">Sentiment updated (demo). For production, run server-side job every 3 hours.</div>';
-      } catch(e) {
-        console.error(e);
-      } finally {
-        btnSent.disabled = false;
-        btnSent.textContent = 'Refresh Sentiment';
-      }
+    navButtons.forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const moduleName = btn.dataset.module;
+            try {
+                contentArea.innerHTML = `<p>Loading ${moduleName}...</p>`;
+                const module = await import(`./modules/${moduleName}.js`);
+                contentArea.innerHTML = "";
+                module.render(contentArea);
+            } catch (error) {
+                console.error("Error loading module:", error);
+                contentArea.innerHTML = `<p>Error loading ${moduleName}</p>`;
+            }
+        });
     });
-  }
-})();
-
+});
