@@ -1,59 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Register Crypto Analyzer Pro</title>
-<style>
-  body { font-family: Arial, sans-serif; max-width: 400px; margin: 2rem auto; }
-  label, input, button { display: block; width: 100%; margin-bottom: 1rem; }
-  button { padding: 0.5rem; }
-  .msg { color: red; margin-bottom: 1rem; }
-</style>
-</head>
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Register</title><link rel="stylesheet" href="css/style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script></head>
 <body>
-
-<h2>Register Crypto Analyzer Pro</h2>
-
-<div class="msg" id="message"></div>
-
-<form id="register-form">
-  <label>Email</label>
-  <input type="email" id="email" required />
-  
-  <label>Password</label>
-  <input type="password" id="password" required minlength="6" />
-  
-  <button type="submit">Register</button>
-</form>
-
-<p><a href="login.html">Back to Login</a></p>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  const supabaseUrl = 'https://ibzgmeooqxmbcnmovlbi.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY';
-  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-  const registerForm = document.getElementById('register-form');
-  const messageDiv = document.getElementById('message');
-
-  registerForm.addEventListener('submit', async (e) => {
+<div class="auth-card">
+  <h2>Register</h2>
+  <form id="regForm">
+    <label>Email <input type="email" id="rEmail"/></label>
+    <label>Password <input type="password" id="rPassword"/></label>
+    <button type="submit" class="btn-primary">Create Account</button>
+  </form>
+  <p>Already have an account? <a href="login.html">Login</a></p>
+</div>
+<script type="module">
+  import { signUp } from './js/auth.js';
+  document.getElementById('regForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    messageDiv.textContent = '';
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-      messageDiv.textContent = error.message;
-    } else {
-      messageDiv.style.color = 'green';
-      messageDiv.textContent = 'Registration successful! Please check your email to confirm.';
+    const email = document.getElementById('rEmail').value;
+    const password = document.getElementById('rPassword').value;
+    const { data, error } = await signUp(email, password);
+    if (error) alert(error.message); else {
+      alert('Registration successful. Check your email to confirm.');
+      window.location.href = 'verify-email.html';
     }
   });
 </script>
+</body></html>
 
-</body>
-</html>
 
