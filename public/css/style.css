@@ -1,142 +1,138 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: Arial, sans-serif;
-  color: #fff;
-  background-color: #0a0f1c;
-}
-
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: #000;
+  color: white;
+  overflow-x: hidden;
 }
 
 header {
-  background: rgba(10, 15, 28, 0.9);
-  padding: 15px 0;
-  border-bottom: 1px solid #1f273a;
-}
-
-.header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 3rem;
+  background: rgba(0,0,0,0.7);
+  position: fixed;
+  width: 100%;
+  z-index: 100;
 }
 
-.logo {
+header .logo img {
   height: 50px;
 }
 
-nav a {
-  margin-left: 20px;
-  color: #fff;
+header nav a {
+  color: white;
   text-decoration: none;
+  margin: 0 1rem;
 }
 
-nav a.btn-primary {
-  background: #00c896;
-  padding: 8px 16px;
-  border-radius: 4px;
+header nav a:hover {
+  color: #FFD700;
 }
 
-.hero {
-  display: flex;
-  align-items: center;
-  padding: 60px 0;
-}
-
-.hero-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.hero-text {
-  flex: 1;
-  padding-right: 20px;
-}
-
-.hero-text h1 {
-  font-size: 2.5rem;
-  color: #00c896;
-}
-
-.hero-text p {
-  margin: 15px 0;
-}
-
-.hero-buttons .btn-primary {
-  background: #00c896;
-  color: #fff;
-  padding: 12px 24px;
+.btn-gold {
+  background: #FFD700;
+  color: black;
+  padding: 0.5rem 1rem;
   border-radius: 5px;
   text-decoration: none;
 }
 
-.hero-image img {
-  max-width: 400px;
+.btn-outline {
+  border: 2px solid #FFD700;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #FFD700;
 }
 
-.features {
-  background: #111827;
-  padding: 60px 0;
+.btn-outline:hover {
+  background: #FFD700;
+  color: black;
 }
 
-.features h2 {
+/* Hero */
+.hero {
   text-align: center;
-  margin-bottom: 40px;
-  color: #00c896;
+  padding: 10rem 2rem;
+  background: rgba(0,0,0,0.6);
 }
 
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+.hero h1 {
+  font-size: 3rem;
 }
 
-.feature-card {
-  background: #1f2937;
-  padding: 20px;
-  border-radius: 8px;
+.hero h1 span {
+  color: #FFD700;
+}
+
+.hero-buttons {
+  margin-top: 2rem;
+}
+
+.hero-buttons a {
+  margin: 0 1rem;
+}
+
+/* Features */
+#features {
+  padding: 5rem 2rem;
+  background: rgba(10,10,10,0.9);
   text-align: center;
 }
 
-.feature-card img {
-  height: 50px;
-  margin-bottom: 15px;
+#features ul {
+  list-style: none;
+  padding: 0;
 }
 
-.tech-stack {
-  background: #0f172a;
-  padding: 40px 0;
+#features li {
+  margin: 1rem 0;
 }
 
-.tech-stack h2 {
+/* Team */
+#team {
+  padding: 5rem 2rem;
   text-align: center;
-  margin-bottom: 30px;
-  color: #00c896;
 }
 
-.tech-logos {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
+.social-links a {
+  margin: 0 0.5rem;
+  color: #FFD700;
 }
 
-.tech-logos img {
-  height: 50px;
-}
-
-.footer {
-  background: #0a0f1c;
-  padding: 20px 0;
+/* Footer */
+footer {
   text-align: center;
-  border-top: 1px solid #1f273a;
+  padding: 1rem;
+  background: rgba(0,0,0,0.8);
 }
 
+/* Animated Coins */
+.coin-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.coin {
+  position: absolute;
+  width: 50px;
+  animation: float 10s infinite linear;
+}
+
+.coin1 { top: 20%; left: 10%; animation-duration: 12s; }
+.coin2 { top: 50%; left: 30%; animation-duration: 15s; }
+.coin3 { top: 70%; left: 60%; animation-duration: 18s; }
+.coin4 { top: 40%; left: 80%; animation-duration: 14s; }
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+  100% { transform: translateY(0) rotate(360deg); }
+}
