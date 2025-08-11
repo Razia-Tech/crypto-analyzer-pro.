@@ -2,13 +2,14 @@
 
 const supabaseUrl = "https://ibzgmeooqxmbcnmovlbi.supabase.co"; // ganti sesuai project kamu
 const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";        // ganti sesuai project kamu
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Buat client
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // LOGIN
 async function loginUser(event) {
   event.preventDefault();
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
@@ -22,8 +23,8 @@ async function loginUser(event) {
 // REGISTER
 async function registerUser(event) {
   event.preventDefault();
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
   const { data, error } = await supabaseClient.auth.signUp({
     email,
@@ -41,7 +42,7 @@ async function registerUser(event) {
 // FORGOT PASSWORD
 async function forgotPassword(event) {
   event.preventDefault();
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email").value.trim();
 
   const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
     redirectTo: window.location.origin + "/auth/reset-password.html"
@@ -57,7 +58,7 @@ async function forgotPassword(event) {
 // RESET PASSWORD
 async function resetPassword(event) {
   event.preventDefault();
-  const password = document.getElementById("password").value;
+  const password = document.getElementById("password").value.trim();
 
   const { data, error } = await supabaseClient.auth.updateUser({ password });
 
@@ -70,7 +71,10 @@ async function resetPassword(event) {
 }
 
 // VERIFY EMAIL PAGE MESSAGE
-async function verifyEmailPage() {
-  document.getElementById("verify-msg").textContent =
-    "Check your email inbox and click the verification link.";
+function verifyEmailPage() {
+  const el = document.getElementById("verify-msg");
+  if (el) {
+    el.textContent = "Check your email inbox and click the verification link.";
+  }
 }
+
