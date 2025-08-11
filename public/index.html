@@ -1,231 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Crypto Analyzer Pro - Landing Page</title>
-<link rel="stylesheet" href="css/style.css" />
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crypto Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <style>
+    body {
+      background-color: #000;
+      color: #FFD700;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .gold-text {
+      color: #FFD700;
+    }
+    .gold-border {
+      border-color: #FFD700;
+    }
+    .gold-btn {
+      background-color: #FFD700;
+      color: #000;
+      font-weight: bold;
+    }
+    .gold-btn:hover {
+      background-color: #e6c200;
+    }
+  </style>
 </head>
-<body>
-<header>
-  <nav class="nav-container">
-    <div class="logo">Crypto Analyzer Pro</div>
-    <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#data-preview">Data Preview</a></li>
-      <li><a href="#integrations">Integrations</a></li>
-      <li><a href="#testimonials">Testimonials</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="login.html">Login</a></li>
-    </ul>
-    <button id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center p-4 border-b gold-border">
+    <div class="flex items-center space-x-3">
+      <img src="/assets/logos/app-logo.png" alt="App Logo" class="w-10 h-10">
+      <span class="text-xl font-bold gold-text">Crypto Dashboard</span>
+    </div>
+    <div class="space-x-3">
+      <a href="login.html" class="gold-btn px-4 py-2 rounded">Login</a>
+      <a href="register.html" class="gold-btn px-4 py-2 rounded">Register</a>
+    </div>
   </nav>
-</header>
 
-<main>
-<section id="hero" class="hero-section">
-  <div class="hero-text">
-    <h1>Analisis Crypto Cepat, Akurat, dan Real-Time</h1>
-    <p>Your trusted tool for crypto market fundamentals, analytics, and portfolio management.</p>
-    <div class="hero-buttons">
-      <a href="register.html" class="btn-primary">Coba Gratis</a>
-      <a href="#demo" class="btn-secondary">Lihat Demo</a>
+  <!-- Hero Section -->
+  <header class="flex flex-col items-center text-center py-16 px-6">
+    <h1 class="text-4xl font-bold mb-4 gold-text">Your All-in-One Crypto Analysis Platform</h1>
+    <p class="text-lg mb-8 text-gray-300">
+      Track new coin listings, market trends, and developer scores in one place.
+    </p>
+    <a href="dashboard.html" class="gold-btn px-6 py-3 rounded-lg text-lg">Go to Dashboard</a>
+  </header>
+
+  <!-- Features Section -->
+  <section class="grid grid-cols-1 md:grid-cols-4 gap-8 px-6 pb-16">
+    <div class="flex flex-col items-center text-center">
+      <img src="/assets/icons/chart-icon.svg" class="w-12 h-12 mb-3" alt="Charts">
+      <h3 class="font-bold gold-text">Live Charts</h3>
+      <p class="text-gray-300">Get real-time charts for all major cryptocurrencies.</p>
     </div>
-  </div>
-  <div class="hero-visual">
-    <!-- Mockup + animasi sederhana -->
-    <img src="images/dashboard-mockup.png" alt="Dashboard Mockup" />
-    <canvas id="priceChart" width="400" height="200"></canvas>
-  </div>
-</section>
-
-<section id="features" class="section-container">
-  <h2>Key Features</h2>
-  <div class="features-grid">
-    <div class="feature-item">
-      <h3>Real-time Market Fundamentals</h3>
-      <p>Dapatkan data harga, market cap, volume, dan tren real-time untuk berbagai koin populer.</p>
+    <div class="flex flex-col items-center text-center">
+      <img src="/assets/icons/filter-icon.svg" class="w-12 h-12 mb-3" alt="Filters">
+      <h3 class="font-bold gold-text">Advanced Filters</h3>
+      <p class="text-gray-300">Find the coins that match your strategy.</p>
     </div>
-    <div class="feature-item">
-      <h3>On-chain Analytics & Whale Tracking</h3>
-      <p>Analisis transaksi on-chain dan pergerakan whale untuk insight investasi lebih tajam.</p>
+    <div class="flex flex-col items-center text-center">
+      <img src="/assets/icons/devscore-icon.svg" class="w-12 h-12 mb-3" alt="Dev Score">
+      <h3 class="font-bold gold-text">Developer Score</h3>
+      <p class="text-gray-300">Evaluate projects by their developer activity.</p>
     </div>
-    <div class="feature-item">
-      <h3>AI-based Coin Rating and Alerts</h3>
-      <p>Skor AI canggih dan notifikasi pintar membantu Anda membuat keputusan investasi tepat waktu.</p>
+    <div class="flex flex-col items-center text-center">
+      <img src="/assets/icons/notification-icon.svg" class="w-12 h-12 mb-3" alt="Alerts">
+      <h3 class="font-bold gold-text">Price Alerts</h3>
+      <p class="text-gray-300">Get notified when prices hit your targets.</p>
     </div>
-    <div class="feature-item">
-      <h3>Multi-wallet and Exchange Integration</h3>
-      <p>Menghubungkan berbagai wallet dan exchange dalam satu dashboard terpusat.</p>
-    </div>
-    <div class="feature-item">
-      <h3>Secure Login and User Profile Management</h3>
-      <p>Sistem autentikasi aman dengan Supabase, plus manajemen profil yang mudah digunakan.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section id="data-preview" class="section-container">
-  <h2>Data Preview (Live Example)</h2>
-  <div class="data-preview-container">
-    <table id="coinsTable">
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Harga</th>
-          <th>Change %</th>
-          <th>Market Cap</th>
-          <th>Rekomendasi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Data diisi JS -->
-      </tbody>
-    </table>
-    <canvas id="trendChart" width="400" height="150"></canvas>
-    <a href="dashboard.html" class="btn-primary btn-block">Lihat Semua Data</a>
-  </div>
-</section>
+  <!-- Footer -->
+  <footer class="mt-auto py-4 border-t gold-border text-center text-gray-400">
+    &copy; 2025 Crypto Dashboard. All Rights Reserved.
+  </footer>
 
-<section id="integrations" class="section-container">
-  <h2>Integrasi & Teknologi</h2>
-  <div class="logos-row">
-    <img src="images/coingecko-logo.png" alt="CoinGecko" title="CoinGecko" />
-    <img src="images/coinmarketcap-logo.png" alt="CoinMarketCap" title="CoinMarketCap" />
-    <img src="images/binance-logo.png" alt="Binance" title="Binance" />
-  </div>
-  <div class="logos-row">
-    <img src="images/fastapi-logo.png" alt="FastAPI" title="FastAPI" />
-    <img src="images/react-logo.png" alt="React" title="React" />
-    <img src="images/supabase-logo.png" alt="Supabase" title="Supabase" />
-    <img src="images/tailwind-logo.png" alt="Tailwind CSS" title="Tailwind CSS" />
-  </div>
-</section>
-
-<section id="testimonials" class="section-container">
-  <h2>Testimoni & Review</h2>
-  <blockquote>
-    <p>"Crypto Analyzer Pro membantu saya mengambil keputusan investasi crypto dengan data akurat dan insight AI yang canggih."</p>
-    <footer>- Dev Razia-Tech (Otong Hamandong)</footer>
-  </blockquote>
-</section>
-
-<section id="faq" class="section-container">
-  <h2>FAQ</h2>
-  <details>
-    <summary>Apa itu Crypto Analyzer Pro?</summary>
-    <p>Platform analisis crypto lengkap dengan data real-time, AI, dan manajemen portfolio.</p>
-  </details>
-  <details>
-    <summary>Bagaimana cara mulai?</summary>
-    <p>Daftar akun, lalu akses dashboard dan fitur lengkap kami.</p>
-  </details>
-  <details>
-    <summary>Apakah data realtime?</summary>
-    <p>Iya, kami menggunakan API terpercaya untuk update data real-time setiap 30-60 detik.</p>
-  </details>
-</section>
-</main>
-
-<footer>
-  <div class="footer-container">
-    <div class="footer-logo">Crypto Analyzer Pro</div>
-    <p>Platform analisis crypto terpercaya © 2025 Dev Razia-Tech (Otong Hamandong)</p>
-    <nav>
-      <ul class="footer-nav">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="social-links">
-      <a href="https://twitter.com/yourprofile" target="_blank" aria-label="Twitter">X</a>
-      <a href="https://t.me/yourprofile" target="_blank" aria-label="Telegram">Telegram</a>
-      <a href="https://discord.gg/yourprofile" target="_blank" aria-label="Discord">Discord</a>
-      <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">LinkedIn</a>
-    </div>
-  </div>
-</footer>
-
-<script src="js/main.js"></script>
-<script>
-  // Dummy data untuk tabel coins
-  const coins = [
-    { name: "Bitcoin", price: "$29,400", change: "+2.5%", marketCap: "$560B", recommendation: "BUY" },
-    { name: "Ethereum", price: "$1,850", change: "-1.2%", marketCap: "$210B", recommendation: "HOLD" },
-    { name: "Binance Coin", price: "$310", change: "+0.8%", marketCap: "$48B", recommendation: "BUY" },
-    { name: "Solana", price: "$23", change: "+5.1%", marketCap: "$8B", recommendation: "BUY" },
-    { name: "Cardano", price: "$0.40", change: "-0.5%", marketCap: "$13B", recommendation: "HOLD" }
-  ];
-
-  // Render data coins di tabel
-  const tbody = document.querySelector("#coinsTable tbody");
-  coins.forEach(c => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${c.name}</td>
-      <td>${c.price}</td>
-      <td class="${c.change.startsWith('+') ? 'positive' : 'negative'}">${c.change}</td>
-      <td>${c.marketCap}</td>
-      <td class="${c.recommendation.toLowerCase()}">${c.recommendation}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-  // Chart.js tren 24 jam
-  const ctx = document.getElementById('trendChart').getContext('2d');
-  const trendChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['00:00','04:00','08:00','12:00','16:00','20:00','24:00'],
-      datasets: [{
-        label: 'Harga Bitcoin (USD)',
-        data: [29000, 29200, 29500, 29400, 29300, 29600, 29750],
-        borderColor: '#d4af37',
-        backgroundColor: 'rgba(212, 175, 55, 0.3)',
-        fill: true,
-        tension: 0.3,
-        pointRadius: 3
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: false }
-      },
-      plugins: { legend: { display: false } }
-    }
-  });
-
-  // Animasi Chart di hero section (harga naik turun)
-  const heroCtx = document.getElementById('priceChart').getContext('2d');
-  const heroChart = new Chart(heroCtx, {
-    type: 'bar',
-    data: {
-      labels: ['BTC', 'ETH', 'BNB', 'SOL', 'ADA'],
-      datasets: [{
-        label: 'Price Change %',
-        data: [2, -1, 0.5, 4, -0.2],
-        backgroundColor: function(ctx) {
-          return ctx.dataset.data[ctx.dataIndex] >= 0 ? '#d4af37' : '#cc3333';
-        }
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: { y: { beginAtZero: true } },
-      plugins: { legend: { display: false } }
-    }
-  });
-
-  // Dark mode toggle
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-  });
-</script>
 </body>
 </html>
+
+
 
