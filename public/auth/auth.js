@@ -3,20 +3,18 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const supabaseUrl = "https://ibzgmeooqxmbcnmovlbi.supabase.co"; // ganti sesuai project kamu
 const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";        // ganti sesuai project kamu
-const { createClient } = supabase;
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-// Redirect jika sudah login
-async function checkSession() {
+// Cek session user
+export async function checkSession() {
   const { data: { session } } = await supabase.auth.getSession()
   if (session && window.location.pathname.includes('login.html')) {
     window.location.href = '/public/dashboard.html'
   }
 }
-checkSession()
 
 // Register User
-async function handleRegister(e) {
+export async function handleRegister(e) {
   e.preventDefault()
   const email = document.getElementById('email').value
   const password = document.getElementById('password').value
@@ -30,7 +28,7 @@ async function handleRegister(e) {
 }
 
 // Login User
-async function handleLogin(e) {
+export async function handleLogin(e) {
   e.preventDefault()
   const email = document.getElementById('email').value
   const password = document.getElementById('password').value
@@ -43,7 +41,7 @@ async function handleLogin(e) {
 }
 
 // Magic Link
-async function handleMagicLink(e) {
+export async function handleMagicLink(e) {
   e.preventDefault()
   const email = document.getElementById('email').value
   const { error } = await supabase.auth.signInWithOtp({ email })
@@ -54,8 +52,8 @@ async function handleMagicLink(e) {
   }
 }
 
-// Lupa Password
-async function handleForgotPassword(e) {
+// Forgot Password
+export async function handleForgotPassword(e) {
   e.preventDefault()
   const email = document.getElementById('email').value
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -69,7 +67,7 @@ async function handleForgotPassword(e) {
 }
 
 // Reset Password
-async function handleResetPassword(e) {
+export async function handleResetPassword(e) {
   e.preventDefault()
   const password = document.getElementById('password').value
   const { error } = await supabase.auth.updateUser({ password })
@@ -82,7 +80,7 @@ async function handleResetPassword(e) {
 }
 
 // Logout
-async function handleLogout() {
+export async function handleLogout() {
   await supabase.auth.signOut()
   window.location.href = '/public/auth/login.html'
 }
