@@ -1,32 +1,26 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - Crypto Analyzer Pro</title>
   <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script src="./auth.js" defer></script>
 </head>
-<body class="dark:bg-gray-900 dark:text-white flex items-center justify-center min-h-screen">
-  <div class="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-    <h2 class="text-2xl font-bold text-center mb-4">Login</h2>
-    <form id="login-form">
-      <input type="email" id="email" placeholder="Email" class="input" required>
-      <input type="password" id="password" placeholder="Password" class="input" required>
-      <button type="submit" class="btn-primary w-full mt-4">Masuk</button>
+<body>
+  <div class="form-container">
+    <h1>Login</h1>
+    <form onsubmit="loginUser(event)">
+      <input type="email" id="email" placeholder="Email" required/>
+      <input type="password" id="password" placeholder="Password" required/>
+      <button class="btn-gold" type="submit">Login</button>
     </form>
-    <button id="magic-btn" class="btn-secondary w-full mt-2">Login dengan Magic Link</button>
-    <div class="text-center mt-4">
-      <a href="forgot-password.html" class="text-blue-500">Lupa password?</a>
-    </div>
-    <div class="text-center mt-2">
-      Belum punya akun? <a href="register.html" class="text-blue-500">Daftar</a>
-    </div>
+    <p><a href="./forgot-password.html">Forgot Password?</a></p>
+    <p>Don't have an account? <a href="./register.html">Register</a></p>
   </div>
-  <script type="module">
-    import { handleLogin, handleMagicLink } from './auth.js'
-    document.getElementById('login-form').addEventListener('submit', handleLogin)
-    document.getElementById('magic-btn').addEventListener('click', handleMagicLink)
-  </script>
 </body>
 </html>
+
 
