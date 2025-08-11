@@ -16,62 +16,75 @@
   <header class="nav">
     <div class="nav-inner">
       <div class="brand">
-        <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Crypto Analyzer Pro" class="brand-logo" />
+        <img src="assets/logo/app-logo.png" alt="Crypto Analyzer Pro" class="brand-logo" />
         <span class="brand-name">Crypto Analyzer Pro</span>
       </div>
 
-      <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">Crypto Analyzer Pro</div>
-        <ul class="nav-links">
-            <li><a href="#features">Features</a></li>
-            <li><a href="#data-preview">Data Preview</a></li>
-            <li><a href="#integrations">Integrations</a></li>
-            <li><a href="#testimonials">Testimonials</a></li>
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="login.html">Login</a></li>
-        </ul>
-        <button id="theme-toggle">🌙</button>
-    </nav>
+      <nav class="menu">
+        <a href="#features">Features</a>
+        <a href="#data-preview">Data Preview</a>
+        <a href="#integrations">Integrations</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#faq">FAQ</a>
+        <a href="login.html" class="menu-cta">Login</a>
+        <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+      </nav>
     </div>
   </header>
 
   <!-- HERO -->
   <main>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-text">
-            <h1>Analisis Crypto Cepat, Akurat, dan Real-Time</h1>
-            <p>Alat terpercaya untuk analisis pasar crypto, insight AI, dan manajemen portofolio.</p>
-            <a href="login.html" class="btn-primary">Coba Gratis</a>
+    <section id="hero" class="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <h1>Analisis Crypto Cepat, Akurat, dan Real-Time</h1>
+          <p class="sub">
+            Your trusted tool for crypto market fundamentals, analytics, and portfolio management.
+          </p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="login.html">Coba Gratis</a>
+            <a class="btn btn-light" href="register.html">Daftar Sekarang</a>
+          </div>
         </div>
-        <div class="hero-img">
-            <img src="assets/img/dashboard-mockup.png" alt="Dashboard Mockup">
+
+        <div class="hero-right" aria-hidden="true">
+          <!-- gunakan file mockup yang akan kamu upload -->
+          <img src="assets/img/dashboard-mockup.png" alt="Dashboard mockup" class="mockup" />
         </div>
+      </div>
     </section>
 
-   <!-- Features -->
-    <section id="features" class="features">
-        <div class="feature">
-            <h3>Real-time Market Data</h3>
-            <p>Harga, market cap, volume, dan tren real-time.</p>
+    <!-- FEATURES -->
+    <section id="features" class="section">
+      <div class="section-inner">
+        <h2>Key Features</h2>
+        <div class="features-grid">
+          <article class="feature-card">
+            <h3>Real-time Market Fundamentals</h3>
+            <p>Harga, market cap, volume, dan persentase perubahan real-time. Data refresh setiap 30–60 detik.</p>
+          </article>
+
+          <article class="feature-card">
+            <h3>On-chain Analytics & Whale Tracking</h3>
+            <p>Melacak transaksi besar dan perilaku dompet utama untuk insight risiko dan momentum pasar.</p>
+          </article>
+
+          <article class="feature-card">
+            <h3>AI-based Coin Rating & Alerts</h3>
+            <p>Skor AI yang menggabungkan on-chain, market, dan sentiment untuk rekomendasi BUY/HOLD.</p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Multi-wallet & Exchange Integration</h3>
+            <p>Gabungkan banyak wallet dan exchange untuk melihat portfolio dan aktivitas on-chain di satu tempat.</p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Secure Login & Profiles</h3>
+            <p>Autentikasi Supabase (email/password & magic link), profil user, dan RLS untuk keamanan data.</p>
+          </article>
         </div>
-        <div class="feature">
-            <h3>On-chain Analytics</h3>
-            <p>Pantau pergerakan whale dan transaksi besar.</p>
-        </div>
-        <div class="feature">
-            <h3>AI Alerts</h3>
-            <p>Notifikasi pintar untuk keputusan investasi tepat waktu.</p>
-        </div>
-        <div class="feature">
-            <h3>Multi-wallet Integration</h3>
-            <p>Hubungkan banyak wallet dan exchange.</p>
-        </div>
-        <div class="feature">
-            <h3>Secure Login</h3>
-            <p>Autentikasi aman dengan Supabase.</p>
-        </div>
+      </div>
     </section>
 
     <!-- DATA PREVIEW -->
@@ -87,7 +100,7 @@
               </thead>
               <tbody></tbody>
             </table>
-            <a class="btn btn-primary" href="login.html">Lihat Semua Data</a>
+            <a class="btn btn-primary" href="dashboard.html">Lihat Semua Data</a>
           </div>
 
           <div class="chart-wrap">
@@ -102,13 +115,13 @@
       <div class="section-inner">
         <h2>Integrasi & Teknologi</h2>
         <div class="logos">
-          <img src="assets/logos/coingecko-logo.png" alt="CoinGecko" />
-          <img src="assets/logos/coinmarketcap-logo.png" alt="CoinMarketCap" />
-          <img src="assets/logos/binance-logo.png" alt="Binance" />
-          <img src="assets/logos/fastapi-logo.png" alt="FastAPI" />
-          <img src="assets/logos/react-logo.png" alt="React" />
-          <img src="assets/logos/supabase-logo.png" alt="Supabase" />
-          <img src="assets/logos/tailwind-logo.png" alt="Tailwind" />
+          <img src="assets/img/coingecko-logo.png" alt="CoinGecko" />
+          <img src="assets/img/coinmarketcap-logo.png" alt="CoinMarketCap" />
+          <img src="assets/img/binance-logo.png" alt="Binance" />
+          <img src="assets/img/fastapi-logo.png" alt="FastAPI" />
+          <img src="assets/img/react-logo.png" alt="React" />
+          <img src="assets/img/supabase-logo.png" alt="Supabase" />
+          <img src="assets/img/tailwind-logo.png" alt="Tailwind" />
         </div>
       </div>
     </section>
@@ -138,7 +151,7 @@
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-left">
-        <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="footer-logo" />
+        <img src="assets/logo/app-logo.png" alt="Logo" class="footer-logo" />
         <p class="muted">Dev Razia-Tech (Otong Hamandong)</p>
       </div>
       <div class="footer-right">
@@ -158,13 +171,9 @@
   </footer>
 
   <!-- SCRIPTS: populasi tabel, chart, theme toggle -->
- <script>
-        const toggleBtn = document.getElementById('theme-toggle');
-        toggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-        });
-    </script>
-  
+  <script>
+    // DARK MODE: toggle + remember
+    const themeToggle = document.getElementById('theme-toggle');
     const saved = localStorage.getItem('cap-theme');
     if (saved === 'dark') document.documentElement.classList.add('dark');
     themeToggle.addEventListener('click', () => {
