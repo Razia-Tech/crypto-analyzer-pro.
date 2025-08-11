@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Crypto Analyzer Pro</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="auth.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Crypto Analyzer Pro</title>
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
-<body>
-<div class="auth-container">
-    <h1>Login</h1>
-    <input type="email" id="login-email" placeholder="Email">
-    <input type="password" id="login-password" placeholder="Password">
-    <button onclick="loginUser(document.getElementById('login-email').value, document.getElementById('login-password').value)">Login</button>
-    <p><a href="forgot-password.html">Lupa password?</a></p>
-    <hr>
-    <input type="email" id="magic-email" placeholder="Email untuk Magic Link">
-    <button onclick="loginMagicLink(document.getElementById('magic-email').value)">Login dengan Magic Link</button>
-    <p>Belum punya akun? <a href="register.html">Daftar di sini</a></p>
-</div>
+<body class="dark:bg-gray-900 dark:text-white flex items-center justify-center min-h-screen">
+  <div class="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+    <h2 class="text-2xl font-bold text-center mb-4">Login</h2>
+    <form id="login-form">
+      <input type="email" id="email" placeholder="Email" class="input" required>
+      <input type="password" id="password" placeholder="Password" class="input" required>
+      <button type="submit" class="btn-primary w-full mt-4">Masuk</button>
+    </form>
+    <button id="magic-btn" class="btn-secondary w-full mt-2">Login dengan Magic Link</button>
+    <div class="text-center mt-4">
+      <a href="forgot-password.html" class="text-blue-500">Lupa password?</a>
+    </div>
+    <div class="text-center mt-2">
+      Belum punya akun? <a href="register.html" class="text-blue-500">Daftar</a>
+    </div>
+  </div>
+  <script type="module" src="auth.js"></script>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', handleLogin)
+    document.getElementById('magic-btn').addEventListener('click', handleMagicLink)
+  </script>
 </body>
 </html>
