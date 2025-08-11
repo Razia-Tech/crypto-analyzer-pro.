@@ -1,78 +1,88 @@
-// ===== Supabase Client Init =====
+// /public/auth/auth.js
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const supabaseUrl = "https://ibzgmeooqxmbcnmovlbi.supabase.co"; // ganti sesuai project kamu
 const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";        // ganti sesuai project kamu
 const { createClient } = supabase;
-const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-// REGISTER
-async function registerUser(email, password) {
-    const { data, error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password,
-        options: { emailRedirectTo: `${window.location.origin}/verify-email.html` }
-    });
-    if (error) {
-        alert("Error: " + error.message);
-    } else {
-        alert("Registrasi berhasil! Silakan cek email untuk verifikasi.");
-        window.location.href = "login.html";
-    }
+// Redirect jika sudah login
+async function checkSession() {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (session && window.location.pathname.includes('login.html')) {
+    window.location.href = '/public/dashboard.html'
+  }
+}
+checkSession()
+
+// Register User
+async function handleRegister(e) {
+  e.preventDefault()
+  const email = document.getElementById('email').value
+  const password = document.getElementById('password').value
+  const { error } = await supabase.auth.signUp({ email, password })
+  if (error) {
+    alert(error.message)
+  } else {
+    alert('Pendaftaran berhasil, cek email untuk verifikasi.')
+    window.location.href = 'verify-email.html'
+  }
 }
 
-// LOGIN
-async function loginUser(email, password) {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
-    if (error) {
-        alert("Error: " + error.message);
-    } else {
-        window.location.href = "dashboard.html";
-    }
+// Login User
+async function handleLogin(e) {
+  e.preventDefault()
+  const email = document.getElementById('email').value
+  const password = document.getElementById('password').value
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) {
+    alert(error.message)
+  } else {
+    window.location.href = '/public/dashboard.html'
+  }
 }
 
-// MAGIC LINK LOGIN
-async function loginMagicLink(email) {
-    const { data, error } = await supabaseClient.auth.signInWithOtp({
-        email: email,
-        options: { emailRedirectTo: `${window.location.origin}/dashboard.html` }
-    });
-    if (error) {
-        alert("Error: " + error.message);
-    } else {
-        alert("Magic link terkirim! Silakan cek email.");
-    }
+// Magic Link
+async function handleMagicLink(e) {
+  e.preventDefault()
+  const email = document.getElementById('email').value
+  const { error } = await supabase.auth.signInWithOtp({ email })
+  if (error) {
+    alert(error.message)
+  } else {
+    alert('Link login terkirim ke email.')
+  }
 }
 
-// FORGOT PASSWORD
-async function forgotPassword(email) {
-    const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password.html`
-    });
-    if (error) {
-        alert("Error: " + error.message);
-    } else {
-        alert("Email reset password terkirim!");
-    }
+// Lupa Password
+async function handleForgotPassword(e) {
+  e.preventDefault()
+  const email = document.getElementById('email').value
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/public/auth/reset-password.html'
+  })
+  if (error) {
+    alert(error.message)
+  } else {
+    alert('Link reset password terkirim ke email.')
+  }
 }
 
-// RESET PASSWORD
-async function resetPassword(newPassword) {
-    const { data, error } = await supabaseClient.auth.updateUser({ password: newPassword });
-    if (error) {
-        alert("Error: " + error.message);
-    } else {
-        alert("Password berhasil diubah! Silakan login kembali.");
-        window.location.href = "login.html";
-    }
+// Reset Password
+async function handleResetPassword(e) {
+  e.preventDefault()
+  const password = document.getElementById('password').value
+  const { error } = await supabase.auth.updateUser({ password })
+  if (error) {
+    alert(error.message)
+  } else {
+    alert('Password berhasil diubah.')
+    window.location.href = 'login.html'
+  }
 }
 
-// LOGOUT
-async function logoutUser() {
-    await supabaseClient.auth.signOut();
-    window.location.href = "login.html";
+// Logout
+async function handleLogout() {
+  await supabase.auth.signOut()
+  window.location.href = '/public/auth/login.html'
 }
-
-
