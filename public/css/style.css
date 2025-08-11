@@ -1,63 +1,121 @@
-/* css/style.css - minimal polished theme black+gold */
-:root{
-  --gold:#d4af37;
-  --gold-dark:#b99427;
-  --bg:#0a0a0a;
-  --muted:#f0e6d2cc;
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background:var(--bg);
-  color:var(--muted);
-  -webkit-font-smoothing:antialiased;
-}
-a{color:var(--gold)}
-header{background:rgba(20,18,16,0.85);box-shadow:0 2px 8px rgba(212,175,55,0.12)}
-.nav-container{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:1rem;padding:1rem}
-.logo{display:flex;align-items:center;gap:.6rem;font-weight:700;color:var(--gold)}
-.nav-links{list-style:none;margin-left:auto;display:flex;gap:1rem;align-items:center}
-.nav-links a{padding:.35rem .7rem;border-radius:6px;font-weight:600}
-.hero-section{max-width:1100px;margin:2rem auto;display:flex;gap:2rem;align-items:center;padding:1rem}
-.hero-text{flex:1;min-width:300px}
-.hero-visual{flex:1;text-align:center}
-.hero-visual img{width:100%;max-width:520px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.6),0 0 20px rgba(212,175,55,0.08)}
-.hero-buttons{display:flex;gap:1rem;margin-top:1rem}
-.btn-primary{background:var(--gold);color:#0b0b0b;padding:.75rem 1.6rem;border-radius:30px;font-weight:700;box-shadow:0 6px 20px rgba(185,156,65,0.12)}
-.btn-secondary{border:2px solid var(--gold);color:var(--gold);padding:.65rem 1.4rem;border-radius:30px}
-
-/* sections */
-.section-container{max-width:1100px;margin:2rem auto;padding:1rem}
-.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem}
-.feature-item{background:rgba(212,175,55,0.06);padding:1rem;border-radius:10px;border:1px solid rgba(212,175,55,0.04)}
-
-/* data preview */
-.data-preview-container{text-align:center}
-#coinsTable{width:100%;border-collapse:collapse;margin:1rem 0}
-#coinsTable th,#coinsTable td{border:1px solid rgba(212,175,55,0.08);padding:.6rem}
-#coinsTable th{background:var(--gold);color:#0b0b0b}
-.positive{color:#27ae60;font-weight:700}
-.negative{color:#c0392b;font-weight:700}
-.buy{color:#27ae60;font-weight:700}
-.hold{color:#f39c12;font-weight:700}
-
-/* logos rows */
-.logos-row{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin:1rem 0}
-.logos-row img{height:40px;filter:drop-shadow(0 0 2px rgba(212,175,55,0.2))}
-
-/* footer */
-footer{border-top:1px solid rgba(212,175,55,0.05);padding:2rem 0;margin-top:2rem}
-.footer-container{max-width:1100px;margin:0 auto;text-align:center}
-
-/* dark-mode */
-body.dark-mode{background:#0b0b0b;color:#f5f5f5}
-body.dark-mode .btn-primary{background:var(--gold-dark)}
-/* responsiveness */
-@media (max-width:800px){
-  .nav-links{display:none}
-  .hero-section{flex-direction:column}
-  .hero-visual img{max-width:100%}
+/* Fonts & Colors */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0d1117;
+    color: white;
 }
 
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+}
+
+.navbar img {
+    height: 40px;
+}
+
+.navbar nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #f39c12;
+    color: black;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid #f39c12;
+    color: #f39c12;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+/* Hero */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3rem 5%;
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+.hero-text h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-text p {
+    margin-bottom: 1.5rem;
+    color: #c9d1d9;
+}
+
+.hero-buttons a {
+    margin-right: 10px;
+}
+
+.hero-image img {
+    height: 250px;
+}
+
+/* Features */
+.features {
+    padding: 3rem 5%;
+}
+
+.features h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.feature-list {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    background-color: #161b22;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    width: 250px;
+    margin: 1rem;
+}
+
+.feature-card img {
+    height: 50px;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: #c9d1d9;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    border-top: 1px solid #30363d;
+    color: #8b949e;
+}
