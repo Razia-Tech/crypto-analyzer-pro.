@@ -173,16 +173,16 @@ p {
 }
 
 .hero-visual {
-  flex: 1 1 150px;
-  max-width: 250px;
+  flex: 1 1 350px;
+  max-width: 450px;
   position: relative;
   text-align: center;
 }
 
 .hero-visual img {
-  max-width: 60%;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #d4af37bb;
+  max-width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #d4af37bb;
   margin-bottom: 1rem;
 }
 
