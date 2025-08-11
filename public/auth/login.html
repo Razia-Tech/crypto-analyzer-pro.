@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - Crypto Analyzer Pro</title>
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/style.css"/>
 </head>
 <body class="dark:bg-gray-900 dark:text-white flex items-center justify-center min-h-screen">
   <div class="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
@@ -22,10 +22,11 @@
       Belum punya akun? <a href="register.html" class="text-blue-500">Daftar</a>
     </div>
   </div>
-  <script type="module" src="auth.js"></script>
-  <script>
+  <script type="module">
+    import { handleLogin, handleMagicLink } from './auth.js'
     document.getElementById('login-form').addEventListener('submit', handleLogin)
     document.getElementById('magic-btn').addEventListener('click', handleMagicLink)
   </script>
 </body>
 </html>
+
