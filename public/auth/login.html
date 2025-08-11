@@ -1,74 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login Crypto Analyzer Pro</title>
-<style>
-  body { font-family: Arial, sans-serif; max-width: 400px; margin: 2rem auto; }
-  label, input, button { display: block; width: 100%; margin-bottom: 1rem; }
-  button { padding: 0.5rem; }
-  .msg { color: red; margin-bottom: 1rem; }
-</style>
-</head>
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login</title><link rel="stylesheet" href="css/style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script></head>
 <body>
-
-<h2>Login Crypto Analyzer Pro</h2>
-
-<div class="msg" id="message"></div>
-
-<form id="login-form">
-  <label>Email</label>
-  <input type="email" id="email" required />
-  
-  <label>Password</label>
-  <input type="password" id="password" required />
-  
-  <button type="submit">Login</button>
-</form>
-
-<button id="magic-link-btn">Login with Magic Link</button>
-<p><a href="register.html">Register</a> | <a href="reset-password.html">Forgot Password?</a></p>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  const supabaseUrl = 'https://ibzgmeooqxmbcnmovlbi.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY';
-  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-  const loginForm = document.getElementById('login-form');
-  const messageDiv = document.getElementById('message');
-  const magicLinkBtn = document.getElementById('magic-link-btn');
-
+<div class="auth-card">
+  <h2>Login</h2>
+  <form id="loginForm">
+    <label>Email <input type="email" id="email"/></label>
+    <label>Password <input type="password" id="password"/></label>
+    <button type="submit" class="btn-primary">Login</button>
+  </form>
+  <hr/>
+  <h3>Magic link</h3>
+  <form id="magicForm">
+    <label>Email <input type="email" id="magicEmail"/></label>
+    <button type="submit" class="btn-secondary">Send Magic Link</button>
+  </form>
+  <p><a href="forgot-password.html">Forgot password?</a></p>
+  <p>New? <a href="register.html">Register</a></p>
+</div>
+<script type="module">
+  import { signIn, signInMagicLink } from './js/auth.js';
+  const loginForm = document.getElementById('loginForm');
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    messageDiv.textContent = '';
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      messageDiv.textContent = error.message;
-    } else {
-      messageDiv.style.color = 'green';
-      messageDiv.textContent = 'Login successful! Redirecting...';
-      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+    const { data, error } = await signIn(email, password);
+    if (error) alert(error.message); else {
+      // redirect to dashboard
+      window.location.href = 'dashboard.html';
     }
   });
 
-  magicLinkBtn.addEventListener('click', async () => {
-    const email = prompt('Enter your email for magic link login:');
-    if (!email) return;
-    messageDiv.textContent = '';
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    if (error) {
-      messageDiv.textContent = error.message;
-    } else {
-      messageDiv.style.color = 'green';
-      messageDiv.textContent = 'Magic link sent! Check your email.';
-    }
+  const magicForm = document.getElementById('magicForm');
+  magicForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('magicEmail').value;
+    const { data, error } = await signInMagicLink(email, window.location.origin + '/verify-email.html');
+    if (error) alert(error.message); else alert('Magic link sent — check your email');
   });
 </script>
-
-</body>
-</html>
+</body></html>
