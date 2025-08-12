@@ -1,33 +1,18 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login</title>
-  <link rel="stylesheet" href="../css/style.css"/>
-</head>
-<body class="flex-center">
-  <div class="auth-card container">
-    <h2 class="text-center">Login</h2>
-    <form id="login-form">
-      <input type="email" id="email" class="input" placeholder="Email" required>
-      <input type="password" id="password" class="input" placeholder="Password" required>
-      <button type="submit" class="btn btn-primary mt-4">Login</button>
-    </form>
-    <button id="magic-link" class="btn btn-secondary mt-2">Login dengan Magic Link</button>
-    <button id="google-login" class="btn btn-google mt-2">Login dengan Google</button>
-    <div class="text-center mt-4">
-      <a href="forgot-password.html">Lupa password?</a>
-    </div>
-    <div class="text-center mt-2">
-      Belum punya akun? <a href="register.html">Daftar</a>
-    </div>
-  </div>
-  <script type="module">
-    import { handleLogin, handleMagicLink, handleGoogleLogin } from './auth.js'
-    document.getElementById('login-form').addEventListener('submit', handleLogin)
-    document.getElementById('magic-link').addEventListener('click', handleMagicLink)
-    document.getElementById('google-login').addEventListener('click', handleGoogleLogin)
-  </script>
-</body>
-</html>
+<script type="module">
+import { loginUser, loginWithMagicLink, handleGoogleLogin } from './auth.js';
+
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    loginUser(email, password);
+});
+
+document.getElementById('magicLinkBtn').addEventListener('click', () => {
+    const email = document.getElementById('email').value;
+    loginWithMagicLink(email);
+});
+
+document.getElementById('googleLoginBtn').addEventListener('click', handleGoogleLogin);
+</script>
+
