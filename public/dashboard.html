@@ -8,73 +8,28 @@
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div class="brand">
-        <div class="logo">CA</div>
-        <div>
-          <h1>Dashboard</h1>
-          <p class="small">Selamat datang, <span id="username-display">—</span></p>
-        </div>
-      </div>
-      <div class="row">
-        <button class="btn-ghost" onclick="logoutUser()">Logout</button>
-      </div>
+    <div class="header card">
+      <div class="brand"><div class="logo">CA</div><div><h1>Dashboard</h1><p class="small">Selamat datang, <span id="user-name">—</span></p></div></div>
+      <div class="row"><button class="btn-ghost" onclick="logoutUser()">Logout</button></div>
     </div>
 
-    <div class="grid">
-      <div>
-        <div class="card">
-          <h3 style="margin-top:0">Market Fundamentals</h3>
-          <p class="small">Top coins & tokenomics (dummy sementara)</p>
-          <div style="margin-top:12px">
-            <div class="kpi"><h3>BTC</h3><p>$xx,xxx • +0.8%</p></div>
-            <div class="kpi"><h3>ETH</h3><p>$x,xxx • +1.2%</p></div>
-            <div class="kpi"><h3>Top Sentiment</h3><p>20 coin diproses</p></div>
-          </div>
-        </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Profile</h3>
+      <p>Email: <span id="user-email">—</span></p>
+      <p>Username: <strong id="user-name">—</strong></p>
+      <p>Tier: <span id="tier">User</span></p>
+    </div>
 
-        <div class="card" style="margin-top:18px">
-          <h3 style="margin-top:0">AI Insights</h3>
-          <p class="small">Ringkasan otomatis berdasarkan scoring tokenomics & community</p>
-          <div style="margin-top:10px"><p class="small">(Fitur menyusul integrasi CoinGecko / Dune)</p></div>
-        </div>
-      </div>
-
-      <aside>
-        <div class="panel card">
-          <h4 style="margin-top:0">Quick Actions</h4>
-          <div style="margin-top:12px" class="small">
-            <button class="btn" style="width:100%;margin-bottom:8px" onclick="location.href='register.html'">Tambah Wallet</button>
-            <button class="btn-ghost" style="width:100%;" onclick="location.href='forgot-password.html'">Change Password</button>
-          </div>
-        </div>
-        <div class="panel card" style="margin-top:12px">
-          <h4 style="margin-top:0">Profile</h4>
-          <p class="small">Username: <strong id="username-small">—</strong></p>
-          <p class="small">Tier: Pro/User</p>
-        </div>
-      </aside>
+    <div class="card" style="margin-top:16px">
+      <h3>Market Fundamentals (dummy)</h3>
+      <p class="small">Data menyusul integrasi CoinGecko.</p>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="auth.js"></script>
-  <script>
-    // tambahan ringan: duplikat username ke panel
-    async function fillExtras(){
-      try{
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if(session){
-          const { data: profile } = await supabaseClient.from('profiles').select('username').eq('id', session.user.id).single();
-          if(profile && profile.username){
-            document.getElementById('username-small').textContent = profile.username;
-          }
-        }
-      }catch(e){ console.warn(e) }
-    }
-    document.addEventListener('DOMContentLoaded', fillExtras)
-  </script>
 </body>
 </html>
+
 
 
