@@ -174,14 +174,15 @@
   <!-- SCRIPTS: populasi tabel, chart, theme toggle -->
   <script>
     // DARK MODE: toggle + remember
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-    document.body.classList.toggle("light-mode");
-    });
+    
     const themeToggle = document.getElementById('theme-toggle');
     const saved = localStorage.getItem('cap-theme');
     if (saved === 'dark') document.documentElement.classList.add('dark');
     themeToggle.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
+      document.getElementById("theme-toggle").addEventListener("click", () => {
+      document.body.classList.toggle("light-mode");
+    });
       localStorage.setItem('cap-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
       themeToggle.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
     });
