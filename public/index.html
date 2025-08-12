@@ -1,164 +1,123 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Crypto Analyzer Pro — Landing</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoAnalyzerPro</title>
+  <link rel="stylesheet" href="style.css" />
 
-  <!-- Chart.js untuk grafik kecil di Data Preview -->
+  <!-- Chart.js tunggal -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css" />
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
 </head>
 <body>
-  <!-- NAV -->
-  <header class="nav">
-    <div class="nav-inner">
-      <div class="brand">
-        <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Crypto Analyzer Pro" class="brand-logo" />
-        <span class="brand-name">Crypto Analyzer Pro</span>
-      </div>
-
-      <nav class="menu">
-        <a href="#features">Features</a>
-        <a href="#data-preview">Data Preview</a>
-        <a href="#integrations">Integrations</a>
-        <a href="#testimonials">Testimonials</a>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">CryptoAnalyzerPro</h1>
+      <nav>
+        <a href="#features">Fitur</a>
+        <a href="#preview">Data Preview</a>
         <a href="#faq">FAQ</a>
-        <a href="./auth/login.html" class="menu-cta">Login</a>
-        <a href="./auth/register.html" class="btn-primary">Register</a>
-        <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+        <a href="#auth-section">Login</a>
       </nav>
     </div>
   </header>
 
   <!-- HERO -->
-  <main>
-    <section id="hero" class="hero">
-      <div class="hero-inner">
-        <div class="hero-left">
-          <h1>Analisis Crypto Cepat, Akurat, dan Real-Time</h1>
-          <p class="sub">
-            Your trusted tool for crypto market fundamentals, analytics, and portfolio management.
-          </p>
-          <div class="hero-ctas">
-            <a class="btn btn-primary" href="./auth/login.html.html">Coba Gratis</a>
-          </div>
-        </div>
+  <section class="hero">
+    <div class="container">
+      <h2>Analisis Crypto Cepat & Akurat</h2>
+      <p>Platform analisis crypto dengan data real-time, grafik interaktif, dan laporan terperinci.</p>
+      <button onclick="document.getElementById('auth-section').scrollIntoView()">Mulai Sekarang</button>
+    </div>
+  </section>
 
-        <div class="hero-right" aria-hidden="true">
-          <!-- gunakan file mockup yang akan kamu upload -->
-          <img src="assets/img/hero-illustration.png" alt="Dashboard mockup" class="mockup" />
-        </div>
+  <!-- DATA PREVIEW -->
+  <section id="preview" class="preview-section">
+    <div class="container preview-container">
+      <div class="chart-box">
+        <canvas id="cryptoChart"></canvas>
       </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section id="features" class="section">
-      <div class="section-inner">
-        <h2>Key Features</h2>
-        <div class="features-grid">
-          <article class="feature-card">
-            <h3>Real-time Market Fundamentals</h3>
-            <p>Harga, market cap, volume, dan persentase perubahan real-time. Data refresh setiap 30–60 detik.</p>
-          </article>
-
-          <article class="feature-card">
-            <h3>On-chain Analytics & Whale Tracking</h3>
-            <p>Melacak transaksi besar dan perilaku dompet utama untuk insight risiko dan momentum pasar.</p>
-          </article>
-
-          <article class="feature-card">
-            <h3>AI-based Coin Rating & Alerts</h3>
-            <p>Skor AI yang menggabungkan on-chain, market, dan sentiment untuk rekomendasi BUY/HOLD.</p>
-          </article>
-
-          <article class="feature-card">
-            <h3>Multi-wallet & Exchange Integration</h3>
-            <p>Gabungkan banyak wallet dan exchange untuk melihat portfolio dan aktivitas on-chain di satu tempat.</p>
-          </article>
-
-          <article class="feature-card">
-            <h3>Secure Login & Profiles</h3>
-            <p>Autentikasi Supabase (email/password & magic link), profil user, dan RLS untuk keamanan data.</p>
-          </article>
-        </div>
+      <div class="table-box">
+        <table id="cryptoTable">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Harga</th>
+              <th>24h %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data di-load via JS -->
+          </tbody>
+        </table>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- DATA PREVIEW -->
-    <section id="data-preview" class="section">
-      <div class="section-inner">
-        <h2>Data Preview (Live Example)</h2>
-
-        <div class="preview-grid">
-          <div class="table-wrap">
-            <table id="coinsTable" class="coins-table" aria-live="polite">
-              <thead>
-                <tr><th>Nama</th><th>Harga</th><th>Change %</th><th>Market Cap</th><th>Rekomendasi</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-            <a class="btn btn-primary" href="./auth/register.html">Daftar Sekarang</a>
-          </div>
-
-          <div class="chart-wrap">
-            <canvas id="trendChart" aria-label="Trend chart" role="img"></canvas>
-          </div>
-        </div>
+  <!-- TEKNOLOGI -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <h3>Integrasi Teknologi</h3>
+      <div class="tech-icons">
+        <img src="assets/icons/binance.png" alt="Binance" />
+        <img src="assets/icons/coinbase.png" alt="Coinbase" />
+        <img src="assets/icons/ethereum.png" alt="Ethereum" />
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- INTEGRATIONS -->
-    <section id="integrations" class="section">
-      <div class="section-inner">
-        <h2>Integrasi & Teknologi</h2>
-        <div class="logos">
-          <img src="assets/logos/coingecko-logo.png" alt="CoinGecko" />
-          <img src="assets/logos/coinmarketcap-logo.png" alt="CoinMarketCap" />
-          <img src="assets/logos/binance-logo.png" alt="Binance" />
-          <img src="assets/logos/fastapi-logo.png" alt="FastAPI" />
-          <img src="assets/logos/react-logo.png" alt="React" />
-          <img src="assets/logos/supabase-logo.png" alt="Supabase" />
-          <img src="assets/logos/tailwind-logo.png" alt="Tailwind" />
-        </div>
+  <!-- FAQ -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <h3>Pertanyaan Umum</h3>
+      <div class="faq-item">
+        <h4>Bagaimana cara mendaftar?</h4>
+        <p>Gunakan form registrasi di bawah untuk membuat akun baru.</p>
       </div>
-    </section>
-     </script>
-    <form id="login-form"> <!-- form login -->
-    <input id="login-email" type="email" />
-    <input id="login-password" type="password" />
-    <button type="submit">Login</button>
-    </form>
+      <div class="faq-item">
+        <h4>Apakah gratis?</h4>
+        <p>Ya, paket dasar gratis. Paket premium akan segera hadir.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- optional magic form -->
-    <form id="magic-form">
-    <input id="magic-email" type="email" />
-    <button type="submit">Kirim magic link</button>
-    </form>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="/auth.js"></script>
-    <!-- TESTIMONIALS -->
-    <section id="testimonials" class="section">
-      <div class="section-inner">
-        <h2>Testimoni & Review</h2>
-        <blockquote class="testimonial">
-          "Crypto Analyzer Pro membantu saya membuat keputusan lebih percaya diri dengan data real-time dan notifikasi pintar." — Dev Razia-Tech
-        </blockquote>
-      </div>
-    </section>
+  <!-- AUTH SECTION -->
+  <section id="auth-section" class="auth-section">
+    <div class="container">
+      <h3>Login / Register</h3>
 
-    <!-- FAQ -->
-    <section id="faq" class="section">
-      <div class="section-inner">
-        <h2>FAQ</h2>
-        <details><summary>Apa itu Crypto Analyzer Pro?</summary><p>Platform analisis crypto dengan data realtime, on-chain insight, dan AI scoring untuk membantu keputusan trading/investasi.</p></details>
-        <details><summary>Bagaimana cara mulai?</summary><p>Daftar akun → login → hubungkan wallet atau cek market fundamentals.</p></details>
-        <details><summary>Apakah aman?</summary><p>Autentikasi disediakan Supabase, RLS aktif di tabel user & data pengguna.</p></details>
-      </div>
-    </section>
-  </main>
+      <!-- Login Form -->
+      <form id="login-form">
+        <input id="login-email" type="email" placeholder="Email" required />
+        <input id="login-password" type="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+
+      <!-- Magic Link -->
+      <form id="magic-form">
+        <input id="magic-email" type="email" placeholder="Email untuk Magic Link" required />
+        <button type="submit">Kirim Magic Link</button>
+      </form>
+
+      <!-- Register -->
+      <form id="register-form">
+        <input id="register-username" type="text" placeholder="Username" required />
+        <input id="register-email" type="email" placeholder="Email" required />
+        <input id="register-password" type="password" placeholder="Password" required />
+        <button type="submit">Daftar</button>
+      </form>
+
+      <!-- Forgot Password -->
+      <form id="forgot-form">
+        <input id="forgot-email" type="email" placeholder="Email" required />
+        <button type="submit">Reset Password</button>
+      </form>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -167,81 +126,12 @@
         <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="footer-logo" />
         <p class="muted">Dev Razia-Tech (Otong Hamandong)</p>
       </div>
-      <div class="footer-right">
-        <nav class="footer-nav">
-          <a href="index.html">Home</a>
-          <a href="#features">Features</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <div class="socials">
-          <a href="#" aria-label="X">X</a>
-          <a href="#" aria-label="Telegram">Telegram</a>
-          <a href="#" aria-label="Discord">Discord</a>
-          <a href="#" aria-label="LinkedIn">LinkedIn</a>
-        </div>
-      </div>
     </div>
   </footer>
 
-  <!-- SCRIPTS: populasi tabel, chart, theme toggle -->
-  <script>
-    // DARK MODE: toggle + remember
-    const themeToggle = document.getElementById('theme-toggle');
-    const saved = localStorage.getItem('cap-theme');
-    if (saved === 'dark') document.documentElement.classList.add('dark');
-    themeToggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      localStorage.setItem('cap-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-      themeToggle.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
-    });
-    themeToggle.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
-
-    // Dummy coin data (replace with live API later)
-    const coins = [
-      { name: "Bitcoin", price: 29400, change: 2.5, marketCap: "560B", recommend: "BUY" },
-      { name: "Ethereum", price: 1850, change: -1.2, marketCap: "210B", recommend: "HOLD" },
-      { name: "Binance Coin", price: 310, change: 0.8, marketCap: "48B", recommend: "BUY" },
-      { name: "Solana", price: 23, change: 5.1, marketCap: "8B", recommend: "BUY" },
-      { name: "Cardano", price: 0.40, change: -0.5, marketCap: "13B", recommend: "HOLD" }
-    ];
-
-    // populate table
-    const tbody = document.querySelector('#coinsTable tbody');
-    coins.forEach(c => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${c.name}</td>
-        <td>$${Number(c.price).toLocaleString()}</td>
-        <td class="${c.change >= 0 ? 'up' : 'down'}">${c.change >=0 ? '+' : ''}${c.change}%</td>
-        <td>${c.marketCap}</td>
-        <td class="${c.recommend.toLowerCase ? '' : ''}">${c.recommend}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    // trend chart (Chart.js)
-    const ctx = document.getElementById('trendChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['00:00','04:00','08:00','12:00','16:00','20:00','24:00'],
-        datasets: [{
-          label: 'Harga BTC (USD)',
-          data: [29000, 29200, 29500, 29400, 29300, 29600, 29750],
-          borderColor: '#d4af37',
-          backgroundColor: 'rgba(212,175,55,0.12)',
-          fill: true,
-          tension: 0.25,
-          pointRadius: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: { y: { beginAtZero: false } },
-        plugins: { legend: { display: false } }
-      }
-    });
-   
+  <!-- Scripts -->
+  <script src="auth.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
+
