@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
+  <!-- Navbar -->
   <nav class="nav">
     <div class="nav-inner">
       <div class="brand">
@@ -20,51 +21,45 @@
     </div>
   </nav>
 
+  <!-- Auth Section -->
   <section class="auth-section">
     <div class="auth-card">
       <h1>Masuk ke Akun</h1>
 
       <form id="login-form">
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Masukkan email" required />
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="Masukkan email" required />
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Masukkan password" required />
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Masukkan password" required />
         </div>
+        <div id="login-msg" class="msg hidden"></div>
         <button type="submit" class="btn btn-primary w-100">Login</button>
       </form>
 
       <div class="auth-links">
         <a href="register.html">Daftar</a> | 
-        <a href="forgot-password.html">Lupa Password</a>
+        <a href="reset-password.html">Lupa Password</a>
       </div>
-
-      <div class="auth-divider"><span>atau</span></div>
-
-      <form id="magic-link-form">
-        <input type="email" id="magic-email" placeholder="Email untuk magic link" />
-        <button type="submit" class="btn btn-light w-100">Kirim Magic Link</button>
-      </form>
-
-      <button id="google-login" class="btn btn-google w-100">Masuk dengan Google</button>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
       <img src="../assets/logos/CryptoAnalyzerPro-logo.png" alt="logo" class="footer-logo" />
       <span>Dev Razia-Tech (Otong Hamandong)</span>
     </div>
   </footer>
-  
-<!-- Load Supabase via CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<!-- Auth script -->
-<script src="/js/auth/auth.js"></script>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/auth.js" defer></script>
 </body>
 </html>
+
 
 
 
