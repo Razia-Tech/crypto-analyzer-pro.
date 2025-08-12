@@ -26,6 +26,7 @@
     <div class="auth-card">
       <h1>Masuk ke Akun</h1>
 
+      <!-- Login Form -->
       <form id="login-form">
         <div class="form-group">
           <label for="login-email">Email</label>
@@ -43,6 +44,17 @@
         <a href="register.html">Daftar</a> | 
         <a href="reset-password.html">Lupa Password</a>
       </div>
+
+      <div class="auth-divider"><span>atau</span></div>
+
+      <!-- Magic Link Form -->
+      <form id="magic-link-form">
+        <input type="email" id="magic-email" placeholder="Email untuk magic link" />
+        <button type="submit" class="btn btn-light w-100">Kirim Magic Link</button>
+      </form>
+
+      <!-- Google Login -->
+      <button id="google-login" class="btn btn-google w-100">Masuk dengan Google</button>
     </div>
   </section>
 
@@ -59,7 +71,3 @@
   <script src="../js/auth.js" defer></script>
 </body>
 </html>
-
-
-
-
