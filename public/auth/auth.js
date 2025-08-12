@@ -19,7 +19,7 @@ export async function loginUser(email, password) {
         });
         if (error) throw error;
         console.log("Login sukses:", data);
-        window.location.href = "public/dashboard.html";
+        window.location.href = "/dashboard.html";
     } catch (err) {
         alert(`Login gagal: ${err.message}`);
     }
@@ -75,7 +75,7 @@ export async function handleGoogleLogin() {
 export async function forgotPassword(email) {
     try {
         const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${window.location.origin}/reset-password.html`
+            redirectTo: `${window.location.origin}/auth/reset-password.html`
         });
         if (error) throw error;
         alert("Link reset password telah dikirim ke email.");
@@ -92,7 +92,7 @@ export async function resetPassword(newPassword) {
         const { data, error } = await supabase.auth.updateUser({ password: newPassword });
         if (error) throw error;
         alert("Password berhasil diubah!");
-        window.location.href = "/login.html";
+        window.location.href = "/auth/login.html";
     } catch (err) {
         alert(`Gagal ubah password: ${err.message}`);
     }
@@ -105,7 +105,7 @@ export async function logoutUser() {
     try {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
-        window.location.href = "/login.html";
+        window.location.href = "/auth/login.html";
     } catch (err) {
         alert(`Logout gagal: ${err.message}`);
     }
