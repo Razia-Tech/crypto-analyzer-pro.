@@ -24,7 +24,10 @@ export async function loginUser(email, password) {
         alert(`Login gagal: ${err.message}`);
     }
 }
-
+   // Alias untuk kompatibilitas lama
+     export function handleLogin(email, password) {
+    return loginUser(email, password);
+}
 // =============================
 // REGISTER
 // =============================
