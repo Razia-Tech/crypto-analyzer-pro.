@@ -1,23 +1,3 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Masuk — CryptoAnalyzerPro</title>
-  <link rel="stylesheet" href="../css/style.css" />
-</head>
-<body>
-  <nav class="nav">
-    <div class="nav-inner">
-      <div class="brand">
-        <img src="../assets/logos/CryptoAnalyzerPro-logo.png" alt="logo" class="brand-logo">
-        <span class="brand-name">CryptoAnalyzerPro</span>
-      </div>
-      <div class="menu">
-        <a href="/">Home</a>
-        <a href="register.html" class="menu-cta">Daftar</a>
-      </div>
-    </div>
   </nav>
 
   <section class="auth-section">
@@ -34,10 +14,20 @@
         </div>
         <button type="submit" class="btn btn-primary w-100">Login</button>
       </form>
+
       <div class="auth-links">
-        <a href="register.html">Daftar</a> | 
-        <a href="forgot-password.html">Lupa Password</a>
+        <a href="/auth/register.html">Daftar</a> | 
+        <a href="/auth/forgot-password.html">Lupa Password</a>
       </div>
+
+      <div class="auth-divider"><span>atau</span></div>
+
+      <form id="magic-link-form">
+        <input type="email" id="magic-email" placeholder="Email untuk magic link">
+        <button type="submit" class="btn btn-light w-100">Kirim Magic Link</button>
+      </form>
+
+      <button class="btn btn-google w-100">Masuk dengan Google</button>
     </div>
   </section>
 
@@ -48,7 +38,6 @@
     </div>
   </footer>
 
-  <!-- Pastikan path ini benar -->
   <script src="../auth.js"></script>
 </body>
 </html>
