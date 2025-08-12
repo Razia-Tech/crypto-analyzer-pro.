@@ -1,10 +1,9 @@
-// public/js/auth.js
-// Gunakan Supabase v2 via CDN
-const { createClient } = supabase;
-// Ganti dengan nilai dari Supabase Project
-const SUPABASE_URL = 'https://ibzgmeooqxmbcnmovlbi.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY';
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// auth.js — Crypto Analyzer Pro (FINAL)
+// GANTI dengan kredensial kamu:
+const SUPABASE_URL = "https://ibzgmeooqxmbcnmovlbi.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";
+
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // Helper: ambil current page
 const PAGE = window.location.pathname.split("/").pop() || "index.html";
 
