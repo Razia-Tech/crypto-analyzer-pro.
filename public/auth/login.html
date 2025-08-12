@@ -3,62 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk — CryptoAnalyzerPro</title>
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css" /> 
+  <title>Login - CryptoAnalyzerPro</title>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <nav class="nav">
-    <div class="nav-inner">
-      <div class="brand">
-        <img src="../assets/logo.png" alt="logo" class="brand-logo">
-        <span class="brand-name">CryptoAnalyzerPro</span>
-      </div>
-      <div class="menu">
-        <a href="/">Home</a>
-        <a href="/auth/register.html" class="menu-cta">Daftar</a>
-      </div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="brand-logo">
+      <span class="brand-name">CryptoAnalyzerPro</span>
     </div>
-  </nav>
-
-  <section class="auth-section">
-    <div class="auth-card">
-      <h1>Masuk ke Akun</h1>
-      <form id="login-form">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Masukkan email" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Masukkan password" required>
-        </div>
-        <button type="submit" class="btn btn-primary w-100">Login</button>
-      </form>
-
-      <div class="auth-links">
-        <a href="/auth/register.html">Daftar</a> | 
-        <a href="/auth/forgot-password.html">Lupa Password</a>
-      </div>
-
-      <div class="auth-divider"><span>atau</span></div>
-
-      <form id="magic-link-form">
-        <input type="email" id="magic-email" placeholder="Email untuk magic link">
-        <button type="submit" class="btn btn-light w-100">Kirim Magic Link</button>
-      </form>
-
-      <button class="btn btn-google w-100">Masuk dengan Google</button>
+    <div class="menu">
+      <a href="index.html">Home</a>
+      <a href="register.html" class="menu-cta">Daftar</a>
     </div>
-  </section>
+  </div>
+</nav>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <img src="../assets/logo.png" alt="logo" class="footer-logo">
-      <span>Dev Razia-Tech (Otong Hamandong)</span>
-    </div>
-  </footer>
+<!-- LOGIN SECTION -->
+<section class="section auth-section">
+  <div class="section-inner" style="max-width:400px; margin:auto;">
+    <h2>Login</h2>
+    <form id="login-form" class="auth-form">
+      <label for="login-email">Email</label>
+      <input id="login-email" type="email" placeholder="Email" required>
 
-  <script src="../auth.js"></script>
+      <label for="login-password">Password</label>
+      <input id="login-password" type="password" placeholder="Password" required>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;">Login</button>
+    </form>
+
+    <p style="margin-top:10px; text-align:center;">
+      <a href="forgot-password.html">Lupa Password?</a> | 
+      <a href="register.html">Buat Akun</a>
+    </p>
+  </div>
+</section>
+
 </body>
 </html>
+
