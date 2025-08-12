@@ -125,7 +125,20 @@
         </div>
       </div>
     </section>
+     </script>
+    <form id="login-form"> <!-- form login -->
+    <input id="login-email" type="email" />
+    <input id="login-password" type="password" />
+    <button type="submit">Login</button>
+    </form>
 
+    <!-- optional magic form -->
+    <form id="magic-form">
+    <input id="magic-email" type="email" />
+    <button type="submit">Kirim magic link</button>
+    </form>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="/auth.js"></script>
     <!-- TESTIMONIALS -->
     <section id="testimonials" class="section">
       <div class="section-inner">
@@ -229,19 +242,6 @@
         plugins: { legend: { display: false } }
       }
     });
-    </script>
-    <form id="login-form"> <!-- form login -->
-    <input id="login-email" type="email" />
-    <input id="login-password" type="password" />
-    <button type="submit">Login</button>
-    </form>
-
-    <!-- optional magic form -->
-    <form id="magic-form">
-    <input id="magic-email" type="email" />
-    <button type="submit">Kirim magic link</button>
-    </form>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="/auth.js"></script>
+   
 </body>
 </html>
