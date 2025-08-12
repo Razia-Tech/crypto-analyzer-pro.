@@ -1,116 +1,69 @@
-// auth.js - Supabase Auth Integration (Browser-safe, CDN style)
+<!-- simpan di /auth.js -->
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // Ganti dengan credential project Supabase kamu
 const SUPABASE_URL = "https://ibzgmeooqxmbcnmovlbi.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// =============================
-// LOGIN
-// =============================
-export async function loginUser(email, password) {
-    try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password
-        });
-        if (error) throw error;
-        console.log("Login sukses:", data);
-        window.location.href = "/dashboard.html";
-    } catch (err) {
-        alert(`Login gagal: ${err.message}`);
-    }
-}
-
-// Alias untuk kompatibilitas lama
-export function handleLogin(email, password) {
-    return loginUser(email, password);
-}
-
-// =============================
 // REGISTER
-// =============================
-export async function registerUser(email, password) {
-    try {
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password
-        });
-        if (error) throw error;
-        alert("Pendaftaran sukses! Periksa email untuk verifikasi.");
-    } catch (err) {
-        alert(`Registrasi gagal: ${err.message}`);
-    }
+export async function handleRegister(e) {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const username = document.getElementById("username").value.trim();
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { username } }
+  });
+
+  if (error) return alert(error.message);
+
+  // Insert ke tabel profile
+  if (data.user) {
+    await supabase.from("profile").insert([
+      { user_id: data.user.id, username }
+    ]);
+  }
+
+  alert("Cek email untuk verifikasi!");
+  window.location.href = "verify-email.html";
 }
 
-// =============================
-// LOGIN DENGAN MAGIC LINK
-// =============================
-export async function loginWithMagicLink(email) {
-    try {
-        const { data, error } = await supabase.auth.signInWithOtp({ email });
-        if (error) throw error;
-        alert("Magic link terkirim! Cek email Anda.");
-    } catch (err) {
-        alert(`Magic link gagal: ${err.message}`);
-    }
+// LOGIN
+export async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) return alert(error.message);
+
+  window.location.href = "dashboard.html";
 }
 
-// =============================
-// LOGIN DENGAN GOOGLE
-// =============================
-export async function handleGoogleLogin() {
-    try {
-        const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: "google"
-        });
-        if (error) throw error;
-        console.log("Mengalihkan ke Google Login...");
-    } catch (err) {
-        alert(`Google login gagal: ${err.message}`);
-    }
-}
-
-// =============================
 // FORGOT PASSWORD
-// =============================
-export async function forgotPassword(email) {
-    try {
-        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${window.location.origin}/reset-password.html`
-        });
-        if (error) throw error;
-        alert("Link reset password telah dikirim ke email.");
-    } catch (err) {
-        alert(`Reset password gagal: ${err.message}`);
-    }
+export async function handleForgot(e) {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + "/reset-password.html"
+  });
+  if (error) return alert(error.message);
+  alert("Cek email untuk link reset password!");
 }
 
-// =============================
 // RESET PASSWORD
-// =============================
-export async function resetPassword(newPassword) {
-    try {
-        const { data, error } = await supabase.auth.updateUser({ password: newPassword });
-        if (error) throw error;
-        alert("Password berhasil diubah!");
-        window.location.href = "/login.html";
-    } catch (err) {
-        alert(`Gagal ubah password: ${err.message}`);
-    }
+export async function handleReset(e) {
+  e.preventDefault();
+  const password = document.getElementById("password").value.trim();
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) return alert(error.message);
+  alert("Password berhasil diubah!");
+  window.location.href = "login.html";
 }
-
-// =============================
-// LOGOUT
-// =============================
-export async function logoutUser() {
-    try {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-        window.location.href = "/login.html";
-    } catch (err) {
-        alert(`Logout gagal: ${err.message}`);
-    }
-}
+</script>
