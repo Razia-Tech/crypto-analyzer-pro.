@@ -19,7 +19,7 @@ export async function loginUser(email, password) {
         });
         if (error) throw error;
         console.log("Login sukses:", data);
-        window.location.href = "/dashboard.html";
+        window.location.href = "public/dashboard.html";
     } catch (err) {
         alert(`Login gagal: ${err.message}`);
     }
