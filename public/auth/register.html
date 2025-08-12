@@ -1,61 +1,26 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Daftar — Crypto Analyzer Pro</title>
-  <link rel="stylesheet" href="../css/style.css" />
+  <meta charset="UTF-8">
+  <title>Register - Crypto Analyzer Pro</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="auth-card" role="main" aria-labelledby="reg-title">
-    <h2 id="reg-title">Buat Akun Baru</h2>
-
-    <form id="form-register" autocomplete="on">
-      <input id="username" class="input" type="text" placeholder="Nama (opsional)" />
-      <input id="email" class="input" type="email" placeholder="Email" required />
-      <input id="password" class="input" type="password" placeholder="Password" required />
-      <input id="confirm" class="input" type="password" placeholder="Konfirmasi Password" required />
-      <button type="submit" class="btn-full btn-primary-full">Daftar</button>
-    </form>
-
-    <div class="text-center mt-2 muted">
-      Sudah punya akun? <a href="login.html">Masuk</a>
-    </div>
-
-    <div id="msg" class="text-center mt-2 muted"></div>
-  </div>
-
-  <script type="module">
-    import { registerUser } from './auth.js'
-    const form = document.getElementById('form-register')
-    const msg = document.getElementById('msg')
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault()
-      msg.textContent = 'Memproses pendaftaran...'
-      const email = document.getElementById('email').value
-      const password = document.getElementById('password').value
-      const confirm = document.getElementById('confirm').value
-      const username = document.getElementById('username').value || null
-
-      if (password !== confirm) {
-        msg.textContent = 'Password dan konfirmasi tidak sama.'
-        return
-      }
-
-      const { data, error } = await registerUser({ email, password })
-      if (error) {
-        msg.textContent = error.message
-      } else {
-        msg.textContent = 'Registrasi sukses. Cek email untuk verifikasi.'
-        // optional: store profile in separate table via supabase client if needed
-        // redirect to verify page
-        window.location.href = 'verify-email.html'
-      }
-    })
-  </script>
+<div class="auth-card">
+  <h2>Register</h2>
+  <form id="register-form">
+    <input class="input" id="username" type="text" placeholder="Username" required>
+    <input class="input" id="email" type="email" placeholder="Email" required>
+    <input class="input" id="password" type="password" placeholder="Password" required>
+    <button class="btn-full btn-primary-full">Daftar</button>
+  </form>
+  <p class="text-center muted">
+    Sudah punya akun? <a href="login.html">Login</a>
+  </p>
+</div>
+<script type="module">
+import { handleRegister } from "./auth.js";
+document.getElementById("register-form").addEventListener("submit", handleRegister);
+</script>
 </body>
 </html>
-
-
-
