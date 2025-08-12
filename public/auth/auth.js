@@ -4,7 +4,6 @@
 const SUPABASE_URL = "https://ibzgmeooqxmbcnmovlbi.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";
 
-// Inisialisasi client Supabase
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -24,10 +23,12 @@ export async function loginUser(email, password) {
         alert(`Login gagal: ${err.message}`);
     }
 }
-   // Alias untuk kompatibilitas lama
-     export function handleLogin(email, password) {
+
+// Alias untuk kompatibilitas lama
+export function handleLogin(email, password) {
     return loginUser(email, password);
 }
+
 // =============================
 // REGISTER
 // =============================
@@ -78,7 +79,7 @@ export async function handleGoogleLogin() {
 export async function forgotPassword(email) {
     try {
         const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${window.location.origin}/auth/reset-password.html`
+            redirectTo: `${window.location.origin}/reset-password.html`
         });
         if (error) throw error;
         alert("Link reset password telah dikirim ke email.");
@@ -95,7 +96,7 @@ export async function resetPassword(newPassword) {
         const { data, error } = await supabase.auth.updateUser({ password: newPassword });
         if (error) throw error;
         alert("Password berhasil diubah!");
-        window.location.href = "/auth/login.html";
+        window.location.href = "/login.html";
     } catch (err) {
         alert(`Gagal ubah password: ${err.message}`);
     }
@@ -108,7 +109,7 @@ export async function logoutUser() {
     try {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
-        window.location.href = "/auth/login.html";
+        window.location.href = "/login.html";
     } catch (err) {
         alert(`Logout gagal: ${err.message}`);
     }
