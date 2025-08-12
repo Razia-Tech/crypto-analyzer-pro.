@@ -1,51 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daftar - CryptoAnalyzerPro</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+  <title>Register — CryptoAnalyzerPro</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
-
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="brand">
-      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="brand-logo">
-      <span class="brand-name">CryptoAnalyzerPro</span>
+  <nav class="nav">
+    <div class="nav-inner container">
+      <div class="brand">
+        <img src="../assets/logos/CryptoAnalyzerPro-logo.png" alt="logo" class="brand-logo">
+        <div class="brand-name">CryptoAnalyzerPro</div>
+      </div>
+      <div class="menu">
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+      </div>
     </div>
-    <div class="menu">
-      <a href="index.html">Home</a>
-      <a href="login.html" class="menu-cta">Login</a>
+  </nav>
+
+  <main class="section">
+    <div class="section-inner container">
+      <h2>Buat Akun Baru</h2>
+
+      <div class="feature-card" style="max-width:520px;margin-top:18px">
+        <form id="register-form">
+          <label class="small">Username</label>
+          <input id="register-username" type="text" required />
+          <label class="small">Email</label>
+          <input id="register-email" type="email" required />
+          <label class="small">Password</label>
+          <input id="register-password" type="password" required />
+          <div style="margin-top:12px">
+            <button class="btn btn-primary" type="submit">Daftar & Verifikasi</button>
+          </div>
+        </form>
+        <p class="small" style="margin-top:12px">Setelah daftar, cek email untuk verifikasi.</p>
+      </div>
     </div>
-  </div>
-</nav>
+  </main>
 
-<!-- REGISTER SECTION -->
-<section class="section auth-section">
-  <div class="section-inner" style="max-width:400px; margin:auto;">
-    <h2>Buat Akun</h2>
-    <form id="register-form" class="auth-form">
-      <label for="register-name">Nama Lengkap</label>
-      <input id="register-name" type="text" placeholder="Nama Lengkap" required>
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="muted">Dev Razia-Tech (Otong Hamandong)</div>
+      <img src="../assets/logos/CryptoAnalyzerPro-logo.png" alt="logo" class="footer-logo">
+    </div>
+  </footer>
 
-      <label for="register-email">Email</label>
-      <input id="register-email" type="email" placeholder="Email" required>
-
-      <label for="register-password">Password</label>
-      <input id="register-password" type="password" placeholder="Password" required>
-
-      <button type="submit" class="btn btn-primary" style="width:100%;">Daftar</button>
-    </form>
-
-    <p style="margin-top:10px; text-align:center;">
-      <a href="login.html">Sudah punya akun? Login</a>
-    </p>
-  </div>
-</section>
-
+  <script src="auth.js"></script>
 </body>
 </html>
-
-
