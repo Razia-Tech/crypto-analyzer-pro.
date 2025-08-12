@@ -4,79 +4,109 @@
 const SUPABASE_URL = "https://ibzgmeooqxmbcnmovlbi.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";
 
-// Inisialisasi Supabase Client via CDN
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Inisialisasi client Supabase
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// === LOGIN ===
-async function loginUser(email, password) {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
-
-    if (error) {
-        alert("Login gagal: " + error.message);
-        console.error(error);
-        return;
+// =============================
+// LOGIN
+// =============================
+export async function loginUser(email, password) {
+    try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+        if (error) throw error;
+        console.log("Login sukses:", data);
+        window.location.href = "/dashboard.html";
+    } catch (err) {
+        alert(`Login gagal: ${err.message}`);
     }
-
-    console.log("Login sukses:", data);
-    alert("Login sukses!");
-    // Redirect ke dashboard atau halaman utama
-    window.location.href = "/dashboard.html";
 }
 
-// === REGISTER ===
-async function registerUser(email, password) {
-    const { data, error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password
-    });
-
-    if (error) {
-        alert("Registrasi gagal: " + error.message);
-        console.error(error);
-        return;
+// =============================
+// REGISTER
+// =============================
+export async function registerUser(email, password) {
+    try {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password
+        });
+        if (error) throw error;
+        alert("Pendaftaran sukses! Periksa email untuk verifikasi.");
+    } catch (err) {
+        alert(`Registrasi gagal: ${err.message}`);
     }
-
-    alert("Registrasi sukses! Silakan cek email untuk verifikasi.");
-    console.log(data);
-    window.location.href = "/auth/verify-email.html";
 }
 
-// === LUPA PASSWORD ===
-async function forgotPassword(email) {
-    const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: "https://cryptoanalyzerpro.netlify.app/auth/reset-password.html"
-    });
-
-    if (error) {
-        alert("Gagal mengirim link reset password: " + error.message);
-        return;
+// =============================
+// LOGIN DENGAN MAGIC LINK
+// =============================
+export async function loginWithMagicLink(email) {
+    try {
+        const { data, error } = await supabase.auth.signInWithOtp({ email });
+        if (error) throw error;
+        alert("Magic link terkirim! Cek email Anda.");
+    } catch (err) {
+        alert(`Magic link gagal: ${err.message}`);
     }
-
-    alert("Link reset password sudah dikirim ke email!");
 }
 
-// === RESET PASSWORD ===
-async function updatePassword(newPassword) {
-    const { data, error } = await supabaseClient.auth.updateUser({
-        password: newPassword
-    });
-
-    if (error) {
-        alert("Gagal mengubah password: " + error.message);
-        return;
+// =============================
+// LOGIN DENGAN GOOGLE
+// =============================
+export async function handleGoogleLogin() {
+    try {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: "google"
+        });
+        if (error) throw error;
+        console.log("Mengalihkan ke Google Login...");
+    } catch (err) {
+        alert(`Google login gagal: ${err.message}`);
     }
-
-    alert("Password berhasil diubah!");
-    window.location.href = "/auth/login.html";
 }
 
-// Export function ke global scope
-window.authFunctions = {
-    loginUser,
-    registerUser,
-    forgotPassword,
-    updatePassword
-};
+// =============================
+// FORGOT PASSWORD
+// =============================
+export async function forgotPassword(email) {
+    try {
+        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/reset-password.html`
+        });
+        if (error) throw error;
+        alert("Link reset password telah dikirim ke email.");
+    } catch (err) {
+        alert(`Reset password gagal: ${err.message}`);
+    }
+}
+
+// =============================
+// RESET PASSWORD
+// =============================
+export async function resetPassword(newPassword) {
+    try {
+        const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) throw error;
+        alert("Password berhasil diubah!");
+        window.location.href = "/login.html";
+    } catch (err) {
+        alert(`Gagal ubah password: ${err.message}`);
+    }
+}
+
+// =============================
+// LOGOUT
+// =============================
+export async function logoutUser() {
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        window.location.href = "/login.html";
+    } catch (err) {
+        alert(`Logout gagal: ${err.message}`);
+    }
+}
