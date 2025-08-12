@@ -1,23 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dashboard - Crypto Analyzer Pro</title>
-<link rel="stylesheet" href="style.css" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth/auth.js" defer></script>
-<script src="js/dashboard.js" defer></script>
-<script src="js/modules/market-fundamentals/market.js" defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — Crypto Analyzer Pro</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<header>
-  <h1>Crypto Analyzer Pro Dashboard</h1>
-  <button id="btnLogout">Logout</button>
-</header>
-<main id="dashboard-content">
-  <p>Loading...</p>
-</main>
+  <header class="nav">
+    <div class="nav-inner container">
+      <div class="brand">
+        <img src="assets/logo/CryptoAnalyzerPro-logo.png" alt="Logo" class="brand-logo"/>
+        <span class="brand-name">Crypto Analyzer Pro</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <button id="btn-logout" class="btn btn-secondary-full">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="section-inner container">
+      <h2>Dashboard</h2>
+      <p class="muted">Ringkasan market fundamentals (contoh)</p>
+
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:18px">
+        <div style="flex:1;min-width:300px" class="table-wrap">
+          <table class="coins-table">
+            <thead><tr><th>Coin</th><th>Price</th><th>24h</th><th>Market Cap</th></tr></thead>
+            <tbody id="market-body"></tbody>
+          </table>
+        </div>
+
+        <div style="width:420px" class="chart-wrap">
+          <canvas id="dashChart" style="height:220px"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase, signOut } from './auth/auth.js'
+
+    // redirect to login if not authenticated
+    (async () => {
+      const { data } = await supabase.auth.getSession()
+      if (!data?.session) {
+        window.location.href = '/auth/login.html'
+        return
+      }
+      // load dummy market data
+      const coins = [
+        { name:"Bitcoin", price:29400, change:2.5, marketCap:"560B" },
+        { name:"Ethereum", price:1850, change:-1.2, marketCap:"210B" },
+        { name:"BNB", price:310, change:0.8, marketCap:"48B" },
+        { name:"Solana", price:23, change:5.1, marketCap:"8B" },
+        { name:"Cardano", price:0.40, change:-0.5, marketCap:"13B" }
+      ]
+      const tbody = document.getElementById('market-body')
+      coins.forEach(c => {
+        const tr = document.createElement('tr')
+        tr.innerHTML = `<td>${c.name}</td><td>$${c.price.toLocaleString()}</td><td class="${c.change>=0?'up':'down'}">${c.change>=0?'+':''}${c.change}%</td><td>${c.marketCap}</td>`
+        tbody.appendChild(tr)
+      })
+      const ctx = document.getElementById('dashChart').getContext('2d')
+      new Chart(ctx, {
+        type:'line',
+        data:{
+          labels:['00:00','04:00','08:00','12:00','16:00','20:00','24:00'],
+          datasets:[{label:'BTC Price', data:[29000,29200,29500,29400,29300,29600,29750], borderColor:'#d4af37', backgroundColor:'rgba(212,175,55,0.12)', fill:true, tension:0.25}]
+        },
+        options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false}}}
+      })
+    })()
+
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+      await signOut()
+      window.location.href = '/auth/login.html'
+    })
+  </script>
 </body>
 </html>
+
 
