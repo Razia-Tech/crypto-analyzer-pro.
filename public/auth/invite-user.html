@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invite User — CryptoAnalyzerPro</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="logo" class="brand-logo" />
+      <span class="brand-name">CryptoAnalyzerPro</span>
+    </div>
+    <div class="menu">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<section class="auth-section">
+  <div class="auth-card">
+    <h1>Invite User</h1>
+    <p>Kirim undangan ke email user untuk bergabung ke CryptoAnalyzerPro.</p>
+
+    <form id="invite-form">
+      <div class="form-group">
+        <label for="invite-email">Email</label>
+        <input type="email" id="invite-email" placeholder="Masukkan email user" required />
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Kirim Undangan</button>
+    </form>
+
+    <div id="invite-msg" class="msg hidden"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="logo" class="footer-logo" />
+    <span>Dev Razia-Tech (Otong Hamandong)</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const sb = supabase.createClient('https://YOUR-PROJECT.supabase.co', 'YOUR_ANON_KEY');
+  const inviteForm = document.getElementById('invite-form');
+  const inviteMsg = document.getElementById('invite-msg');
+
+  function showMsg(el, txt, err=false) {
+    if (!el) return;
+    el.textContent = txt;
+    el.classList.remove('hidden');
+    el.classList.toggle('error', err);
+    setTimeout(() => el.classList.add('hidden'), 6000);
+  }
+
+  inviteForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = document.getElementById('invite-email').value.trim();
+    if (!email) {
+      showMsg(inviteMsg, 'Masukkan email', true);
+      return;
+    }
+    try {
+      // Contoh: Simpan undangan ke tabel "invitations" di Supabase (buat tabel dulu)
+      const { error } = await sb.from('invitations').insert([{ email }]);
+      if (error) throw error;
+      showMsg(inviteMsg, 'Undangan terkirim');
+      inviteForm.reset();
+    } catch (err) {
+      showMsg(inviteMsg, err.message || 'Gagal kirim undangan', true);
+    }
+  });
+</script>
+</body>
+</html>
