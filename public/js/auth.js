@@ -38,23 +38,23 @@ async function handleLogin(e) {
 }
 
 // Handle Magic Link Login
-async function handleMagicLink(e) {
+magicLinkForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const email = qs('magic-email').value.trim();
-  const msgEl = qs('login-msg');
+  const email = document.getElementById('magic-email').value.trim();
 
-  if (!email) {
-    showMsg(msgEl, 'Masukkan email untuk magic link', true);
-    return;
-  }
-
-  const { error } = await sb.auth.signInWithOtp({
+  const { error } = await supabaseClient.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: window.location.origin + '/dashboard.html',
-    },
+      emailRedirectTo: window.location.origin + '/dashboard.html'
+    }
   });
 
+  if (error) {
+    alert(error.message);
+  } else {
+    alert('Magic link telah dikirim ke email Anda.');
+  }
+});
   if (error) return showMsg(msgEl, error.message, true);
   showMsg(msgEl, 'Magic link dikirim! Cek email kamu.');
 }
