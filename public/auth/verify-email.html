@@ -1,21 +1,33 @@
 <!doctype html>
-<html>
+<html lang="id">
 <head>
   <meta charset="utf-8" />
-  <title>Verify Email — Crypto Analyzer Pro</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Verify Email — CryptoAnalyzerPro</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <div class="container card center">
-    <h2>Verifikasi Email</h2>
-    <p class="small">Klik link verifikasi di email — setelah itu Anda akan diarahkan otomatis.</p>
-    <p class="small">Jika tidak otomatis, coba <a href="index.html" class="link">login</a>.</p>
-  </div>
+  <main class="section">
+    <div class="section-inner container" style="max-width:720px">
+      <div class="feature-card">
+        <h2>Verifikasi Email</h2>
+        <p class="small">Kami sudah mengirimkan link verifikasi ke email Anda. Silakan buka email dan klik link verifikasi. Setelah verifikasi, Anda akan diarahkan kembali ke dashboard.</p>
+        <p class="small">Jika belum menerima email, cek folder spam atau klik <a href="login.html" class="link">coba login</a> untuk mengirim ulang.</p>
+      </div>
+    </div>
+  </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="muted">Dev Razia-Tech (Otong Hamandong)</div>
+      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="logo" class="footer-logo">
+    </div>
+  </footer>
+
   <script src="auth.js"></script>
 </body>
 </html>
+
 
 
