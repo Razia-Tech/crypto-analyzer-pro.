@@ -1,17 +1,22 @@
-<!DOCTYPE html>
-<html lang="id">
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Verifikasi Email - Crypto Analyzer Pro</title>
-  <link rel="stylesheet" href="../css/style.css"/>
+  <meta charset="utf-8" />
+  <title>Verify Email — Crypto Analyzer Pro</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="dark:bg-gray-900 dark:text-white flex items-center justify-center min-h-screen">
-  <div class="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center">
-    <h2 class="text-2xl font-bold mb-4">Cek Email Anda</h2>
-    <p>Kami telah mengirimkan link verifikasi ke email Anda. Klik link tersebut untuk mengaktifkan akun.</p>
-    <a href="login.html" class="btn-primary mt-6 inline-block">Kembali ke Login</a>
+<body>
+  <div class="container">
+    <div class="card center">
+      <h2>Verifikasi Email</h2>
+      <p class="small">Tunggu — setelah klik link di email, kamu akan diarahkan ke dashboard otomatis.</p>
+      <p class="small">Kalau tidak diarahkan otomatis, coba <a class="link" href="login.html">login</a>.</p>
+    </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="auth.js"></script>
 </body>
 </html>
 
