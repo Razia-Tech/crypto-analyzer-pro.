@@ -1,78 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login — CryptoAnalyzerPro</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masuk — CryptoAnalyzerPro</title>
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
   <nav class="nav">
-    <div class="nav-inner container">
+    <div class="nav-inner">
       <div class="brand">
-        <img src="public/assets/logos/CryptoAnalyzerPro-logo.png" alt="logo" class="brand-logo">
-        <div class="brand-name">CryptoAnalyzerPro</div>
+        <img src="../assets/logo.png" alt="logo" class="brand-logo">
+        <span class="brand-name">CryptoAnalyzerPro</span>
       </div>
       <div class="menu">
-        <a href="public/index.html">Home</a>
-        <a href="./auth/register.html" class="menu-cta">Daftar</a>
+        <a href="/">Home</a>
+        <a href="/auth/register.html" class="menu-cta">Daftar</a>
       </div>
     </div>
   </nav>
 
-  <main class="section">
-    <div class="section-inner container">
-      <h2>Masuk ke Akun</h2>
-
-      <div class="feature-card" style="max-width:520px;margin-top:18px">
-        <!-- Standard Login -->
-        <form id="login-form">
-          <label class="small">Email</label>
-          <input id="login-email" type="email" required />
-          <label class="small">Password</label>
-          <input id="login-password" type="password" required />
-          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn btn-primary" type="submit">Login</button>
-            <a class="btn btn-light" href="register.html">Daftar</a>
-            <a class="btn btn-light" href="forgot-password.html">Lupa Password</a>
-          </div>
-        </form>
-
-        <hr style="margin:18px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)" />
-
-        <!-- Magic Link -->
-        <form id="magic-form">
-          <label class="small">Login tanpa password (Magic Link)</label>
-          <input id="magic-email" type="email" placeholder="Email untuk magic link" required />
-          <button class="btn btn-light" type="submit" style="margin-top:8px">Kirim Magic Link</button>
-        </form>
-
-        <div style="margin-top:12px">
-          <button class="btn btn-light" id="google-login">Masuk dengan Google (aktifkan di Supabase)</button>
+  <section class="auth-section">
+    <div class="auth-card">
+      <h1>Masuk ke Akun</h1>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Masukkan email" required>
         </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Masukkan password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+      </form>
+
+      <div class="auth-links">
+        <a href="/auth/register.html">Daftar</a> | 
+        <a href="/auth/forgot-password.html">Lupa Password</a>
       </div>
+
+      <div class="auth-divider"><span>atau</span></div>
+
+      <form id="magic-link-form">
+        <input type="email" id="magic-email" placeholder="Email untuk magic link">
+        <button type="submit" class="btn btn-light w-100">Kirim Magic Link</button>
+      </form>
+
+      <button class="btn btn-google w-100">Masuk dengan Google</button>
     </div>
-  </main>
+  </section>
 
   <footer class="footer">
-    <div class="footer-inner container">
-      <div>
-        <img src="public/assets/logos/CryptoAnalyzerPro-logo.png" alt="logo" class="footer-logo">
-        <div class="muted">Dev Razia-Tech (Otong Hamandong)</div>
-      </div>
+    <div class="footer-inner">
+      <img src="../assets/logo.png" alt="logo" class="footer-logo">
+      <span>Dev Razia-Tech (Otong Hamandong)</span>
     </div>
   </footer>
 
-  <script src="auth.js"></script>
-  <script>
-    // tambahan safety: mencegah double Chart lib jika ada
-    // (tidak ada Chart.js di halaman login, tapi ini aman)
-    // Bind google button to auth.js function if present
-    document.getElementById('google-login')?.addEventListener('click', () => {
-      if(typeof loginGoogle === 'function') loginGoogle();
-      else alert('Google auth belum dikonfigurasi di auth.js / Supabase.');
-    });
-  </script>
+  <script src="../auth.js"></script>
 </body>
 </html>
