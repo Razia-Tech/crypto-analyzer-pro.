@@ -5,192 +5,148 @@
 // Ganti dengan credential project Supabase kamu
 const SUPABASE_URL = "https://ibzgmeooqxmbcnmovlbi.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Helper: ambil current page
-const PAGE = window.location.pathname.split("/").pop() || "index.html";
+// ✅ Helper redirect
+function goTo(page) {
+  window.location.href = page;
+}
 
-/* =====================
-   REGISTER
-   ===================== */
-async function registerUser(evt){
-  evt && evt.preventDefault();
-  const email = document.getElementById("reg-email")?.value?.trim();
-  const password = document.getElementById("reg-password")?.value;
-  const username = document.getElementById("reg-username")?.value?.trim();
+// ✅ Save profile after register
+async function saveProfile(userId, username) {
+  const { error } = await supabaseClient
+    .from("profiles")
+    .upsert([{ id: userId, username }], { onConflict: "id" });
+  if (error) console.error("Error saving profile:", error.message);
+}
 
-  if(!email || !password || !username) return alert("Isi semua field");
-
-  const { data, error } = await supabase.auth.signUp({
-    email, password,
-    options: {
-      data: { username },
-      emailRedirectTo: window.location.origin + "/verify.html"
-    }
+// ✅ REGISTER
+async function handleRegister(email, password, username) {
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: window.location.origin + "/verify-email.html" }
   });
 
-  if(error) return alert(error.message);
-
-  // create profile row (if not auto-created)
-  if(data?.user?.id){
-    const { error: profErr } = await supabase
-      .from("profiles")
-      .upsert({
-        id: data.user.id,
-        username: username
-      }, { onConflict: 'id' });
-    if(profErr) console.warn("profiles upsert:", profErr.message);
-  }
-
-  alert("Registrasi sukses. Cek email untuk verifikasi.");
-  window.location.href = "verify.html";
+  if (error) return alert(error.message);
+  if (data.user) await saveProfile(data.user.id, username);
+  alert("Pendaftaran berhasil! Silakan cek email untuk verifikasi.");
 }
 
-/* =====================
-   LOGIN (email + password)
-   ===================== */
-async function loginUser(evt){
-  evt && evt.preventDefault();
-  const email = document.getElementById("login-email")?.value?.trim();
-  const password = document.getElementById("login-password")?.value;
-  if(!email || !password) return alert("Isi email & password");
-
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if(error) return alert(error.message);
-  window.location.href = "dashboard.html";
+// ✅ LOGIN (email/password)
+async function handleLogin(email, password) {
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if (error) return alert(error.message);
+  goTo("dashboard.html");
 }
 
-/* =====================
-   MAGIC LINK (email)
-   ===================== */
-async function magicLinkLogin(evt){
-  evt && evt.preventDefault();
-  const email = document.getElementById("magic-email")?.value?.trim();
-  if(!email) return alert("Masukkan email");
-
-  const { error } = await supabase.auth.signInWithOtp({
+// ✅ LOGIN MAGIC LINK
+async function handleMagicLink(email) {
+  const { error } = await supabaseClient.auth.signInWithOtp({
     email,
     options: { emailRedirectTo: window.location.origin + "/dashboard.html" }
   });
-
-  if(error) return alert(error.message);
-  alert("Magic link dikirim. Cek email.");
+  if (error) return alert(error.message);
+  alert("Magic link telah dikirim ke email.");
 }
 
-/* =====================
-   OAUTH Google (butuh setup di Supabase)
-   ===================== */
-async function loginGoogle(){
-  const { error } = await supabase.auth.signInWithOAuth({
+// ✅ LOGIN GOOGLE
+async function handleGoogleLogin() {
+  const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: "google",
     options: { redirectTo: window.location.origin + "/dashboard.html" }
   });
-  if(error) alert(error.message);
+  if (error) alert(error.message);
 }
 
-/* =====================
-   FORGOT PASSWORD -> kirim email
-   ===================== */
-async function forgotPassword(evt){
-  evt && evt.preventDefault();
-  const email = document.getElementById("forgot-email")?.value?.trim();
-  if(!email) return alert("Masukkan email");
-
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+// ✅ FORGOT PASSWORD
+async function handleForgotPassword(email) {
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
     redirectTo: window.location.origin + "/reset.html"
   });
-  if(error) return alert(error.message);
-  alert("Cek email untuk link reset password.");
+  if (error) return alert(error.message);
+  alert("Link reset password telah dikirim ke email.");
 }
 
-/* =====================
-   RESET PASSWORD (set new password)
-   ===================== */
-async function resetPassword(evt){
-  evt && evt.preventDefault();
-  const newPass = document.getElementById("reset-password")?.value;
-  if(!newPass) return alert("Masukkan password baru");
-
-  const { error } = await supabase.auth.updateUser({ password: newPass });
-  if(error) return alert(error.message);
+// ✅ RESET PASSWORD
+async function handleResetPassword(newPassword) {
+  const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+  if (error) return alert(error.message);
   alert("Password berhasil diubah. Silakan login.");
-  window.location.href = "index.html";
+  goTo("login.html");
 }
 
-/* =====================
-   LOGOUT
-   ===================== */
-async function logoutUser(){
-  await supabase.auth.signOut();
-  window.location.href = "index.html";
+// ✅ LOGOUT
+async function handleLogout() {
+  await supabaseClient.auth.signOut();
+  goTo("login.html");
 }
 
-/* =====================
-   Protect Dashboard: fetch profile and show basic info
-   ===================== */
-async function loadDashboard(){
-  // jika tidak session -> redirect to login
-  const { data: { session } } = await supabase.auth.getSession();
-  if(!session) return window.location.href = "index.html";
-
-  // tampilkan email
-  const emailEl = document.getElementById("user-email");
-  if(emailEl) emailEl.textContent = session.user.email || "";
-
-  // ambil profile dari table profiles
-  const { data: profile, error } = await supabase
-    .from("profiles")
-    .select("username,full_name,tier,avatar_url")
-    .eq("id", session.user.id)
-    .single();
-
-  if(profile && !error){
-    document.getElementById("user-name")?.textContent = profile.username || "";
-    document.getElementById("user-fullname")?.textContent = profile.full_name || "";
-    document.getElementById("tier")?.textContent = profile.tier || "User";
-    const av = document.getElementById("avatar-img");
-    if(av && profile.avatar_url) av.src = profile.avatar_url;
-  } else {
-    console.warn("profile fetch:", error?.message || "no profile");
-  }
-}
-
-/* =====================
-   Listen auth change — untuk handle email verify redirect otomatis
-   ===================== */
-supabase.auth.onAuthStateChange((event, session) => {
-  // contoh: setelah verify email Supabase sering emit SIGNED_IN
-  if(event === "SIGNED_IN" && PAGE === "verify.html"){
-    window.location.href = "dashboard.html";
-  }
-});
-
-/* =====================
-   Auto-bind forms on DOMContentLoaded (if present)
-   ===================== */
+// =========================
+// EVENT LISTENERS (dinamis, aman dari dobel listener)
+// =========================
 document.addEventListener("DOMContentLoaded", () => {
-  // register
-  const rf = document.getElementById("register-form");
-  rf && rf.addEventListener("submit", registerUser);
+  // Register
+  const regForm = document.getElementById("register-form");
+  if (regForm) {
+    regForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await handleRegister(
+        document.getElementById("reg-email").value,
+        document.getElementById("reg-password").value,
+        document.getElementById("reg-username").value
+      );
+    });
+  }
 
-  // login
-  const lf = document.getElementById("login-form");
-  lf && lf.addEventListener("submit", loginUser);
+  // Login normal
+  const loginForm = document.getElementById("login-form");
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await handleLogin(
+        document.getElementById("login-email").value,
+        document.getElementById("login-password").value
+      );
+    });
+  }
 
-  // magic link
-  const mf = document.getElementById("magic-form");
-  mf && mf.addEventListener("submit", magicLinkLogin);
+  // Magic link
+  const magicForm = document.getElementById("magic-form");
+  if (magicForm) {
+    magicForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await handleMagicLink(document.getElementById("magic-email").value);
+    });
+  }
 
-  // forgot
-  const ff = document.getElementById("forgot-form");
-  ff && ff.addEventListener("submit", forgotPassword);
+  // Google login
+  const googleBtn = document.getElementById("google-login");
+  if (googleBtn) {
+    googleBtn.addEventListener("click", handleGoogleLogin);
+  }
 
-  // reset
-  const rf2 = document.getElementById("reset-form");
-  rf2 && rf2.addEventListener("submit", resetPassword);
+  // Forgot password
+  const forgotForm = document.getElementById("forgot-form");
+  if (forgotForm) {
+    forgotForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await handleForgotPassword(document.getElementById("forgot-email").value);
+    });
+  }
 
-  // dashboard load
-  if(PAGE === "dashboard.html") loadDashboard();
+  // Reset password
+  const resetForm = document.getElementById("reset-form");
+  if (resetForm) {
+    resetForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await handleResetPassword(document.getElementById("new-password").value);
+    });
+  }
+
+  // Logout
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", handleLogout);
+  }
 });
-
-
