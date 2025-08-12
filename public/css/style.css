@@ -45,6 +45,13 @@ img{max-width:100%;display:block}
 .auth-divider {text-align: center;margin: 16px 0;position: relative;}
 .auth-divider span {background: var(--card);padding: 0 10px;color: var(--muted);font-size: 0.85rem;}
 .auth-divider::before {content: "";position: absolute;left: 0;top: 50%;width: 100%;height: 1px;background: rgba(255,255,255,0.08);transform: translateY(-50%);}
+/* ----- AUTH PAGES penambahan disini----- */
+.form-group {margin-bottom: 16px;}
+.form-group label {display: block;font-size: 0.9rem;margin-bottom: 6px;color: var(--muted);}
+.form-group input {width: 100%;padding: 10px 14px;border-radius: 8px;border: 1px solid rgba(255,255,255,0.08);background: transparent;color: var(--white);}
+.btn-google {background: #db4437;color: white;font-weight: 600;}
+.w-100 {width: 100%;}
+
 .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .feature-card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.6);color:var(--muted)}
 .preview-grid{display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
@@ -55,12 +62,6 @@ img{max-width:100%;display:block}
 .chart-wrap{background:var(--card);padding:12px;border-radius:12px;height:260px}
 .logos{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
 .logos img{height:36px;opacity:0.95}
-/* ----- AUTH PAGES penambahan disini----- */
-.form-group {margin-bottom: 16px;}
-.form-group label {display: block;font-size: 0.9rem;margin-bottom: 6px;color: var(--muted);}
-.form-group input {width: 100%;padding: 10px 14px;border-radius: 8px;border: 1px solid rgba(255,255,255,0.08);background: transparent;color: var(--white);}
-.btn-google {background: #db4437;color: white;font-weight: 600;}
-.w-100 {width: 100%;}
 
 
 /* ----- TESTIMONIAL / FAQ / FOOTER ----- */
