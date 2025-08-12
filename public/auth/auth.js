@@ -6,10 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // LOGIN FORM HANDLER
   if (loginForm) {
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+     const loginForm = document.getElementById("login-form");
+     const email = document.getElementById("email");
+     const password = document.getElementById("password");
+
 
       if (!email || !password) {
         alert("Email dan password wajib diisi.");
