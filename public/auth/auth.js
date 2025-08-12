@@ -1,52 +1,31 @@
-// public/js/auth.js
-// UMD / Browser-friendly Supabase auth helper
-//  - Load supabase.min.js UMD BEFORE this file
-//  - Replace SUPABASE_URL and SUPABASE_ANON_KEY with your project values
+// /js/auth.js
 
-(function () {
-  // --- SETTING (ganti dengan milikmu) ---
+// Ganti sesuai URL & ANON KEY dari Supabase
 const supabaseUrl = "https://ibzgmeooqxmbcnmovlbi.supabase.co";
 const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";
-// ---------------------------------------
+// Init Supabase
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  if (!window.supabase || !window.supabase.createClient) {
-    console.error("Supabase UMD SDK belum ada. Pastikan CDN <script> dimuat sebelum auth.js");
-    return;
+  // Login function
+async function loginUser(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+  if (error) {
+    alert(error.message);
+  } else {
+    // Redirect setelah login sukses
+    window.location.href = "/dashboard.html";
   }
-
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // helper redirect
-  function goTo(path) { window.location.href = path; }
-
-  // ===== LOGIN =====
-  async function login(email, password) {
-    try {
-      if (!email || !password) { alert("Email & password wajib diisi."); return; }
-      const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password: password.trim() });
-      if (error) {
-        console.error("Login error:", error);
-        // Pesan lebih ramah
-        if (error.message?.toLowerCase().includes("email")) {
-          alert("Login gagal: " + error.message);
-        } else {
-          alert(error.message || "Login gagal");
-        }
-        return;
-      }
-      // data.session biasanya ada bila login berhasil
-      if (data && data.session) {
-        // sukses -> redirect
-        goTo("/dashboard.html");
-      } else {
-        // Kadang akun butuh verifikasi email
-        alert("Login sukses, tetapi sesi belum aktif. Jika Anda baru mendaftar, cek email untuk verifikasi.");
-      }
-    } catch (err) {
-      console.error("Exception login:", err);
-      alert(err.message || "Terjadi kesalahan saat login.");
-    }
-  }
+}
+// Event listener untuk login form
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  await loginUser(email, password);
+});
 
   // ===== MAGIC LINK =====
   async function sendMagicLink(email) {
