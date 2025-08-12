@@ -1,152 +1,94 @@
-// =========================
-// Supabase Auth JS Final
-// =========================
-
-// Ganti dengan credential project Supabase kamu
-const SUPABASE_URL = "https://ibzgmeooqxmbcnmovlbi.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// ✅ Helper redirect
-function goTo(page) {
-  window.location.href = page;
-}
-
-// ✅ Save profile after register
-async function saveProfile(userId, username) {
-  const { error } = await supabaseClient
-    .from("profiles")
-    .upsert([{ id: userId, username }], { onConflict: "id" });
-  if (error) console.error("Error saving profile:", error.message);
-}
-
-// ✅ REGISTER
-async function handleRegister(email, password, username) {
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: { emailRedirectTo: window.location.origin + "/verify-email.html" }
-  });
-
-  if (error) return alert(error.message);
-  if (data.user) await saveProfile(data.user.id, username);
-  alert("Pendaftaran berhasil! Silakan cek email untuk verifikasi.");
-}
-
-// ✅ LOGIN (email/password)
-async function handleLogin(email, password) {
-  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  if (error) return alert(error.message);
-  goTo("dashboard.html");
-}
-
-// ✅ LOGIN MAGIC LINK
-async function handleMagicLink(email) {
-  const { error } = await supabaseClient.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: window.location.origin + "/dashboard.html" }
-  });
-  if (error) return alert(error.message);
-  alert("Magic link telah dikirim ke email.");
-}
-
-// ✅ LOGIN GOOGLE
-async function handleGoogleLogin() {
-  const { error } = await supabaseClient.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo: window.location.origin + "/dashboard.html" }
-  });
-  if (error) alert(error.message);
-}
-
-// ✅ FORGOT PASSWORD
-async function handleForgotPassword(email) {
-  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + "/reset.html"
-  });
-  if (error) return alert(error.message);
-  alert("Link reset password telah dikirim ke email.");
-}
-
-// ✅ RESET PASSWORD
-async function handleResetPassword(newPassword) {
-  const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
-  if (error) return alert(error.message);
-  alert("Password berhasil diubah. Silakan login.");
-  goTo("login.html");
-}
-
-// ✅ LOGOUT
-async function handleLogout() {
-  await supabaseClient.auth.signOut();
-  goTo("login.html");
-}
-
-// =========================
-// EVENT LISTENERS (dinamis, aman dari dobel listener)
-// =========================
+// auth.js — Versi Final
 document.addEventListener("DOMContentLoaded", () => {
-  // Register
-  const regForm = document.getElementById("register-form");
-  if (regForm) {
-    regForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      await handleRegister(
-        document.getElementById("reg-email").value,
-        document.getElementById("reg-password").value,
-        document.getElementById("reg-username").value
-      );
-    });
-  }
-
-  // Login normal
+  // Elemen form
   const loginForm = document.getElementById("login-form");
+  const magicForm = document.getElementById("magic-link-form");
+
+  // LOGIN FORM HANDLER
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      await handleLogin(
-        document.getElementById("login-email").value,
-        document.getElementById("login-password").value
-      );
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        alert("Email dan password wajib diisi.");
+        return;
+      }
+
+      try {
+        // === Simulasi login ===
+        // Ganti block ini dengan request API jika backend sudah siap.
+        console.log("🔐 Login attempt:", email, password);
+        if (email === "admin@example.com" && password === "123456") {
+          localStorage.setItem("user", JSON.stringify({ email }));
+          window.location.href = "/dashboard.html";
+        } else {
+          alert("Email atau password salah.");
+        }
+      } catch (err) {
+        console.error("Login error:", err);
+        alert("Terjadi kesalahan saat login.");
+      }
     });
   }
 
-  // Magic link
-  const magicForm = document.getElementById("magic-form");
+  // MAGIC LINK FORM HANDLER
   if (magicForm) {
     magicForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      await handleMagicLink(document.getElementById("magic-email").value);
+      const magicEmail = document.getElementById("magic-email").value.trim();
+      if (!magicEmail) {
+        alert("Masukkan email untuk magic link.");
+        return;
+      }
+      try {
+        console.log("📧 Magic link sent to:", magicEmail);
+        alert("Magic link telah dikirim ke " + magicEmail);
+      } catch (err) {
+        console.error(err);
+        alert("Gagal mengirim magic link.");
+      }
     });
   }
 
-  // Google login
-  const googleBtn = document.getElementById("google-login");
-  if (googleBtn) {
-    googleBtn.addEventListener("click", handleGoogleLogin);
-  }
-
-  // Forgot password
-  const forgotForm = document.getElementById("forgot-form");
-  if (forgotForm) {
-    forgotForm.addEventListener("submit", async (e) => {
+  // REGISTER PAGE HANDLER
+  const registerForm = document.getElementById("register-form");
+  if (registerForm) {
+    registerForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      await handleForgotPassword(document.getElementById("forgot-email").value);
+      const regEmail = document.getElementById("reg-email").value.trim();
+      const regPassword = document.getElementById("reg-password").value.trim();
+
+      if (!regEmail || !regPassword) {
+        alert("Email dan password wajib diisi.");
+        return;
+      }
+
+      // Simulasi register
+      localStorage.setItem("user", JSON.stringify({ email: regEmail }));
+      alert("Pendaftaran berhasil. Silakan login.");
+      window.location.href = "/auth/login.html";
     });
   }
 
-  // Reset password
-  const resetForm = document.getElementById("reset-form");
-  if (resetForm) {
-    resetForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      await handleResetPassword(document.getElementById("new-password").value);
-    });
-  }
-
-  // Logout
+  // LOGOUT HANDLER (bisa dipanggil dari dashboard)
   const logoutBtn = document.getElementById("logout-btn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", handleLogout);
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("user");
+      window.location.href = "/auth/login.html";
+    });
+  }
+
+  // CEK LOGIN STATUS (contoh di dashboard)
+  if (window.location.pathname.includes("dashboard.html")) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      window.location.href = "/auth/login.html";
+    } else {
+      console.log("✅ User logged in:", user.email);
+    }
   }
 });
+
