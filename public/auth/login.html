@@ -1,60 +1,70 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="utf-8" />
-  <title>Login — Crypto Analyzer Pro</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+  <title>Login — Crypto Analyzer Pro</title>
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="brand">
-        <div class="logo">CA</div>
-        <div>
-          <h1>Crypto Analyzer Pro</h1>
-          <p class="small">Masuk ke dashboard — tema gold • hitam • elegan</p>
-        </div>
-      </div>
-      <div class="row">
-        <a class="link" href="register.html">Register</a>
-      </div>
+  <div class="auth-card" role="main" aria-labelledby="login-title">
+    <h2 id="login-title">Masuk ke Crypto Analyzer Pro</h2>
+
+    <form id="form-login" autocomplete="on">
+      <input id="email" class="input" type="email" placeholder="Email" required />
+      <input id="password" class="input" type="password" placeholder="Password" required />
+      <button type="submit" class="btn-full btn-primary-full">Login</button>
+    </form>
+
+    <div style="height:12px"></div>
+    <button id="magic-btn" class="btn-full btn-secondary-full">Kirim Magic Link</button>
+    <div style="height:8px"></div>
+    <button id="google-btn" class="btn-full" style="background:#ea4335;color:#fff;margin-bottom:8px">Masuk dengan Google</button>
+
+    <div class="text-center mt-2 muted">
+      <a href="forgot-password.html">Lupa password?</a> • <a href="register.html">Daftar</a>
     </div>
 
-    <div class="card" style="max-width:560px;margin:0 auto">
-      <form id="login-form">
-        <div class="form-row">
-          <label class="small">Email</label>
-          <input id="login-email" class="input" type="email" required />
-        </div>
-        <div class="form-row">
-          <label class="small">Password</label>
-          <input id="login-password" class="input" type="password" required />
-        </div>
-        <div class="row" style="justify-content:space-between">
-          <button class="btn" type="submit">Login</button>
-          <a class="link small" href="forgot-password.html">Lupa password?</a>
-        </div>
-      </form>
-
-      <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:18px 0" />
-      <div class="center small">Atau masuk dengan</div>
-      <div class="row" style="margin-top:12px;gap:8px;justify-content:center">
-        <form id="magic-form" style="display:inline-block">
-          <input id="magic-email" class="input" type="email" placeholder="Email untuk magic link" />
-          <button class="btn" type="submit" style="margin-left:8px">Kirim Magic Link</button>
-        </form>
-        <button class="btn-ghost" onclick="loginGoogle()">Google (soon)</button>
-      </div>
-    </div>
+    <div id="msg" class="text-center mt-2 muted" style="font-size:0.95rem"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="auth.js"></script>
+  <script type="module">
+    import { loginUser, magicLink, signInWithGoogle } from './auth.js'
+
+    const form = document.getElementById('form-login')
+    const magicBtn = document.getElementById('magic-btn')
+    const googleBtn = document.getElementById('google-btn')
+    const msg = document.getElementById('msg')
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      msg.textContent = 'Memproses...'
+      const email = document.getElementById('email').value
+      const password = document.getElementById('password').value
+      const { error } = await loginUser({ email, password })
+      if (error) {
+        msg.textContent = error.message
+        msg.classList.add('muted')
+      } else {
+        msg.textContent = 'Login berhasil. Mengarahkan ke dashboard...'
+        window.location.href = '../dashboard.html'
+      }
+    })
+
+    magicBtn.addEventListener('click', async () => {
+      const email = document.getElementById('email').value
+      if (!email) { msg.textContent = 'Masukkan email untuk magic link.'; return }
+      msg.textContent = 'Mengirim magic link...'
+      const { error } = await magicLink({ email })
+      msg.textContent = error ? error.message : 'Magic link telah dikirim. Cek email Anda.'
+    })
+
+    googleBtn.addEventListener('click', async () => {
+      // This will redirect to Google OAuth flow
+      await signInWithGoogle()
+    })
+  </script>
 </body>
 </html>
 
-
-</body>
-</html>
 
