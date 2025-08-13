@@ -1,3 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
-  <path d="M6 17v-5a6 6 0 1 1 12 0v5l2 2H4l2-2Z"/><path d="M9.5 19.5a2.5 2.5 0 0 0 5 0"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FFA500"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#gold-gradient)" d="M12 24a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 24Zm6.36-6V11a6.36 6.36 0 0 0-5-6.21V4a1.36 1.36 0 1 0-2.72 0v.79A6.36 6.36 0 0 0 5.64 11v7L4 19.64V21h16v-1.36Z"/>
 </svg>
