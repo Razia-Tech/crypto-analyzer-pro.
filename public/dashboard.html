@@ -47,22 +47,25 @@
       <div class="card">Aktivitas Terbaru: <span id="latest-activity">-</span></div>
     </section>
 
-    <section class="realtime-analysis">
-      <h2>Analisis Real-time</h2>
-      <canvas id="realtime-chart" height="100"></canvas>
-    </section>
-
+<section class="live-chart">
+  <div class="chart-header">
+    <h2>📈 Live Candlestick Chart</h2>
+    <select id="pairSelector">
+      <option value="BTCUSDT">BTC/USDT</option>
+      <option value="ETHUSDT">ETH/USDT</option>
+      <option value="SOLUSDT">SOL/USDT</option>
+      <option value="BNBUSDT">BNB/USDT</option>
+      <option value="XRPUSDT">XRP/USDT</option>
+    </select>
+  </div>
+  <canvas id="candlestickChart"></canvas>
+</section>
     <section class="market-fundamentals">
       <section class="live-chart">
-      
         <h2>📈 Live Candlestick Chart – BTC/USDT</h2>
         <canvas id="candlestickChart"></canvas>
       </section>
-      <section class="live-chart">
-      <h2>📈 Live Candlestick Chart – BTC/USDT</h2>
-      <canvas id="candlestickChart"></canvas>
-       </section>
-
+      
       <h2>Market Fundamentals</h2>
       <div class="card-container" id="market-cards"></div>
     </section>
