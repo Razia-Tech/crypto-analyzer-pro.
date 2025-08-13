@@ -271,6 +271,21 @@ svg defs linearGradient stop {
   font-family: 'Orbitron', sans-serif;
   margin-bottom: 15px;
 }
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#pairSelector {
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #111;
+  border: 1px solid #FFD700;
+  color: #FFD700;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
