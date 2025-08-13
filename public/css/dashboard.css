@@ -166,6 +166,79 @@ body {
 svg defs linearGradient stop {
   animation: gold-shine 3s infinite alternate;
 }
+.market-fundamentals {
+  margin-top: 20px;
+  padding: 20px;
+  background: #111;
+  border-radius: 12px;
+  color: #fff;
+}
+
+.market-fundamentals h2, .market-fundamentals h3 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.fundamentals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #1c1c1c;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.card .value {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.badge.up { background: #28a745; color: #fff; }
+.badge.down { background: #dc3545; color: #fff; }
+.badge.hold { background: #ffc107; color: #111; }
+.badge.greed { background: #198754; color: #fff; }
+
+/* Table rekomendasi */
+.recommendations table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.recommendations th, .recommendations td {
+  padding: 10px;
+  text-align: left;
+}
+
+.recommendations thead {
+  background: #222;
+}
+
+.recommendations tbody tr:nth-child(even) {
+  background: #181818;
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
