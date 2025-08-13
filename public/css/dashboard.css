@@ -140,6 +140,33 @@ body {
   margin-top: auto;
 }
 
+/* Efek glow emas futuristik */
+.icon {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.6))
+          drop-shadow(0 0 10px rgba(255, 165, 0, 0.4));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Hover efek kilau bergerak */
+.icon:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9))
+          drop-shadow(0 0 15px rgba(255, 165, 0, 0.6));
+}
+
+/* Jika icon inline SVG, tambahkan animasi gradient bergerak */
+@keyframes gold-shine {
+  0% { stop-color: #FFD700; }
+  50% { stop-color: #FFA500; }
+  100% { stop-color: #FFD700; }
+}
+
+svg defs linearGradient stop {
+  animation: gold-shine 3s infinite alternate;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .sidebar {
