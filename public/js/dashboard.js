@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("latest-activity").textContent = "Beli BTC 0.01 @ Rp 700 juta";
   <!-- Tambahkan di <head> dashboard.html -->
  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
