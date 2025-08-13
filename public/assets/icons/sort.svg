@@ -1,4 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M7 3v18M7 21l-3-3m3 3 3-3"/>
-  <path d="M13 6h7M13 12h5M13 18h3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FFA500"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#gold-gradient)" d="M3 18h6v-2H3v2Zm0-5h12v-2H3v2Zm0-7v2h18V6H3Z"/>
 </svg>
