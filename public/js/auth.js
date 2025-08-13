@@ -53,7 +53,7 @@ sb.auth.onAuthStateChange((event) => {
   if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
     const p = window.location.pathname;
     if (p.includes('/login.html') || p.includes('/register.html') || p.includes('/confirm-signup.html')) {
-      window.location.href = '/dashboard.html';
+      window.location.href = `${window.location.origin}/dashboard.html`;
     }
   }
 });
