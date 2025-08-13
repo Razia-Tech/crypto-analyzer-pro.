@@ -29,6 +29,55 @@ document.addEventListener("DOMContentLoaded", () => {
 async function renderCandlestickChart() {
   const ctx = document.getElementById('candlestickChart').getContext('2d');
   const chartData = await fetchCandlestickData();
+  async function fetchCandlestickData(symbol = 'BTCUSDT', interval = '1h', limit = 50) {
+  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
+  const res = await fetch(url);
+  const data = await res.json();
+
+  return data.map(c => ({
+    x: new Date(c[0]),
+    o: parseFloat(c[1]),
+    h: parseFloat(c[2]),
+    l: parseFloat(c[3]),
+    c: parseFloat(c[4])
+  }));
+}
+
+async function renderCandlestickChart() {
+  const ctx = document.getElementById('candlestickChart').getContext('2d');
+  const chartData = await fetchCandlestickData();
+
+  new Chart(ctx, {
+    type: 'candlestick',
+    data: {
+      datasets: [{
+        label: 'BTC/USDT',
+        data: chartData,
+        borderColor: '#FFD700',
+        color: {
+          up: '#00ff99',     // candle naik
+          down: '#ff3366',   // candle turun
+          unchanged: '#999'
+        }
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { labels: { color: '#FFD700' } }
+      },
+      scales: {
+        x: { 
+          time: { unit: 'day' }, 
+          ticks: { color: '#FFD700' }
+        },
+        y: { ticks: { color: '#FFD700' } }
+      }
+    }
+  });
+}
+
+renderCandlestickChart();
+
 
   new Chart(ctx, {
     type: 'candlestick',
