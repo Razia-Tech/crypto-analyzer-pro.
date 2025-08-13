@@ -24,6 +24,24 @@
   <div class="auth-card">
     <h1>Reauthentication</h1>
     <p>Untuk keamanan, silakan lakukan re-authentication dengan memasukkan email Anda.</p>
+    
+    <form id="reauth-send-form" style="margin-top:1rem;">
+  <div class="form-group">
+    <label for="reauth-email">Email</label>
+    <input type="email" id="reauth-email" placeholder="Email yang dipakai login" required />
+  </div>
+  <button type="submit" class="btn btn-light w-100">Kirim Kode Reauth</button>
+</form>
+
+<form id="reauth-verify-form" style="margin-top:0.75rem;">
+  <div class="form-group">
+    <label for="reauth-code">Kode OTP</label>
+    <input type="text" id="reauth-code" placeholder="6 digit" inputmode="numeric" maxlength="6" required />
+  </div>
+  <button type="submit" class="btn btn-primary w-100">Verifikasi</button>
+</form>
+
+<div id="reauth-msg" class="msg hidden"></div>
 
     <form id="magic-link-form">
       <div class="form-group">
