@@ -4,257 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard — CryptoAnalyzerPro</title>
-
-  <!-- Global style -->
-  <link rel="stylesheet" href="/css/style.css" />
-
-  <!-- Scoped style untuk Market Fundamentals -->
-  <link rel="stylesheet" href="/public/css/market-fundamentals/page.css" />
-
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/page.css" />
 </head>
-<body class="cap-dashboard">
-
+<body>
   <!-- HEADER -->
-  <header class="cap-header">
-    <div class="cap-header__left">
-      <img src="/assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="cap-logo" />
-      <span class="cap-brand">CryptoAnalyzerPro</span>
+  <header class="header">
+    <div class="header-left">
+      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="logo">
+      <input type="text" placeholder="Cari..." class="search-bar">
     </div>
-
-    <div class="cap-header__center">
-      <div class="cap-search">
-        <img src="/assets/icons/xxx.svg" class="icon-sm" alt="Cari"/>
-        <input type="text" id="global-search" placeholder="Cari koin, wallet, berita..." />
-      </div>
-    </div>
-
-    <div class="cap-header__right">
-      <button id="notif-btn" class="cap-icon-btn" title="Notifikasi">
-        <img src="/assets/icons/xxx.svg" class="icon-sm" alt="Notif"/>
+    <div class="header-right">
+      <button class="icon-btn" id="notif-btn">
+        <img src="assets/icons/bell.svg" alt="Notifikasi" class="icon">
       </button>
-      <div class="cap-profile">
-        <img src="/assets/profile-placeholder.png" alt="User" class="cap-avatar"/>
-        <span id="cap-username" class="cap-username">User</span>
-        <img src="/assets/icons/chevron-down.xxx" class="icon-sm" alt="▼"/>
-        <div class="cap-profile__menu">
-          <a href="#" id="goto-settings"><img src="/assets/icons/xxx.svg" class="icon-sm" alt=""> Settings</a>
-          <a href="#" id="btn-logout"><img src="/assets/icons/xxx.svg" class="icon-sm" alt=""> Logout</a>
+      <div class="profile-menu">
+        <img src="assets/icons/user.svg" alt="Profil" class="icon">
+        <div class="dropdown">
+          <a href="#">Pengaturan</a>
+          <a href="#" id="logout-btn">Logout</a>
         </div>
       </div>
     </div>
   </header>
 
-  <div class="cap-shell">
-    <!-- SIDEBAR -->
-    <aside class="cap-sidebar">
-      <nav class="cap-nav">
-        <a href="#" class="cap-nav__item is-active" data-target="section-overview">
-          <img src="/assets/icons/xxx.svg" class="icon-sm" alt=""> Home
-        </a>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <nav>
+      <a href="#" class="active"><img src="assets/icons/home.svg" class="icon"> Home</a>
+      <a href="#"><img src="assets/icons/feature.svg" class="icon"> Fitur</a>
+      <a href="#"><img src="assets/icons/chart.svg" class="icon"> Market Fundamentals</a>
+      <a href="#"><img src="assets/icons/settings.svg" class="icon"> Settings</a>
+      <a href="#" id="logout-sidebar"><img src="assets/icons/logout.svg" class="icon"> Logout</a>
+    </nav>
+  </aside>
 
-        <div class="cap-nav__group">
-          <div class="cap-nav__title">
-            <img src="/assets/icons/xxx.svg" class="icon-sm" alt="">
-            Fitur-fitur
-          </div>
-          <a href="#" class="cap-nav__item" data-target="section-market-fundamentals">
-            <img src="/assets/icons/xxx.svg" class="icon-sm" alt=""> Market Fundamentals
-          </a>
-          <a href="#" class="cap-nav__item" data-target="section-ai">
-            <img src="/assets/icons/xxx.svg" class="icon-sm" alt=""> Analisis AI
-          </a>
-          <a href="#" class="cap-nav__item" data-target="section-portfolio">
-            <img src="/assets/icons/xxx.svg" class="icon-sm" alt=""> Portofolio
-          </a>
-          <a href="#" class="cap-nav__item" data-target="section-trends">
-            <img src="/assets/icons/xxx.svg" class="icon-sm" alt=""> Global Trends
-          </a>
-        </div>
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <section class="summary">
+      <h2>Ringkasan Personalisasi</h2>
+      <div class="card">Portfolio Value: <span id="portfolio-value">Rp0</span></div>
+      <div class="card">Aktivitas Terbaru: <span id="latest-activity">-</span></div>
+    </section>
 
-        <a href="#" class="cap-nav__item" data-target="section-settings">
-          <img src="/assets/icons/xxx.svg" class="icon-sm" alt=""> Settings
-        </a>
-        <a href="#" class="cap-nav__item" id="sidebar-logout">
-          <img src="/assets/icons/xxx.svg" class="icon-sm" alt=""> Logout
-        </a>
-      </nav>
-    </aside>
+    <section class="realtime-analysis">
+      <h2>Analisis Real-time</h2>
+      <canvas id="realtime-chart" height="100"></canvas>
+    </section>
 
-    <!-- MAIN -->
-    <main class="cap-main">
-      <!-- RINGKASAN -->
-      <section id="section-overview" class="cap-section is-visible">
-        <div class="cap-section__header">
-          <h2>Ringkasan Personalisasi</h2>
-          <p class="muted">Data khusus user: portofolio, notifikasi, aktivitas.</p>
-        </div>
-
-        <div class="cap-cards">
-          <div class="cap-card">
-            <div class="cap-card__label">Total Portofolio</div>
-            <div class="cap-card__value" id="overview-portfolio">Rp 120.000.000</div>
-          </div>
-          <div class="cap-card">
-            <div class="cap-card__label">Notifikasi Baru</div>
-            <div class="cap-card__value" id="overview-notifs">3</div>
-          </div>
-          <div class="cap-card">
-            <div class="cap-card__label">Aktivitas Terakhir</div>
-            <div class="cap-card__value" id="overview-activity">1 jam lalu</div>
-          </div>
-        </div>
-
-        <div class="cap-split">
-          <div class="cap-panel">
-            <div class="cap-panel__head">
-              <h3>Analisis Real-time (Dummy)</h3>
-            </div>
-            <div class="cap-chart" id="overview-chart">
-              <div class="cap-chart__ghost">Chart Placeholder</div>
-            </div>
-          </div>
-          <div class="cap-panel">
-            <div class="cap-panel__head">
-              <h3>Prediksi AI (Dummy)</h3>
-            </div>
-            <div class="cap-ai">
-              <div class="cap-ai__item"><span class="cap-ai__label">BTC</span><span class="cap-ai__score up">Bullish (0.72)</span></div>
-              <div class="cap-ai__item"><span class="cap-ai__label">ETH</span><span class="cap-ai__score down">Bearish (0.41)</span></div>
-              <div class="cap-ai__item"><span class="cap-ai__label">SOL</span><span class="cap-ai__score up">Bullish (0.66)</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- MARKET FUNDAMENTALS -->
-      <section id="section-market-fundamentals" class="cap-section">
-        <div class="cap-section__header">
-          <h2>Market Fundamentals</h2>
-          <p class="muted">Harga, perubahan 24j, volume, market cap (dummy).</p>
-        </div>
-
-        <div class="mf-controls">
-          <div class="mf-control">
-            <img src="/assets/icons/xxx.svg" class="icon-sm" alt="">
-            <input type="text" id="mf-search" placeholder="Cari koin (BTC, Ethereum, ...)" />
-          </div>
-          <div class="mf-control">
-            <img src="/assets/icons/xxx.svg" class="icon-sm" alt="">
-            <select id="mf-change-filter">
-              <option value="all">Semua</option>
-              <option value="gainers">Gainers</option>
-              <option value="losers">Losers</option>
-            </select>
-          </div>
-          <div class="mf-control">
-            <img src="/assets/icons/xxx.svg" class="icon-sm" alt="">
-            <select id="mf-sort">
-              <option value="marketCap:desc">Market Cap ↓</option>
-              <option value="marketCap:asc">Market Cap ↑</option>
-              <option value="price:desc">Harga ↓</option>
-              <option value="price:asc">Harga ↑</option>
-              <option value="change24h:desc">% 24j ↓</option>
-              <option value="change24h:asc">% 24j ↑</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="mf-table-wrap">
-          <table class="mf-table" id="mf-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Nama</th>
-                <th>Harga</th>
-                <th>Perubahan 24j</th>
-                <th>Market Cap</th>
-                <th>Volume 24j</th>
-              </tr>
-            </thead>
-            <tbody id="mf-tbody"></tbody>
-          </table>
-        </div>
-
-        <div class="mf-pagination" id="mf-pagination"></div>
-      </section>
-
-      <!-- ANALISIS AI -->
-      <section id="section-ai" class="cap-section">
-        <div class="cap-section__header">
-          <h2>Analisis AI</h2>
-          <p class="muted">Insight dan rating AI (dummy).</p>
-        </div>
-        <div class="cap-panel">
-          <div class="cap-panel__head"><h3>AI Coin Rating</h3></div>
-          <div class="cap-ai">
-            <div class="cap-ai__item"><span class="cap-ai__label">ADA</span><span class="cap-ai__score up">Bullish (0.63)</span></div>
-            <div class="cap-ai__item"><span class="cap-ai__label">XRP</span><span class="cap-ai__score down">Bearish (0.38)</span></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PORTOFOLIO -->
-      <section id="section-portfolio" class="cap-section">
-        <div class="cap-section__header">
-          <h2>Portofolio</h2>
-          <p class="muted">Ringkasan aset & PNL (dummy).</p>
-        </div>
-        <div class="cap-cards">
-          <div class="cap-card"><div class="cap-card__label">PNL 24j</div><div class="cap-card__value up">+ Rp 2.340.000</div></div>
-          <div class="cap-card"><div class="cap-card__label">Aset</div><div class="cap-card__value">6 koin</div></div>
-          <div class="cap-card"><div class="cap-card__label">Risiko</div><div class="cap-card__value">Sedang</div></div>
-        </div>
-      </section>
-
-      <!-- GLOBAL TRENDS -->
-      <section id="section-trends" class="cap-section">
-        <div class="cap-section__header">
-          <h2>Global Trends</h2>
-          <p class="muted">Indeks fear & greed, volatilitas (dummy).</p>
-        </div>
-        <div class="cap-panel">
-          <div class="cap-panel__head"><h3>Tren Pasar</h3></div>
-          <div class="cap-chart"><div class="cap-chart__ghost">Chart Placeholder</div></div>
-        </div>
-      </section>
-
-      <!-- SETTINGS -->
-      <section id="section-settings" class="cap-section">
-        <div class="cap-section__header">
-          <h2>Settings</h2>
-          <p class="muted">Pengaturan profil & keamanan (placeholder).</p>
-        </div>
-        <div class="cap-panel">
-          <div class="cap-panel__head"><h3>Profil</h3></div>
-          <div class="cap-form">
-            <label>Display Name</label>
-            <input type="text" placeholder="Nama tampilan" />
-            <label>Notifikasi Email</label>
-            <select>
-              <option>Aktif</option>
-              <option>Nonaktif</option>
-            </select>
-            <button class="btn btn-primary" disabled>Simpan (dummy)</button>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
+    <section class="market-fundamentals">
+      <h2>Market Fundamentals</h2>
+      <div class="card-container" id="market-cards"></div>
+    </section>
+  </main>
 
   <!-- FOOTER -->
-  <footer class="cap-footer">
-    <div class="cap-footer__inner">
-      <span>© 2025 CryptoAnalyzerPro</span>
-      <span class="sep">•</span>
-      <a href="#">TOS</a>
-      <span class="sep">•</span>
-      <a href="#">Support</a>
-    </div>
+  <footer class="footer">
+    <p>&copy; 2025 CryptoAnalyzerPro | <a href="#">Support</a></p>
   </footer>
 
-  <!-- JS Modul Market Fundamentals -->
-  <script src="/public/js/market-fundamentals/page.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/page.js"></script>
 </body>
 </html>
