@@ -79,22 +79,24 @@ async function handleLogin(evt){
 /* MAGIC LINK */
 async function handleMagicLink(evt){
   evt.preventDefault();
-  const email = qs('magic-email')?.value.trim();
-  const msg = qs('login-msg') || qs('magic-msg');
-  if(!email){
-    showMsg(msg,'Masukkan email untuk magic link',true);
-    return;
-  }
+  const emailInput = document.getElementById('magic-email');
+  const msg = document.getElementById('login-msg');
+  const email = (emailInput?.value || '').trim();
+  if(!email){ msg?.classList.remove('hidden'); msg.textContent='Masukkan email'; return; }
+
   try {
     const redirectTo = 'https://cryptoanalyzerpro.netlify.app/dashboard.html';
+    console.log('[magic-link] sending to', email, 'redirectTo=', redirectTo);
     const { error } = await sb.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: redirectTo }
     });
-    if(error) throw error;
-    showMsg(msg,'Magic link terkirim, cek inbox/spam');
-  } catch(e){
-    showMsg(msg,e.message||'Gagal kirim magic link',true);
+    if (error) throw error;
+    msg?.classList.remove('hidden'); msg.textContent='Magic link terkirim. Cek inbox/spam.';
+  } catch (e) {
+    console.error('[magic-link] error:', e);
+    msg?.classList.remove('hidden'); msg.classList.add('error');
+    msg.textContent = e?.message || 'Gagal kirim magic link';
   }
 }
 
