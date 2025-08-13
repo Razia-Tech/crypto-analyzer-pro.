@@ -255,6 +255,22 @@ svg defs linearGradient stop {
 .recommendations tbody tr:nth-child(even) {
   background: #181818;
 }
+.live-chart {
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid #FFD700;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.live-chart h2 {
+  color: #FFD700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+  font-family: 'Orbitron', sans-serif;
+  margin-bottom: 15px;
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
