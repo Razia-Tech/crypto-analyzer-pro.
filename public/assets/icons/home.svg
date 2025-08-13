@@ -1,5 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M3 10.5 12 3l9 7.5"/>
-  <path d="M5 10.5V21h14V10.5"/>
-  <path d="M9 21v-5a3 3 0 0 1 6 0v5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FFA500"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#gold-gradient)" d="M12 3l10 9h-3v9h-6v-6H11v6H5v-9H2l10-9z"/>
 </svg>
+
