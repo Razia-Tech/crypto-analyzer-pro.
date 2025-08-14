@@ -1,9 +1,9 @@
 // ==========================
-// 1. WELCOME MESSAGE
+// WELCOME MESSAGE
 // ==========================
 function setWelcomeMessage() {
   const welcomeEl = document.getElementById('welcomeMessage');
-  const username = 'Kaio'; // nanti bisa ambil dari Supabase profile
+  const username = 'Kaio'; // Ambil dari Supabase nanti
   const membership = 'Free'; // atau Premium
   if (welcomeEl) {
     welcomeEl.textContent = `Welcome to Crypto Analyzer Pro — ${username} (${membership} Member)`;
@@ -12,7 +12,7 @@ function setWelcomeMessage() {
 setWelcomeMessage();
 
 // ==========================
-// 2. LOGOUT FUNCTION
+// LOGOUT FUNCTION
 // ==========================
 function setupLogout() {
   const headerLogout = document.getElementById('logout-btn');
@@ -27,7 +27,7 @@ function setupLogout() {
 setupLogout();
 
 // ==========================
-// 3. MARKET FUNDAMENTALS (Dummy Data)
+// MARKET FUNDAMENTALS (Dummy)
 // ==========================
 function loadMarketFundamentals() {
   const container = document.getElementById('market-cards');
@@ -38,7 +38,6 @@ function loadMarketFundamentals() {
     { title: 'Total Market Cap', value: '$1.9T' },
     { title: 'Fear & Greed Index', value: 'Greed (74)' }
   ];
-
   container.innerHTML = '';
   dummyData.forEach(item => {
     const card = document.createElement('div');
@@ -50,7 +49,7 @@ function loadMarketFundamentals() {
 loadMarketFundamentals();
 
 // ==========================
-// 4. REKOMENDASI RULE
+// REKOMENDASI RULE
 // ==========================
 function getShortTermRecommendation(change24h) {
   if (change24h > 3) return { text: "BUY", reason: "Momentum positif > 3% dalam 24 jam" };
@@ -65,28 +64,54 @@ function getLongTermRecommendation(change7d) {
 }
 
 // ==========================
-// 5. BINANCE SYMBOL LIST (Optional - Handle VPN Block)
+// GLOBAL SEARCH (CoinGecko)
 // ==========================
-let binanceSymbols = [];
+const globalSearchInput = document.getElementById("globalSearch");
+const searchResults = document.getElementById("searchResults");
 
-async function fetchBinanceSymbols() {
-  try {
-    const res = await fetch("https://api.binance.com/api/v3/exchangeInfo");
+if (globalSearchInput) {
+  globalSearchInput.addEventListener("input", async function () {
+    const query = this.value.trim().toLowerCase();
+    if (query.length < 2) {
+      searchResults.style.display = "none";
+      return;
+    }
+    const res = await fetch(`https://api.coingecko.com/api/v3/search?query=${query}`);
     const data = await res.json();
-    binanceSymbols = data.symbols.map(s => s.symbol);
-    console.log("Binance symbols loaded:", binanceSymbols.length);
-  } catch (err) {
-    console.warn("Gagal load Binance symbols (kemungkinan diblokir di Indonesia):", err);
-    binanceSymbols = []; // kosongkan biar tidak error
-  }
+    searchResults.innerHTML = "";
+    data.coins.forEach(coin => {
+      const div = document.createElement("div");
+      div.innerHTML = `<img src="${coin.thumb}" width="20"> ${coin.name} (${coin.symbol.toUpperCase()})`;
+      div.addEventListener("click", () => {
+        const binanceSymbol = `${coin.symbol.toUpperCase()}USDT`;
+        loadChart(`BINANCE:${binanceSymbol}`);
+        searchResults.style.display = "none";
+        globalSearchInput.value = "";
+      });
+      searchResults.appendChild(div);
+    });
+    searchResults.style.display = "block";
+  });
 }
 
 // ==========================
-// 6. LOAD TOP 25 COINS
+// TOP 25 COINS TABLE
 // ==========================
-async function loadTopCoins() {
-  await fetchBinanceSymbols(); // walau gagal tetap lanjut
+let binanceSymbols = [];
 
+// Ambil semua simbol Binance via proxy (bypass blokir)
+async function fetchBinanceSymbols() {
+  try {
+    const res = await fetch("https://api.allorigins.win/raw?url=https://api.binance.com/api/v3/exchangeInfo");
+    const data = await res.json();
+    binanceSymbols = data.symbols.map(s => s.symbol);
+  } catch (err) {
+    console.error("Gagal ambil data Binance:", err);
+  }
+}
+
+async function loadTopCoins() {
+  await fetchBinanceSymbols();
   const tableBody = document.querySelector("#topCoinsTable tbody");
   if (!tableBody) return;
   tableBody.innerHTML = `<tr><td colspan="8">Loading...</td></tr>`;
@@ -102,23 +127,18 @@ async function loadTopCoins() {
       const row = document.createElement('tr');
       const binanceSymbol = `${coin.symbol.toUpperCase()}USDT`;
 
-      // Klik baris → ubah chart jika tersedia di Binance
       if (binanceSymbols.includes(binanceSymbol)) {
         row.addEventListener('click', () => {
-          const chartSymbol = `BINANCE:${coin.symbol.toUpperCase()}USDT`;
-          const pairSelect = document.getElementById("pairSelect");
-          if (pairSelect) pairSelect.value = chartSymbol;
+          const chartSymbol = `BINANCE:${binanceSymbol}`;
           loadChart(chartSymbol);
-
           document.querySelectorAll('#topCoinsTable tbody tr').forEach(r => r.classList.remove('active-row'));
           row.classList.add('active-row');
         });
       }
 
-      // Isi kolom tabel
       row.innerHTML = `
         <td>${index + 1}</td>
-        <td><img src="${coin.image}" alt="${coin.name}" width="20" style="vertical-align:middle; margin-right:5px;"> ${coin.name} (${coin.symbol.toUpperCase()})</td>
+        <td><img src="${coin.image}" width="20"> ${coin.name} (${coin.symbol.toUpperCase()})</td>
         <td>$${coin.current_price.toLocaleString()}</td>
         <td style="color:${coin.price_change_percentage_24h >= 0 ? 'lime' : 'red'}">${coin.price_change_percentage_24h?.toFixed(2)}%</td>
         <td>$${coin.market_cap.toLocaleString()}</td>
@@ -131,36 +151,21 @@ async function loadTopCoins() {
           }
         </td>
       `;
-
       tableBody.appendChild(row);
     });
-  } catch (error) {
-    console.error("Error loading coins:", error);
+
+  } catch (err) {
+    console.error("Error loading coins:", err);
     tableBody.innerHTML = `<tr><td colspan="8">Failed to load data</td></tr>`;
   }
 }
 loadTopCoins();
 
 // ==========================
-// 7. SEARCH COIN
-// ==========================
-const coinSearch = document.getElementById("coinSearch");
-if (coinSearch) {
-  coinSearch.addEventListener("input", function () {
-    const searchValue = this.value.toLowerCase();
-    document.querySelectorAll("#topCoinsTable tbody tr").forEach(row => {
-      row.style.display = row.innerText.toLowerCase().includes(searchValue) ? "" : "none";
-    });
-  });
-}
-
-// ==========================
-// 8. TRADINGVIEW CHART
+// TRADINGVIEW CHART
 // ==========================
 function loadChart(symbol) {
-  const chartContainer = document.getElementById("tv_chart_container");
-  if (!chartContainer) return;
-  chartContainer.innerHTML = "";
+  document.getElementById("tv_chart_container").innerHTML = "";
   new TradingView.widget({
     "container_id": "tv_chart_container",
     "symbol": symbol,
@@ -169,99 +174,10 @@ function loadChart(symbol) {
     "theme": "dark",
     "style": "1",
     "locale": "en",
-    "toolbar_bg": "#000000",
-    "enable_publishing": false,
-    "hide_top_toolbar": false,
-    "hide_legend": false,
-    "save_image": false,
-    "studies": ["RSI@tv-basicstudies", "MACD@tv-basicstudies"],
     "width": "100%",
-    "height": "500"
+    "height": "500",
+    "studies": ["RSI@tv-basicstudies", "MACD@tv-basicstudies"]
   });
 }
-loadChart("BINANCE:BTCUSDT"); // Default chart
+loadChart("BINANCE:BTCUSDT");
 
-const pairSelect = document.getElementById("pairSelect");
-if (pairSelect) {
-  pairSelect.addEventListener("change", function () {
-    loadChart(this.value);
-  });
-}
-
-// ==========================
-// 9. CANDLESTICK CHART (Binance - Optional)
-// ==========================
-let candlestickChartInstance = null;
-let currentPair = 'BTCUSDT';
-
-async function fetchCandlestickData(symbol = 'BTCUSDT', interval = '1h', limit = 50) {
-  try {
-    const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    return data.map(c => ({
-      x: new Date(c[0]),
-      o: parseFloat(c[1]),
-      h: parseFloat(c[2]),
-      l: parseFloat(c[3]),
-      c: parseFloat(c[4])
-    }));
-  } catch (err) {
-    console.warn("Gagal load candlestick Binance:", err);
-    return [];
-  }
-}
-
-async function renderCandlestickChart(symbol) {
-  const ctx = document.getElementById('candlestickChart');
-  if (!ctx) return;
-  const chartData = await fetchCandlestickData(symbol);
-
-  if (candlestickChartInstance) {
-    candlestickChartInstance.destroy();
-  }
-
-  candlestickChartInstance = new Chart(ctx, {
-    type: 'candlestick',
-    data: {
-      datasets: [{
-        label: symbol,
-        data: chartData,
-        borderColor: '#FFD700',
-        color: {
-          up: '#00ff99',
-          down: '#ff3366',
-          unchanged: '#999'
-        }
-      }]
-    },
-    options: {
-      plugins: {
-        legend: { labels: { color: '#FFD700' } }
-      },
-      scales: {
-        x: {
-          time: { unit: 'day' },
-          ticks: { color: '#FFD700' }
-        },
-        y: {
-          ticks: { color: '#FFD700' }
-        }
-      }
-    }
-  });
-}
-
-const pairSelector = document.getElementById('pairSelector');
-if (pairSelector) {
-  pairSelector.addEventListener('change', async (e) => {
-    currentPair = e.target.value;
-    await renderCandlestickChart(currentPair);
-  });
-  // Auto refresh tiap 60 detik
-  setInterval(() => {
-    renderCandlestickChart(currentPair);
-  }, 60000);
-  renderCandlestickChart(currentPair);
-}
