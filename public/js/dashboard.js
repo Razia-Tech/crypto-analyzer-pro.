@@ -3,10 +3,11 @@
 // ==========================
 function setWelcomeMessage() {
   const welcomeEl = document.getElementById('welcomeMessage');
-  // Dummy user data (nanti ambil dari Supabase)
   const username = 'Kaio';
-  const membership = 'Free'; // atau 'Premium'
+  const membership = 'Free';
   welcomeEl.textContent = `Welcome to Crypto Analyzer Pro — ${username} (${membership} Member)`;
+}
+setWelcomeMessage();
 }
 setWelcomeMessage();
 
@@ -18,7 +19,6 @@ function setupLogout() {
   const sidebarLogout = document.getElementById('sidebarLogout');
 
   const logoutAction = () => {
-    // TODO: tambahkan Supabase signOut di sini jika sudah terhubung
     console.log("User logged out");
     window.location.href = '/login.html';
   };
@@ -51,30 +51,60 @@ function loadMarketFundamentals() {
 loadMarketFundamentals();
 
 // ==========================
+// REKOMENDASI RULE
+// ==========================
+function getShortTermRecommendation(change24h) {
+  if (change24h > 3) return { text: "BUY", reason: "Momentum positif > 3% dalam 24 jam" };
+  if (change24h >= 0) return { text: "HOLD", reason: "Pergerakan stabil (0%–3%) dalam 24 jam" };
+  return { text: "SELL", reason: "Harga turun dalam 24 jam" };
+}
+
+function getLongTermRecommendation(change7d) {
+  if (change7d > 10) return { text: "BUY", reason: "Kenaikan signifikan > 10% dalam 7 hari" };
+  if (change7d >= 0) return { text: "HOLD", reason: "Pergerakan stabil (0%–10%) dalam 7 hari" };
+  return { text: "SELL", reason: "Harga turun dalam 7 hari" };
+}
+
+
+// ==========================
 // TOP 25 COINS (Dummy)
 // ==========================
-function loadTopCoins() {
+async function loadTopCoins() {
   const tableBody = document.querySelector('#topCoinsTable tbody');
-  const dummyCoins = [
-    { rank: 1, name: 'Bitcoin', price: '$64,200', change: '+2.5%', cap: '$1.2T' },
-    { rank: 2, name: 'Ethereum', price: '$3,200', change: '-0.8%', cap: '$380B' },
-    { rank: 3, name: 'Solana', price: '$145', change: '+5.2%', cap: '$60B' },
-    { rank: 4, name: 'BNB', price: '$412', change: '+1.1%', cap: '$63B' },
-    { rank: 5, name: 'XRP', price: '$0.72', change: '-1.5%', cap: '$38B' }
-  ];
+  tableBody.innerHTML = `<tr><td colspan="7">Loading...</td></tr>`;
 
-  tableBody.innerHTML = '';
-  dummyCoins.forEach(coin => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${coin.rank}</td>
-      <td>${coin.name}</td>
-      <td>${coin.price}</td>
-      <td>${coin.change}</td>
-      <td>${coin.cap}</td>
-    `;
-    tableBody.appendChild(row);
-  });
+  try {
+    const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=7d");
+    const coins = await res.json();
+
+    tableBody.innerHTML = '';
+    coins.forEach((coin, index) => {
+      const shortRec = getShortTermRecommendation(coin.price_change_percentage_24h);
+      const longRec = getLongTermRecommendation(coin.price_change_percentage_7d_in_currency?.usd || 0);
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td><img src="${coin.image}" alt="${coin.name}" width="20" style="vertical-align:middle; margin-right:5px;"> ${coin.name} (${coin.symbol.toUpperCase()})</td>
+        <td>$${coin.current_price.toLocaleString()}</td>
+        <td style="color:${coin.price_change_percentage_24h >= 0 ? 'lime' : 'red'}">
+          ${coin.price_change_percentage_24h?.toFixed(2)}%
+        </td>
+        <td>$${coin.market_cap.toLocaleString()}</td>
+        <td title="${shortRec.reason}" style="color:${shortRec.text === 'BUY' ? 'lime' : shortRec.text === 'SELL' ? 'red' : 'gold'}">
+          ${shortRec.text}
+        </td>
+        <td title="${longRec.reason}" style="color:${longRec.text === 'BUY' ? 'lime' : longRec.text === 'SELL' ? 'red' : 'gold'}">
+          ${longRec.text}
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Error loading coins:", error);
+    tableBody.innerHTML = `<tr><td colspan="7">Failed to load data</td></tr>`;
+  }
 }
 loadTopCoins();
 
@@ -137,6 +167,16 @@ async function renderCandlestickChart(symbol) {
   });
 }
 
+document.getElementById('pairSelector').addEventListener('change', async (e) => {
+  currentPair = e.target.value;
+  await renderCandlestickChart(currentPair);
+});
+
+setInterval(() => {
+  renderCandlestickChart(currentPair);
+}, 60000);
+
+renderCandlestickChart(currentPair);
 // ==========================
 // PAIR SELECTOR & AUTO-REFRESH
 // ==========================
