@@ -2,6 +2,7 @@
 * {margin: 0;padding: 0;box-sizing: border-box;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
 
 body {background-color: #0b0f19;color: #fff;}
+body {margin: 0;font-family: Arial, sans-serif;background: #f9f9f9;display: flex;flex-direction: column;height: 100vh;}
 
 /* ====== HEADER / NAVBAR ====== */
 /* HEADER */
