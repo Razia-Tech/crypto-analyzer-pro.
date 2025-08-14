@@ -1,114 +1,94 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Dummy data user
-  document.getElementById("portfolio-value").textContent = "Rp 150,000,000";
-  document.getElementById("latest-activity").textContent = "Beli BTC 0.01 @ Rp 700 juta";
-  <!-- Tambahkan di <head> dashboard.html -->
- 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
+// Konfigurasi Supabase
+const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
+const SUPABASE_KEY = "YOUR_PUBLIC_ANON_KEY";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
-
-  async function fetchCandlestickData(symbol = 'BTCUSDT', interval = '1h', limit = 50) {
-  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
-  const res = await fetch(url);
-  const data = await res.json();
-
-  return data.map(c => ({
-    x: new Date(c[0]),
-    o: parseFloat(c[1]),
-    h: parseFloat(c[2]),
-    l: parseFloat(c[3]),
-    c: parseFloat(c[4])
-  }));
-}
-
-async function renderCandlestickChart() {
-  const ctx = document.getElementById('candlestickChart').getContext('2d');
-  const chartData = await fetchCandlestickData();
-  async function fetchCandlestickData(symbol = 'BTCUSDT', interval = '1h', limit = 50) {
-  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
-  const res = await fetch(url);
-  const data = await res.json();
-
-  return data.map(c => ({
-    x: new Date(c[0]),
-    o: parseFloat(c[1]),
-    h: parseFloat(c[2]),
-    l: parseFloat(c[3]),
-    c: parseFloat(c[4])
-  }));
-}
-
-let candlestickChartInstance = null;
-let currentPair = 'BTCUSDT';
-
-async function fetchCandlestickData(symbol = 'BTCUSDT', interval = '1h', limit = 50) {
-  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
-  const res = await fetch(url);
-  const data = await res.json();
-
-  return data.map(c => ({
-    x: new Date(c[0]),
-    o: parseFloat(c[1]),
-    h: parseFloat(c[2]),
-    l: parseFloat(c[3]),
-    c: parseFloat(c[4])
-  }));
-}
-
-async function renderCandlestickChart(symbol) {
-  const ctx = document.getElementById('candlestickChart').getContext('2d');
-  const chartData = await fetchCandlestickData(symbol);
-
-  if (candlestickChartInstance) {
-    candlestickChartInstance.destroy();
+// Cek Login
+async function checkLogin() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) {
+    window.location.href = "auth/login.html";
+  } else {
+    document.getElementById("username").innerText = user.email;
+    document.getElementById("user-profile").innerText = user.email;
+    document.getElementById("membership").innerText = "Free";
   }
+}
 
-  candlestickChartInstance = new Chart(ctx, {
-    type: 'candlestick',
+// Logout
+document.getElementById("logout-btn").addEventListener("click", async () => {
+  await supabaseClient.auth.signOut();
+  window.location.href = "auth/login.html";
+});
+
+// Ambil Data Market Fundamentals
+async function loadMarketData() {
+  const res = await fetch("https://api.coingecko.com/api/v3/global");
+  const data = await res.json();
+  const m = data.data;
+  document.getElementById("market-data").innerHTML = `
+    <p>Market Cap: $${(m.total_market_cap.usd/1e9).toFixed(2)}B</p>
+    <p>24h Volume: $${(m.total_volume.usd/1e9).toFixed(2)}B</p>
+    <p>BTC Dominance: ${m.market_cap_percentage.btc.toFixed(2)}%</p>
+  `;
+}
+
+// Top 25 Coins Table
+async function loadTopCoins() {
+  const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false");
+  const coins = await res.json();
+  const tbody = document.querySelector("#coins-table tbody");
+  tbody.innerHTML = coins.map((c, i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>${c.name} (${c.symbol.toUpperCase()})</td>
+      <td>$${c.current_price.toLocaleString()}</td>
+      <td style="color:${c.price_change_percentage_24h>=0?'lime':'red'}">
+        ${c.price_change_percentage_24h.toFixed(2)}%
+      </td>
+    </tr>
+  `).join("");
+}
+
+// Candlestick Chart
+let chart;
+async function initChart(pair="BTCUSDT") {
+  const ctx = document.getElementById("candlestickChart").getContext("2d");
+  if(chart) chart.destroy();
+
+  const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${pair}&interval=1m&limit=30`);
+  const klines = await res.json();
+
+  const labels = klines.map(k => new Date(k[0]).toLocaleTimeString());
+  const prices = klines.map(k => k[4]);
+
+  chart = new Chart(ctx, {
+    type: "line",
     data: {
+      labels: labels,
       datasets: [{
-        label: symbol,
-        data: chartData,
-        borderColor: '#FFD700',
-        color: {
-          up: '#00ff99',
-          down: '#ff3366',
-          unchanged: '#999'
-        }
+        label: `${pair} Price`,
+        data: prices,
+        borderColor: "gold",
+        backgroundColor: "rgba(255,215,0,0.3)"
       }]
-    },
-    options: {
-      plugins: {
-        legend: { labels: { color: '#FFD700' } }
-      },
-      scales: {
-        x: {
-          time: { unit: 'day' },
-          ticks: { color: '#FFD700' }
-        },
-        y: {
-          ticks: { color: '#FFD700' }
-        }
-      }
     }
   });
 }
 
-// Pair selector change
-document.getElementById('pairSelector').addEventListener('change', async (e) => {
-  currentPair = e.target.value;
-  await renderCandlestickChart(currentPair);
+// Pair Selector Event
+document.getElementById("pair-selector").addEventListener("change", (e) => {
+  initChart(e.target.value);
 });
 
-// Auto-refresh every 60s
+// Auto Refresh
 setInterval(() => {
-  renderCandlestickChart(currentPair);
+  initChart(document.getElementById("pair-selector").value);
 }, 60000);
 
-// Initial load
-renderCandlestickChart(currentPair);
+// Load Semua Data
+checkLogin();
+loadMarketData();
+loadTopCoins();
+initChart();
+
