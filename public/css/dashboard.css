@@ -1,186 +1,175 @@
-:root{
-  --bg:#0a0a0a; --panel:#151515; --panel-2:#1c1c1c;
-  --gold:#ffd700; --gold-soft:#ffef9a; --text:#f5f5f5; --muted:#a3a3a3;
-  --ok:#3bd16f; --warn:#ffb020; --bad:#ff5c5c; --line:#2b2b2b;
-}
-
-*{ box-sizing: border-box; }
-html, body{ margin:0; padding:0; height:100%; }
-body{
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: var(--bg); color: var(--text);
-  display:flex; flex-direction:column;
-}
-
-/* HEADER */
-.header{
-  position:sticky; top:0; z-index:10;
-  display:flex; justify-content:space-between; align-items:center;
-  padding:10px 16px;
-  background: linear-gradient(90deg,#111,#2a2a2a);
-  border-bottom: 2px solid var(--gold);
-}
-.header-left{ display:flex; gap:12px; align-items:center; }
-.logo{ font-weight:800; color:var(--gold); letter-spacing:.5px; }
-.search-box{
-  background:#0f0f0f; border:1px solid var(--line); color:var(--text);
-  padding:6px 10px; border-radius:8px; min-width:220px;
-}
-.header-right{ display:flex; align-items:center; gap:12px; }
-.notif-btn, .logout-btn{
-  background: transparent; border:1px solid var(--gold); color:var(--gold);
-  padding:6px 10px; border-radius:8px; cursor:pointer;
-}
-.user-profile{ color:var(--gold-soft); }
-
-/* SIDEBAR */
-.sidebar{
-  position: fixed; top:56px; bottom:0; left:0;
-  width:230px; background:#111; border-right:1px solid var(--line);
-  padding:14px; overflow-y:auto;
-}
-.sidebar nav ul{ list-style:none; padding:0; margin:0; }
-.sidebar nav > ul > li{ margin:10px 0; }
-.sidebar a{ color:var(--gold); text-decoration:none; }
-.sidebar a:hover{ color:#fff; }
-.subnav{ margin:6px 0 0 12px; }
-
-/* MAIN */
-.main-content{
-  margin-left:230px; padding:18px; display:flex; flex-direction:column; gap:16px;
-}
-.card{
-  background: var(--panel);
-  border:1px solid var(--line);
-  border-radius:12px; padding:16px;
-  box-shadow: 0 0 12px rgba(255,215,0,.08);
-}
-.muted{ color:var(--muted); font-size:.9rem; }
-
-/* FUNDAMENTALS */
-.fundamentals-grid{
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px;
-}
-.fundamentals-grid .tile{
-  background: var(--panel-2); border:1px solid var(--line);
-  padding:12px; border-radius:10px; text-align:center;
-}
-.tile .label{ color:var(--muted); font-size:.9rem; }
-.tile .value{ font-weight:700; font-size:1.1rem; color:var(--gold); }
-
-/* CHART */
-.chart-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-.chart-controls select{
-  background:#0f0f0f; border:1px solid var(--gold); color:var(--gold); border-radius:8px; padding:6px 8px;
-}
-#chartContainer{ height:420px; }
-
-/* TABLE */
-.table-wrap{ overflow:auto; border:1px solid var(--line); border-radius:10px; }
-table{ width:100%; border-collapse:collapse; background:var(--panel-2); }
-thead th{
-  position:sticky; top:0; background:#222; color:#000;
-  background-image: linear-gradient(#ffd700,#ffef9a);
-}
-th, td{ padding:10px; border-bottom:1px solid var(--line); }
-tbody tr:hover{ background:#202020; }
-td.pct.pos{ color: var(--ok); font-weight:700; }
-td.pct.neg{ color: var(--bad); font-weight:700; }
-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed; /* Lebar kolom konsisten */
-}
-
-table th, table td {
-    padding: 8px 12px;
-    text-align: center; /* Semua isi rata tengah */
-    white-space: nowrap; /* Biar teks nggak turun ke bawah */
-    border-bottom: 1px solid #333;
-}
-
-table th:nth-child(1), table td:nth-child(1) {
-    width: 5%; /* kolom nomor */
-}
-
-table th:nth-child(2), table td:nth-child(2) {
-    width: 45%; /* kolom nama coin */
-    text-align: left; /* nama coin rata kiri */
-}
-
-table th:nth-child(3), table td:nth-child(3) {
-    width: 25%; /* kolom harga */
-    font-family: monospace; /* angka sejajar */
-}
-
-table th:nth-child(4), table td:nth-child(4) {
-    width: 25%; /* kolom persen */
-    font-family: monospace;
-}
-body {
-  display: flex;
-  font-family: Arial, sans-serif;
+/* ====== GLOBAL RESET ====== */
+* {
   margin: 0;
-}
-
-.sidebar {
-  width: 200px;
-  background: #1e1e2f;
-  color: #fff;
-  padding: 20px;
-}
-
-.sidebar .logo img {
-  width: 120px;
-  display: block;
-  margin: 0 auto 20px;
-}
-
-.sidebar nav ul {
-  list-style: none;
   padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.sidebar nav ul li {
-  display: flex;
-  align-items: center;
-  margin: 15px 0;
-  cursor: pointer;
+body {
+  background-color: #0b0f19;
+  color: #fff;
 }
 
-.sidebar nav ul li img {
-  width: 20px;
-  margin-right: 10px;
-}
-
-main {
-  flex: 1;
-  background: #f4f4f9;
-  padding: 20px;
-}
-
-.top-bar {
+/* ====== HEADER / NAVBAR ====== */
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #141a28, #1e2436);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
 }
 
-.user-info {
+.header-left {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
-.user-info .icon {
-  width: 24px;
-  margin-left: 10px;
+.header-left img.logo {
+  height: 40px;
+}
+
+.header-center {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-right img.icon {
+  width: 22px;
+  height: 22px;
   cursor: pointer;
+  filter: brightness(0) invert(1);
 }
 
-.trending, .charts, .top-coins {
-  margin-top: 20px;
-  background: #fff;
+/* ====== SIDEBAR ====== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background: #141a28;
+  padding: 20px 0;
+  border-right: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sidebar ul li img {
+  width: 20px;
+  filter: brightness(0) invert(1);
+}
+
+.sidebar ul li:hover {
+  background: rgba(255, 215, 0, 0.15);
+}
+
+/* ====== MAIN CONTENT ====== */
+.main {
+  margin-left: 240px;
+  padding: 20px;
+}
+
+/* ====== MARKET FUNDAMENTALS (UPDATE) ====== */
+.market-fundamentals {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.market-card {
+  background: #1a2236;
   padding: 15px;
   border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.market-card:hover {
+  transform: translateY(-3px);
+}
+
+.market-card h4 {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.market-card p {
+  font-size: 18px;
+  font-weight: bold;
+  color: gold;
+}
+
+/* ====== TRENDING COINS (UPDATE) ====== */
+.trending-coins {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.trending-card {
+  background: #1a2236;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  text-align: center;
+}
+
+.trending-card h5 {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.trending-card p {
+  font-size: 13px;
+  color: #ccc;
+}
+
+/* ====== CHART SECTION (UPDATE) ====== */
+.chart-section {
+  background: #1a2236;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  margin-bottom: 20px;
+}
+
+.chart-title {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: gold;
+}
+
+/* ====== TOP 25 COINS TABLE (UPDATE) ====== */
+.table-container {
+  background: #1a2236;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 table {
@@ -188,24 +177,54 @@ table {
   border-collapse: collapse;
 }
 
-table th, table td {
+thead tr {
+  background: rgba(255, 215, 0, 0.15);
+}
+
+thead th {
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  text-align: left;
+  font-size: 14px;
 }
 
-table th {
-  background: #f0f0f0;
+tbody tr {
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
 }
 
-/* FOOTER */
-.footer{
-  margin-top:auto; border-top:1px solid var(--line); background:#111;
-  text-align:center; color:var(--muted); padding:12px;
+tbody td {
+  padding: 10px;
+  font-size: 13px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 900px){
-  .sidebar{ display:none; }
-  .main-content{ margin-left:0; }
+tbody tr:hover {
+  background: rgba(255, 215, 0, 0.1);
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 180px;
+  }
+  .main {
+    margin-left: 200px;
+  }
+  .market-fundamentals {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .trending-coins {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .sidebar {
+    display: none;
+  }
+  .main {
+    margin-left: 0;
+  }
+  .market-fundamentals {
+    grid-template-columns: 1fr;
+  }
 }
 
