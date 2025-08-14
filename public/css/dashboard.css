@@ -37,6 +37,7 @@ a {color: inherit;text-decoration: none;}
 #topCoinsTable tbody tr {cursor: pointer;transition: background 0.3s;}
 #topCoinsTable tbody tr:hover {background: rgba(255, 215, 0, 0.15);}
 #topCoinsTable tbody tr.active-row {background: rgba(255, 215, 0, 0.3);font-weight: bold;}
+.table-controls {margin-bottom: 10px;}
 
 /* LIVE CHART */
 .live-chart {padding: 20px;background: rgba(0, 0, 0, 0.4);backdrop-filter: blur(8px);border: 1px solid #FFD700;border-radius: 12px;box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);}
@@ -44,6 +45,11 @@ a {color: inherit;text-decoration: none;}
 .chart-controls select {background: black;color: gold;border: 1px solid gold;padding: 5px 10px;border-radius: 5px;font-size: 14px;}
 .chart-controls select:focus {outline: none;border-color: #ffd700;box-shadow: 0 0 5px #ffd700;}
 #pairSelector {padding: 5px 10px;border-radius: 5px;background: #111;border: 1px solid #FFD700;color: #FFD700;}
+.view-chart-btn {padding: 4px 8px;background: gold;color: black;border: none;border-radius: 3px;font-size: 12px;cursor: pointer;transition: all 0.3s;}
+.view-chrt-btn:hover {background: black;color: gold;border: 1px solid gold;}
+
+#coinSearch {padding: 6px 10px;border: 1px solid gold;border-radius: 5px;background: black;color: gold;}
+#coinSearch:focus {outline: none;box-shadow: 0 0 5px gold;}
 
 /* FOOTER */
 .footer {background: rgba(0, 0, 0, 0.6);border-top: 1px solid #FFD700;text-align: center;padding: 10px;font-size: 0.9rem;}
