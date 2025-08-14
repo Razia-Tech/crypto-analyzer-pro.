@@ -106,6 +106,36 @@ async function loadTopCoins() {
 }
 loadTopCoins();
 
+function loadChart(symbol) {
+  document.getElementById("tv_chart_container").innerHTML = ""; // Reset container
+  new TradingView.widget({
+    "container_id": "tv_chart_container",
+    "symbol": symbol,
+    "interval": "60",
+    "timezone": "Etc/UTC",
+    "theme": "dark",
+    "style": "1",
+    "locale": "en",
+    "toolbar_bg": "#000000",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["RSI@tv-basicstudies", "MACD@tv-basicstudies"],
+    "width": "100%",
+    "height": "500"
+  });
+}
+
+// Load chart default BTC
+loadChart("BINANCE:BTCUSDT");
+
+// Event listener untuk dropdown
+document.getElementById("pairSelect").addEventListener("change", function () {
+  loadChart(this.value);
+});
+
+
 // ==========================
 // LIVE CHART (Binance API)
 // ==========================
