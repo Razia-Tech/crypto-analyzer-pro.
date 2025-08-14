@@ -1,105 +1,94 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard — CryptoAnalyzerPro</title>
-  <link rel="stylesheet" href="css/dashboard.css"/>
+  <title>Dashboard - Crypto Analyzer Pro</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
 </head>
 <body>
   <!-- HEADER -->
-   <header class="header">
-    <div class="header-left">
-      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="logo">
-      <input type="text" placeholder="Cari..." class="search-bar">
+  <header class="header">
+    <div class="logo">
+      <img src="../assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="logo-img">
+      <span>CryptoAnalyzerPro</span>
     </div>
-     <div class="header-centre">
-     <span id="welcomeMessage">Selamat Datang, User</span>
-       </div>
-    <div class="header-right">
-      <button class="icon-btn" id="notif-btn">
-        <img src="assets/icons/bell.svg" alt="Notifikasi" class="icon">
-      </button>
-      <div class="profile-menu">
-        <img src="assets/icons/profile.svg" alt="Profil" class="icon">
-        <div class="dropdown">
-          <a href="#">Pengaturan</a>
-          <a href="#" id="logout-btn">Logout</a>
-        </div>
-      </div>
+    <div class="welcome" id="welcomeMessage">Welcome to Crypto Analyzer Pro</div>
+    <div class="header-actions">
+      <input type="text" placeholder="Search..." class="search-box">
+      <button id="logout-btn" class="btn-logout">Logout</button>
     </div>
   </header>
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <nav>
-      <a href="#" class="active"><img src="assets/icons/home.svg" class="icon"> Home</a>
-      <a href="#"><img src="assets/icons/features.svg" class="icon"> Fitur</a>
-      <a href="#"><img src="assets/icons/chart.svg" class="icon"> Market Fundamentals</a>
-      <a href="#"><img src="assets/icons/settings.svg" class="icon"> Settings</a>
-      <a href="#" id="logout-sidebar"><img src="assets/icons/logout.svg" class="icon"> Logout</a>
-    </nav>
+    <ul>
+      <li><a href="#" class="active"><img src="../assets/icons/home.svg" class="icon"> Home</a></li>
+      <li><a href="#"><img src="../assets/icons/features.svg" class="icon"> Features</a></li>
+      <li><a href="#"><img src="../assets/icons/chart.svg" class="icon"> Market Fundamentals</a></li>
+      <li><a href="#"><img src="../assets/icons/settings.svg" class="icon"> Settings</a></li>
+      <li><a id="sidebarLogout" href="#"><img src="../assets/icons/logout.svg" class="icon"> Logout</a></li>
+    </ul>
   </aside>
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
-   <!-- realtime-analsis -->
-    <section class="realtime-analysis">
-      <h2>Analisis Real-time</h2>
-      <canvas id="realtime-chart" height="100"></canvas>
-    </section>
-    <!-- Market Fundamentals -->
-     <section class="market-fundamentals">
+
+    <!-- MARKET FUNDAMENTALS -->
+    <section id="marketFundamentals" class="card-section">
       <h2>Market Fundamentals</h2>
-      <div class="card-container" id="market-cards"></div>
+      <div id="market-cards" class="card-container">
+        <!-- Dummy data akan diisi dari dashboard.js -->
+      </div>
     </section>
-    
-    <!-- Trending Coins -->
-    <section class="trending">
-      <h2>🔥 Trending Coins</h2>
-      <div id="trendingList"></div>
-    </section>
-    
-    <!-- Top 25 Coins Table -->
-    <section class="top-coins">
-      <h2>🏆 Top 25 Coins</h2>
-      <table>
+
+    <!-- TOP 25 COINS -->
+    <section id="topCoins" class="card-section">
+      <h2>Top 25 Coins</h2>
+      <table id="topCoinsTable">
         <thead>
           <tr>
+            <th>Rank</th>
             <th>Coin</th>
-            <th>Harga</th>
-            <th>24H%</th>
-            <th>Volume 24H</th>
+            <th>Price</th>
+            <th>24h Change</th>
             <th>Market Cap</th>
-            <th>Rekomendasi</th>
           </tr>
         </thead>
-        <tbody id="topCoinsTable"></tbody>
+        <tbody>
+          <!-- Dummy data akan diisi dari dashboard.js -->
+        </tbody>
       </table>
     </section>
- 
-  <!-- Charts section-->
-   <div class="chart-section">
-  <div class="chart-box">
-    <h3 class="chart-title">Harga Live (Coingecko)</h3>
-    <iframe src="URL_CHART_COINGECKO" frameborder="0"></iframe>
-     </div>
-     <div class="chart-box">
-     <h3 class="chart-title">Harga Live (Binance)</h3>
-     <iframe src="URL_CHART_BINANCE" frameborder="0"></iframe>
-     </div>
-    </div>
+
+    <!-- LIVE CHART -->
+    <section class="live-chart">
+      <div class="chart-header">
+        <h2>📈 Live Candlestick Chart</h2>
+        <select id="pairSelector">
+          <option value="BTCUSDT">BTC/USDT</option>
+          <option value="ETHUSDT">ETH/USDT</option>
+          <option value="SOLUSDT">SOL/USDT</option>
+          <option value="BNBUSDT">BNB/USDT</option>
+          <option value="XRPUSDT">XRP/USDT</option>
+        </select>
+      </div>
+      <canvas id="candlestickChart"></canvas>
+    </section>
+
   </main>
-    
+
   <!-- FOOTER -->
   <footer class="footer">
-    <p>&copy; 2025 CryptoAnalyzerPro | <a href="#">Support</a></p>
+    <p>&copy; 2025 Crypto Analyzer Pro. All rights reserved.</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="js/dashboard.js"></script>
-  <script src="js/market-fundamentals/page.js"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
 
