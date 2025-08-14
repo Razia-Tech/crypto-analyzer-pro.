@@ -1,48 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Crypto Analyzer Pro - Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css">
+  <title>Dashboard — CryptoAnalyzerPro</title>
+  <link rel="stylesheet" href="css/dashboard.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="logo">
-      <img src="assets/logos/xxx.png" alt="Logo">
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="logo">
+      <input type="text" placeholder="Cari..." class="search-bar">
+      <span id="welcomeMessage">Selamat Datang, User</span>
     </div>
+    <div class="header-right">
+      <button class="icon-btn" id="notif-btn">
+        <img src="assets/icons/bell.svg" alt="Notifikasi" class="icon">
+      </button>
+      <div class="profile-menu">
+        <img src="assets/icons/user.svg" alt="Profil" class="icon">
+        <div class="dropdown">
+          <a href="#">Pengaturan</a>
+          <a href="#" id="logout-btn">Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
     <nav>
-      <ul>
-        <li><img src="assets/icons/home.svg" alt="Home"> Home</li>
-        <li><img src="assets/icons/features.svg" class="icon" alt="Features"> Features</li>
-        <li><img src="assets/icons/chart.svg" alt="Market Fundamentals"> Market Fundamentals</li>
-        <li><img src="assets/icons/settings.svg" alt="Settings"> Settings</li>
-        <li><img src="assets/icons/logout.svg" alt="Logout" id="logoutBtn"> Logout</li>
-      </ul>
+      <a href="#" class="active"><img src="assets/icons/home.svg" class="icon"> Home</a>
+      <a href="#"><img src="assets/icons/feature.svg" class="icon"> Fitur</a>
+      <a href="#"><img src="assets/icons/chart.svg" class="icon"> Market Fundamentals</a>
+      <a href="#"><img src="assets/icons/settings.svg" class="icon"> Settings</a>
+      <a href="#" id="logout-sidebar"><img src="assets/icons/logout.svg" class="icon"> Logout</a>
     </nav>
   </aside>
 
-  <!-- Main Content -->
-  <main>
-    <!-- Top bar -->
-    <header class="top-bar">
-      <div class="market-fundamentals" id="marketFundamentals"></div>
-      <div class="user-info">
-        <span id="welcomeMessage">Selamat Datang, User</span>
-        <img src="assets/icons/bell.svg" alt="Notifications" class="icon notification-icon">
-        <img src="assets/icons/user.svg" alt="User" class="icon">
-        <img src="assets/icons/logout.svg" alt="Logout" class="icon logout-icon" id="logoutTopBtn">
-      </div>
-    </header>
-
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+   <!-- market fundamentals -->
+    <section class="market-fundamentals">
+      <h2>Market Fundamentals</h2>
+      <div class="card-container" id="market-cards"></div>
+    </section>
+  </main>
     <!-- Trending Coins -->
     <section class="trending">
       <h2>🔥 Trending Coins</h2>
       <div id="trendingList"></div>
     </section>
-
+    
     <!-- Top 25 Coins Table -->
     <section class="top-coins">
       <h2>🏆 Top 25 Coins</h2>
@@ -60,8 +71,8 @@
         <tbody id="topCoinsTable"></tbody>
       </table>
     </section>
-     
-    <!-- Charts -->
+ 
+  <!-- Charts section-->
    <div class="chart-section">
   <div class="chart-box">
     <h3 class="chart-title">Harga Live (Coingecko)</h3>
@@ -73,7 +84,15 @@
      </div>
     </div>
   </main>
+    
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>&copy; 2025 CryptoAnalyzerPro | <a href="#">Support</a></p>
+  </footer>
 
-  <script src="dashboard.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/market-fundamentals/page.js"></script>
 </body>
 </html>
+
