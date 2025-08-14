@@ -1,6 +1,6 @@
 // ---------- KONFIG FRONTEND (WAJIB DIEDIT) ----------
-const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co"; // ganti
-const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";               // ganti
+const SUPABASE_URL = "https://ibzgmeooqxmbcnmovlbi.supabase.co"; // ganti
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliemdtZW9vcXhtYmNubW92bGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyOTExNTcsImV4cCI6MjA2OTg2NzE1N30.xvgi4yyKNSntsNFkB4a1YPyNs6jsQBgiCeT_XYuo9bY";               // ganti
 
 // Init supabase client
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
