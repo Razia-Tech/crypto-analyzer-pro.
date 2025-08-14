@@ -74,13 +74,16 @@ async function loadTopCoins() {
     coins.forEach((coin, index) => {
       const shortRec = getShortTermRecommendation(coin.price_change_percentage_24h);
       const longRec = getLongTermRecommendation(coin.price_change_percentage_7d_in_currency?.usd || 0);
+     
       const row = document.createElement('tr');
+     
       // Klik baris coin → ganti chart
     row.addEventListener('click', () => {
       const symbol = coin.symbol.toUpperCase();
       const chartSymbol = `BINANCE:${symbol}USDT`;
       loadChart(chartSymbol);
-     // Highlight baris aktif
+   
+      // Highlight baris aktif
       document.querySelectorAll('#topCoinsTable tbody tr').forEach(r => r.classList.remove('active-row'));
     row.classList.add('active-row');
     });
