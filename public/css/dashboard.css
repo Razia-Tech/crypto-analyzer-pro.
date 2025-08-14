@@ -35,11 +35,26 @@ body {background-color: #0b0f19;color: #fff;}
 .trending-card h5 {font-size: 14px;margin-bottom: 5px;}
 .trending-card p {font-size: 13px;color: #ccc;}
 
-/* ====== CHART SECTION ====== */
-canvas {max-width: 100%;height: auto !important;}
-.charts {max-width: 900px;margin: auto;}
-.chart-section {background: #1a2236;padding: 15px;border-radius: 8px;border: 1px solid rgba(255, 215, 0, 0.3);margin-bottom: 20px;}
-.chart-title {font-size: 16px;margin-bottom: 10px;color: gold;}
+/* ====== CHART SECTION FIX ====== */
+.chart-section {
+  display: grid; /* UPDATE */
+  grid-template-columns: repeat(2, 1fr); /* UPDATE */
+  gap: 20px; /* UPDATE */
+  margin-bottom: 20px;
+}
+
+.chart-box {
+  background: #1a2236;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.chart-box iframe {
+  width: 100%;
+  height: 400px; /* bisa diubah sesuai kebutuhan */
+  border: none;
+}
 
 /* ====== TOP 25 COINS TABLE ====== */
 .table-container {background: #1a2236;padding: 15px;border-radius: 8px;border: 1px solid rgba(255, 215, 0, 0.3);}
