@@ -54,13 +54,14 @@
       <section id="market-cards" class="card-container"></section>
 
       <!-- TRADINGVIEW CHART -->
-      <section class="chart-section">
-        <select id="pairSelect">
-          <option value="BINANCE:BTCUSDT">BTC/USDT</option>
-          <option value="BINANCE:ETHUSDT">ETH/USDT</option>
-        </select>
-        <div id="tv_chart_container" style="height:500px;"></div>
-      </section>
+      <h3 style="color: gold; margin-top:20px;">Binance Candlestick Chart</h3>
+<select id="pairSelector">
+  <option value="BTCUSDT">BTC/USDT</option>
+  <option value="ETHUSDT">ETH/USDT</option>
+  <option value="BNBUSDT">BNB/USDT</option>
+  <option value="SOLUSDT">SOL/USDT</option>
+</select>
+<canvas id="candlestickChart" height="300"></canvas>
 
       <!-- TOP 25 COINS TABLE -->
       <section class="coins-table-section">
@@ -104,6 +105,7 @@
   <!-- SCRIPT -->
   <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
   <script src="https://s3.tradingview.com/tv.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
