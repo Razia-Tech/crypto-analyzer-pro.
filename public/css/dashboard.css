@@ -117,6 +117,85 @@ table th:nth-child(4), table td:nth-child(4) {
     width: 25%; /* kolom persen */
     font-family: monospace;
 }
+body {
+  display: flex;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.sidebar {
+  width: 200px;
+  background: #1e1e2f;
+  color: #fff;
+  padding: 20px;
+}
+
+.sidebar .logo img {
+  width: 120px;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  cursor: pointer;
+}
+
+.sidebar nav ul li img {
+  width: 20px;
+  margin-right: 10px;
+}
+
+main {
+  flex: 1;
+  background: #f4f4f9;
+  padding: 20px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info .icon {
+  width: 24px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.trending, .charts, .top-coins {
+  margin-top: 20px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background: #f0f0f0;
+}
 
 /* FOOTER */
 .footer{
