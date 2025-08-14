@@ -8,8 +8,6 @@ function setWelcomeMessage() {
   welcomeEl.textContent = `Welcome to Crypto Analyzer Pro — ${username} (${membership} Member)`;
 }
 setWelcomeMessage();
-}
-setWelcomeMessage();
 
 // ==========================
 // LOGOUT FUNCTION
