@@ -1,156 +1,85 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard — CryptoAnalyzerPro</title>
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link rel="stylesheet" href="css/market-fundamentals/page.css" />
+  <title>Crypto Analyzer Pro - Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <!-- HEADER -->
   <header class="header">
-    <div class="header-left">
-      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="logo">
-      <input type="text" placeholder="Cari..." class="search-bar">
-    </div>
+    <div class="logo">Crypto Analyzer Pro</div>
+    <input type="text" class="search" placeholder="Search...">
     <div class="header-right">
-      <button class="icon-btn" id="notif-btn">
-        <img src="assets/icons/bell.svg" alt="Notifikasi" class="icon">
-      </button>
-      <div class="profile-menu">
-        <img src="assets/icons/profile.svg" alt="Profil" class="icon">
-        <div class="dropdown">
-          <a href="#">Pengaturan</a>
-          <a href="#" id="logout-btn">Logout</a>
-        </div>
-      </div>
+      <div class="notif">🔔</div>
+      <div class="profile" id="user-profile">Loading...</div>
+      <button id="logout-btn" class="logout-btn">Logout</button>
     </div>
   </header>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <nav>
-      <a href="#" class="active"><img src="assets/icons/home.svg" class="icon"> Home</a>
-      <a href="#"><img src="assets/icons/features.svg" class="icon"> Fitur</a>
-      <a href="#"><img src="assets/icons/chart.svg" class="icon"> Market Fundamentals</a>
-      <a href="#"><img src="assets/icons/settings.svg" class="icon"> Settings</a>
-      <a href="#" id="logout-sidebar"><img src="assets/icons/logout.svg" class="icon"> Logout</a>
-    </nav>
-  </aside>
+  <!-- SIDEBAR + MAIN -->
+  <div class="container">
+    <aside class="sidebar">
+      <ul>
+        <li><a href="#">🏠 Home</a></li>
+        <li><a href="#">📊 Market Fundamentals</a></li>
+        <li><a href="#">📈 Sentiment Analyzer</a></li>
+        <li><a href="#">💰 Portfolio</a></li>
+        <li><a href="#">⚙️ Settings</a></li>
+      </ul>
+    </aside>
 
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-    <section class="summary">
-      <h2>Ringkasan Personalisasi</h2>
-      <div class="card">Portfolio Value: <span id="portfolio-value">Rp0</span></div>
-      <div class="card">Aktivitas Terbaru: <span id="latest-activity">-</span></div>
-    </section>
-
-<section class="live-chart">
-  <div class="chart-header">
-    <h2>📈 Live Candlestick Chart</h2>
-    <select id="pairSelector">
-      <option value="BTCUSDT">BTC/USDT</option>
-      <option value="ETHUSDT">ETH/USDT</option>
-      <option value="SOLUSDT">SOL/USDT</option>
-      <option value="BNBUSDT">BNB/USDT</option>
-      <option value="XRPUSDT">XRP/USDT</option>
-    </select>
-  </div>
-  <canvas id="candlestickChart"></canvas>
-</section>
-    <section class="market-fundamentals">
-      <section class="live-chart">
-        <h2>📈 Live Candlestick Chart – BTC/USDT</h2>
-        <canvas id="candlestickChart"></canvas>
+    <main class="main-content">
+      <section class="welcome">
+        <h2>Welcome, <span id="username">User</span> (<span id="membership">Free</span>)</h2>
       </section>
-      
-      <h2>Market Fundamentals</h2>
-      <div class="card-container" id="market-cards"></div>
-    </section>
-    <section class="market-fundamentals">
-   <h2>📊 Market Fundamentals</h2>
-    <div class="fundamentals-grid">
-    <div class="card">
-      <h3>Global Market Cap</h3>
-      <p class="value">$1,250,000,000,000</p>
-    </div>
-    <div class="card">
-      <h3>24h Trading Volume</h3>
-      <p class="value">$95,000,000,000</p>
-    </div>
-    <div class="card">
-      <h3>BTC Dominance</h3>
-      <p class="value">48.5%</p>
-    </div>
-    <div class="card">
-      <h3>Top Gainers</h3>
-      <ul>
-        <li>PEPE <span class="badge up">+120%</span></li>
-        <li>SOL <span class="badge up">+15%</span></li>
-        <li>DOGE <span class="badge up">+8%</span></li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Top Losers</h3>
-      <ul>
-        <li>LUNA <span class="badge down">-25%</span></li>
-        <li>ADA <span class="badge down">-10%</span></li>
-        <li>XRP <span class="badge down">-7%</span></li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Fear & Greed Index</h3>
-      <p class="badge greed">65 (Greed)</p>
-    </div>
-  </div>
 
-  <!-- Rekomendasi Buy/Sell -->
-  <div class="recommendations">
-    <h3>📈 Rekomendasi Buy/Sell</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Coin</th>
-          <th>Short Term</th>
-          <th>Long Term</th>
-          <th>Kesimpulan</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>BTC</td>
-          <td><span class="badge up">Buy</span></td>
-          <td><span class="badge hold">Hold</span></td>
-          <td>Potensi naik jangka pendek, stabil jangka panjang</td>
-        </tr>
-        <tr>
-          <td>ETH</td>
-          <td><span class="badge down">Sell</span></td>
-          <td><span class="badge up">Buy</span></td>
-          <td>Koreksi sementara, bullish jangka panjang</td>
-        </tr>
-        <tr>
-          <td>SOL</td>
-          <td><span class="badge up">Buy</span></td>
-          <td><span class="badge up">Buy</span></td>
-          <td>Momentum kuat untuk kedua jangka</td>
-        </tr>
-      </tbody>
-    </table>
+      <section class="market-fundamentals">
+        <h3>Market Fundamentals</h3>
+        <div id="market-data" class="market-data">Loading data...</div>
+      </section>
+
+      <section class="chart-section">
+        <div class="chart-header">
+          <h3>Live Candlestick Chart</h3>
+          <select id="pair-selector">
+            <option value="BTCUSDT">BTC/USDT</option>
+            <option value="ETHUSDT">ETH/USDT</option>
+            <option value="SOLUSDT">SOL/USDT</option>
+          </select>
+        </div>
+        <canvas id="candlestickChart" height="200"></canvas>
+      </section>
+
+      <section class="top-coins">
+        <h3>Top 25 Coins</h3>
+        <table id="coins-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>24h %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="4">Loading...</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
   </div>
-</section>
-  </main>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p>&copy; 2025 CryptoAnalyzerPro | <a href="#">Support</a></p>
+    <p>© 2025 Crypto Analyzer Pro | <a href="#">Terms</a> | <a href="#">Support</a></p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- JS -->
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
   <script src="js/dashboard.js"></script>
-  <script src="js/market-fundamentals/page.js"></script>
 </body>
 </html>
 
