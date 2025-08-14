@@ -181,3 +181,86 @@ function loadChart(symbol) {
 }
 loadChart("BINANCE:BTCUSDT");
 
+// ==========================
+// CANDLESTICK CHART BINANCE (LIVE VIA PROXY)
+// ==========================
+let candlestickChartInstance = null;
+let currentPair = 'BTCUSDT';
+
+async function fetchCandlestickData(symbol = 'BTCUSDT', interval = '1h', limit = 50) {
+  try {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`)}`;
+    const res = await fetch(proxyUrl);
+    const data = await res.json();
+
+    return data.map(c => ({
+      x: new Date(c[0]),
+      o: parseFloat(c[1]),
+      h: parseFloat(c[2]),
+      l: parseFloat(c[3]),
+      c: parseFloat(c[4])
+    }));
+  } catch (err) {
+    console.error("Gagal ambil candlestick data:", err);
+    return [];
+  }
+}
+
+async function renderCandlestickChart(symbol) {
+  const ctx = document.getElementById('candlestickChart')?.getContext('2d');
+  if (!ctx) return;
+  const chartData = await fetchCandlestickData(symbol);
+
+  if (candlestickChartInstance) {
+    candlestickChartInstance.destroy();
+  }
+
+  candlestickChartInstance = new Chart(ctx, {
+    type: 'candlestick',
+    data: {
+      datasets: [{
+        label: symbol,
+        data: chartData,
+        borderColor: '#FFD700',
+        color: {
+          up: '#00ff99',
+          down: '#ff3366',
+          unchanged: '#999'
+        }
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { labels: { color: '#FFD700' } }
+      },
+      scales: {
+        x: {
+          time: { unit: 'day' },
+          ticks: { color: '#FFD700' }
+        },
+        y: {
+          ticks: { color: '#FFD700' }
+        }
+      }
+    }
+  });
+}
+
+// Event listener pair selector Binance
+const pairSelector = document.getElementById('pairSelector');
+if (pairSelector) {
+  pairSelector.addEventListener('change', async (e) => {
+    currentPair = e.target.value;
+    await renderCandlestickChart(currentPair);
+  });
+}
+
+// Refresh chart tiap 60 detik
+setInterval(() => {
+  renderCandlestickChart(currentPair);
+}, 60000);
+
+// Load pertama kali
+renderCandlestickChart(currentPair);
+
+
