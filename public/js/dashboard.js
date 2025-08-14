@@ -15,12 +15,7 @@ setWelcomeMessage();
 function setupLogout() {
   const headerLogout = document.getElementById('logout-btn');
   const sidebarLogout = document.getElementById('sidebarLogout');
-
-  const logoutAction = () => {
-    console.log("User logged out");
-    window.location.href = '/login.html';
-  };
-
+  const logoutAction = () => {console.log("User logged out");window.location.href = '/login.html';};
   headerLogout.addEventListener('click', logoutAction);
   sidebarLogout.addEventListener('click', logoutAction);
 }
@@ -79,8 +74,17 @@ async function loadTopCoins() {
     coins.forEach((coin, index) => {
       const shortRec = getShortTermRecommendation(coin.price_change_percentage_24h);
       const longRec = getLongTermRecommendation(coin.price_change_percentage_7d_in_currency?.usd || 0);
-
       const row = document.createElement('tr');
+      // Klik baris coin → ganti chart
+    row.addEventListener('click', () => {
+      const symbol = coin.symbol.toUpperCase();
+      const chartSymbol = `BINANCE:${symbol}USDT`;
+      loadChart(chartSymbol);
+     // Highlight baris aktif
+      document.querySelectorAll('#topCoinsTable tbody tr').forEach(r => r.classList.remove('active-row'));
+    row.classList.add('active-row');
+    });
+
       row.innerHTML = `
         <td>${index + 1}</td>
         <td><img src="${coin.image}" alt="${coin.name}" width="20" style="vertical-align:middle; margin-right:5px;"> ${coin.name} (${coin.symbol.toUpperCase()})</td>
