@@ -1,116 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crypto Analyzer Pro - Dashboard</title>
-  <link rel="stylesheet" href="css/dashboard.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — Crypto Analyzer Pro</title>
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="https://s3.tradingview.com/tv.js"></script>
 </head>
 <body>
-
-  <!-- HEADER -->
-  <header class="dashboard-header">
-    <div class="header-left">
-      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="logo">
-    </div>
-    <div class="header-center">
-      <h2 id="welcomeMessage">Welcome to Crypto Analyzer Pro</h2>
-    </div>
-    <div class="header-right">
-      <div class="header-search">
-        <input type="text" id="globalCoinSearch" placeholder="Search coins...">
-        <div id="searchResults" class="search-results"></div>
-      </div>
-      <button class="icon-btn" id="notif-btn">
-        <img src="assets/icons/bell.svg" alt="Notifications" class="icon">
-      </button>
-      <div class="profile-menu">
-        <img src="assets/icons/profile.svg" alt="Profile" class="icon">
-      </div>
-      <button id="logout-btn" class="icon-btn">
-        <img src="assets/icons/logout.svg" alt="Logout" class="icon">
-      </button>
+  <header class="header">
+    <div class="logo">Crypto Analyzer Pro</div>
+    <input type="text" id="coinSearch" placeholder="Search coin..." />
+    <div class="header-actions">
+      <button id="logout-btn">Logout</button>
     </div>
   </header>
 
-  <!-- WRAPPER -->
-  <div class="dashboard-wrapper">
-    
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <ul>
-        <li class="active"><img src="assets/icons/home.svg" class="icon"> Home</li>
-        <li><img src="assets/icons/features.svg" class="icon"> Fitur</li>
-        <li><img src="assets/icons/chart.svg" class="icon"> Market Fundamentals</li>
-        <li><img src="assets/icons/settings.svg" class="icon"> Settings</li>
-        <li id="sidebarLogout"><img src="assets/icons/logout.svg" class="icon"> Logout</li>
-      </ul>
-    </aside>
+  <aside class="sidebar">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Features</a></li>
+      <li><a href="#">Market Fundamentals</a></li>
+      <li><a href="#">Settings</a></li>
+      <li><a href="#" id="sidebarLogout">Logout</a></li>
+    </ul>
+  </aside>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-       <!-- TradingView Chart -->
-<div id="tv_chart_container" style="height: 500px; margin-bottom: 20px;"></div>
+  <main class="main-content">
+    <h1 id="welcomeMessage"></h1>
 
+    <!-- TradingView Chart -->
+    <div id="tv_chart_container" style="height:500px; margin-bottom:20px;"></div>
 
-      <!-- MARKET FUNDAMENTALS CARDS -->
-      <section id="market-cards" class="card-container"></section>
+    <!-- Candlestick Chart -->
+    <div class="candlestick-container">
+      <select id="pairSelector">
+        <option value="BTCUSDT">BTC/USDT</option>
+        <option value="ETHUSDT">ETH/USDT</option>
+        <option value="BNBUSDT">BNB/USDT</option>
+      </select>
+      <canvas id="candlestickChart" height="300"></canvas>
+    </div>
 
-      <!-- TRADINGVIEW CHART -->
-      <h3 style="color: gold; margin-top:20px;">Binance Candlestick Chart</h3>
-<select id="pairSelector">
-  <option value="BTCUSDT">BTC/USDT</option>
-  <option value="ETHUSDT">ETH/USDT</option>
-  <option value="BNBUSDT">BNB/USDT</option>
-  <option value="SOLUSDT">SOL/USDT</option>
-</select>
-<canvas id="candlestickChart" height="300"></canvas>
+    <!-- Top 25 Coins Table -->
+    <section class="top-coins">
+      <h2>Top 25 Coins</h2>
+      <table id="topCoinsTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Coin</th>
+            <th>Price</th>
+            <th>24h %</th>
+            <th>Market Cap</th>
+            <th>Short Term</th>
+            <th>Long Term</th>
+            <th>Chart</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
 
-      <!-- TOP 25 COINS TABLE -->
-      <section class="coins-table-section">
-        <h3>Top 25 Coins</h3>
-        <input type="text" id="coinSearch" placeholder="Search in table...">
-        <table id="topCoinsTable">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Coin</th>
-              <th>Price</th>
-              <th>24h %</th>
-              <th>Market Cap</th>
-              <th>Short Term</th>
-              <th>Long Term</th>
-              <th>Chart</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
-
-      <!-- BINANCE CANDLESTICK CHART -->
-      <section class="chart-section">
-        <h3>Binance Candlestick Chart</h3>
-        <select id="pairSelector">
-          <option value="BTCUSDT">BTC/USDT</option>
-          <option value="ETHUSDT">ETH/USDT</option>
-        </select>
-        <canvas id="candlestickChart" height="300"></canvas>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- FOOTER -->
   <footer class="footer">
-    <p>© 2025 Crypto Analyzer Pro | Support: support@cryptoanalyzerpro.com</p>
+    <p>&copy; 2025 Crypto Analyzer Pro — All Rights Reserved</p>
   </footer>
 
-  <!-- SCRIPT -->
-  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
-  <script src="https://s3.tradingview.com/tv.js"></script>
-  <script src="js/dashboard.js"></script>
+  <script src="/js/dashboard.js"></script>
 </body>
 </html>
 
