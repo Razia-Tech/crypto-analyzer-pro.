@@ -82,6 +82,20 @@ async function loadTopCoins() {
       const symbol = coin.symbol.toUpperCase();
       const chartSymbol = `BINANCE:${symbol}USDT`;
       loadChart(chartSymbol);
+      // Ubah value dropdown agar sinkron
+      const pairSelect = document.getElementById("pairSelect");
+      if (pairSelect) {
+      // Kalau pair ada di list dropdown, set value
+      const optionExists = Array.from(pairSelect.options).some(opt => opt.value === chartSymbol);
+      if (!optionExists) {
+      // Tambahkan option baru kalau belum ada
+      const newOption = document.createElement("option");
+      newOption.value = chartSymbol;
+      newOption.textContent = `${symbol}/USDT`;
+      pairSelect.appendChild(newOption);
+      }
+      pairSelect.value = chartSymbol;
+      }
    
       // Highlight baris aktif
       document.querySelectorAll('#topCoinsTable tbody tr').forEach(r => r.classList.remove('active-row'));
