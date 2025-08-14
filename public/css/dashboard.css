@@ -34,6 +34,9 @@ a {color: inherit;text-decoration: none;}
 #topCoinsTable {width: 100%;border-collapse: collapse;}
 #topCoinsTable th, #topCoinsTable td {border: 1px solid #FFD700;padding: 8px;text-align: left;}
 #topCoinsTable th {background: rgba(255, 215, 0, 0.1);}
+#topCoinsTable tbody tr {cursor: pointer;transition: background 0.3s;}
+#topCoinsTable tbody tr:hover {background: rgba(255, 215, 0, 0.15);}
+#topCoinsTable tbody tr.active-row {background: rgba(255, 215, 0, 0.3);font-weight: bold;}
 
 /* LIVE CHART */
 .live-chart {padding: 20px;background: rgba(0, 0, 0, 0.4);backdrop-filter: blur(8px);border: 1px solid #FFD700;border-radius: 12px;box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);}
