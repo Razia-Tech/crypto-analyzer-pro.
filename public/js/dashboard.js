@@ -62,25 +62,69 @@ function getLongTermRecommendation(change7d) {
 // ==========================
 // TOP 25 COINS (Dummy)
 // ==========================
+let binanceSymbols = [];
+
+// Ambil semua simbol Binance
+async function fetchBinanceSymbols() {
+  const res = await fetch("https://api.binance.com/api/v3/exchangeInfo");
+  const data = await res.json();
+  binanceSymbols = data.symbols.map(s => s.symbol);
+}
+
+// Load Top Coins dari CoinGecko
 async function loadTopCoins() {
-  const tableBody = document.querySelector('#topCoinsTable tbody');
-  tableBody.innerHTML = `<tr><td colspan="7">Loading...</td></tr>`;
+  await fetchBinanceSymbols();
+  const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=7d");
+  const coins = await res.json();
+  const tableBody = document.querySelector("#topCoinsTable tbody");
+  tableBody.innerHTML = '';
 
-  try {
-    const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=7d");
-    const coins = await res.json();
+  coins.forEach((coin, index) => {
+    const shortRec = getShortTermRecommendation(coin.price_change_percentage_24h);
+    const longRec = getLongTermRecommendation(coin.price_change_percentage_7d_in_currency?.usd || 0);
+    const row = document.createElement('tr');
+    const binanceSymbol = `${coin.symbol.toUpperCase()}USDT`;
 
-    tableBody.innerHTML = '';
-    coins.forEach((coin, index) => {
-      const shortRec = getShortTermRecommendation(coin.price_change_percentage_24h);
-      const longRec = getLongTermRecommendation(coin.price_change_percentage_7d_in_currency?.usd || 0);
-     
-      const row = document.createElement('tr');
-     
-      // Klik baris coin → ganti chart
-    row.addEventListener('click', () => {
-      const symbol = coin.symbol.toUpperCase();
-      const chartSymbol = `BINANCE:${symbol}USDT`;
+    if (binanceSymbols.includes(binanceSymbol)) {
+     // Klik baris coin → ganti chart Binance
+      row.addEventListener('click', () => {
+        const chartSymbol = `BINANCE:${coin.symbol.toUpperCase()}USDT`;
+        document.getElementById("pairSelect").value = chartSymbol;
+        loadChart(chartSymbol);
+
+        document.querySelectorAll('#topCoinsTable tbody tr').forEach(r => r.classList.remove('active-row'));
+        row.classList.add('active-row');
+      });
+    }
+
+    // Isi kolom tabel
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td><img src="${coin.image}" alt="${coin.name}" width="20" style="vertical-align:middle; margin-right:5px;"> ${coin.name} (${coin.symbol.toUpperCase()})</td>
+      <td>$${coin.current_price.toLocaleString()}</td>
+      <td style="color:${coin.price_change_percentage_24h >= 0 ? 'lime' : 'red'}">${coin.price_change_percentage_24h?.toFixed(2)}%</td>
+      <td>$${coin.market_cap.toLocaleString()}</td>
+      <td style="color:${shortRec.text === 'BUY' ? 'lime' : shortRec.text === 'SELL' ? 'red' : 'gold'}" title="${shortRec.reason}">${shortRec.text}</td>
+      <td style="color:${longRec.text === 'BUY' ? 'lime' : longRec.text === 'SELL' ? 'red' : 'gold'}" title="${longRec.reason}">${longRec.text}</td>
+      <td>
+        ${binanceSymbols.includes(binanceSymbol)
+          ? `<span style="color:lime">✔ Binance</span>`
+          : `<button class="view-chart-btn" onclick="window.open('https://www.coingecko.com/en/coins/${coin.id}', '_blank')">View Chart</button>`
+        }
+      </td>
+    `;
+
+    tableBody.appendChild(row);
+  });
+}
+
+// Search coin di tabel
+document.getElementById("coinSearch").addEventListener("input", function () {
+  const searchValue = this.value.toLowerCase();
+  document.querySelectorAll("#topCoinsTable tbody tr").forEach(row => {
+    row.style.display = row.innerText.toLowerCase().includes(searchValue) ? "" : "none";
+  });
+});
       
       // Ubah value dropdown agar sinkron
       const pairSelect = document.getElementById("pairSelect");
