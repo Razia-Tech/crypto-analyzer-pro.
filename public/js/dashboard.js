@@ -81,7 +81,7 @@ async function loadTopCoins() {
     row.addEventListener('click', () => {
       const symbol = coin.symbol.toUpperCase();
       const chartSymbol = `BINANCE:${symbol}USDT`;
-      loadChart(chartSymbol);
+      
       // Ubah value dropdown agar sinkron
       const pairSelect = document.getElementById("pairSelect");
       if (pairSelect) {
@@ -96,11 +96,12 @@ async function loadTopCoins() {
       }
       pairSelect.value = chartSymbol;
       }
-   
+      loadChart(chartSymbol);
+      
       // Highlight baris aktif
       document.querySelectorAll('#topCoinsTable tbody tr').forEach(r => r.classList.remove('active-row'));
-    row.classList.add('active-row');
-    });
+      row.classList.add('active-row');
+      });
 
       row.innerHTML = `
         <td>${index + 1}</td>
