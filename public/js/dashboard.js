@@ -87,6 +87,10 @@ async function renderCoingeckoChart() {
     data: {
       labels,
       datasets: [{ label: "BTC Price (Coingecko)", data: prices, borderColor: "blue" }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
     }
   });
 }
@@ -103,7 +107,10 @@ async function renderBinanceChart() {
     data: {
       labels,
       datasets: [{ label: "BTC Price (Binance)", data: prices, borderColor: "green" }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
     }
   });
 }
-
