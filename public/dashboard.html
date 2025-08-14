@@ -66,20 +66,24 @@
       </table>
     </section>
 
-    <!-- LIVE CHART -->
-    <section class="live-chart">
-      <div class="chart-header">
-        <h2>📈 Live Candlestick Chart</h2>
-        <select id="pairSelector">
-          <option value="BTCUSDT">BTC/USDT</option>
-          <option value="ETHUSDT">ETH/USDT</option>
-          <option value="SOLUSDT">SOL/USDT</option>
-          <option value="BNBUSDT">BNB/USDT</option>
-          <option value="XRPUSDT">XRP/USDT</option>
-        </select>
-      </div>
-      <canvas id="candlestickChart"></canvas>
-    </section>
+    <!-- Live Candlestick Chart -->
+<section class="chart-section">
+  <h3>📊 Live Candlestick Chart</h3>
+  <div class="chart-controls">
+    <select id="pairSelect">
+      <option value="BINANCE:BTCUSDT">BTC/USDT</option>
+      <option value="BINANCE:ETHUSDT">ETH/USDT</option>
+      <option value="BINANCE:BNBUSDT">BNB/USDT</option>
+      <option value="BINANCE:ADAUSDT">ADA/USDT</option>
+      <option value="BINANCE:XRPUSDT">XRP/USDT</option>
+    </select>
+  </div>
+  <div id="tv_chart_container" style="height: 500px; border: 2px solid gold; border-radius: 10px;"></div>
+</section>
+
+<!-- TradingView Widget -->
+<script src="https://s3.tradingview.com/tv.js"></script>
+
 
   </main>
 
