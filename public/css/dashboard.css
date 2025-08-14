@@ -36,25 +36,10 @@ body {background-color: #0b0f19;color: #fff;}
 .trending-card p {font-size: 13px;color: #ccc;}
 
 /* ====== CHART SECTION FIX ====== */
-.chart-section {
-  display: grid; /* UPDATE */
-  grid-template-columns: repeat(2, 1fr); /* UPDATE */
-  gap: 20px; /* UPDATE */
-  margin-bottom: 20px;
-}
-
-.chart-box {
-  background: #1a2236;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
-}
-
-.chart-box iframe {
-  width: 100%;
-  height: 400px; /* bisa diubah sesuai kebutuhan */
-  border: none;
-}
+.chart-section {display: grid; /* UPDATE */grid-template-columns: repeat(2, 1fr); /* UPDATE */gap: 20px; /* UPDATE */margin-bottom: 20px;}
+.chart-box {background: #1a2236;padding: 15px;border-radius: 8px;border: 1px solid rgba(255, 215, 0, 0.3);}
+.chart-box iframe {width: 100%;height: 400px;
+                   /border: none;}
 
 /* ====== TOP 25 COINS TABLE ====== */
 .table-container {background: #1a2236;padding: 15px;border-radius: 8px;border: 1px solid rgba(255, 215, 0, 0.3);}
@@ -64,20 +49,6 @@ thead th {padding: 10px;text-align: left;font-size: 14px;}
 tbody tr {border-bottom: 1px solid rgba(255, 215, 0, 0.1);}
 tbody td {padding: 10px;font-size: 13px;}
 tbody tr:hover {background: rgba(255, 215, 0, 0.1);}
-
-/* ====== ICONS FIX ====== */
-.notification-icon {width: 20px;height: 20px;}
-.logout-icon {width: 18px;height: 18px;}
-<div class="chart-section">
-  <div class="chart-box">
-    <h3 class="chart-title">Harga Live (Coingecko)</h3>
-    <iframe src="URL_CHART_COINGECKO" frameborder="0"></iframe>
-  </div>
-  <div class="chart-box">
-    <h3 class="chart-title">Harga Live (Binance)</h3>
-    <iframe src="URL_CHART_BINANCE" frameborder="0"></iframe>
-  </div>
-</div>
 
 /* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
