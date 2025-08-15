@@ -102,11 +102,13 @@ let binanceSymbols = [];
 // Ambil semua simbol Binance via proxy (bypass blokir)
 async function fetchBinanceSymbols() {
   try {
-    const res = await fetch("https://api.allorigins.win/raw?url=https://api.binance.com/api/v3/exchangeInfo");
+    const url = `https://api.allorigins.win/raw?url=${encodeURIComponent("https://api.binance.com/api/v3/exchangeInfo")}`;
+    const res = await fetch(url);
     const data = await res.json();
     binanceSymbols = data.symbols.map(s => s.symbol);
   } catch (err) {
     console.error("Gagal ambil data Binance:", err);
+    binanceSymbols = [];
   }
 }
 
