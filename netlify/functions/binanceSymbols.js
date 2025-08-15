@@ -1,13 +1,9 @@
+import fetch from 'node-fetch';
+
 export async function handler() {
   try {
-    const proxy = "https://corsproxy.io/?";
-    const url = "https://api.binance.com/api/v3/exchangeInfo";
-
-    const res = await fetch(proxy + encodeURIComponent(url), {
-      headers: {
-        "X-MBX-APIKEY": process.env.BINANCE_API_KEY || ""
-      }
-    });
+    const url = "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://api.binance.com/api/v3/exchangeInfo");
+    const res = await fetch(url);
 
     if (!res.ok) {
       return {
@@ -31,5 +27,6 @@ export async function handler() {
     };
   }
 }
+
 
 
