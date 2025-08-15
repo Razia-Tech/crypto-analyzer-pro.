@@ -1,4 +1,8 @@
-// ===== Crypto Analyzer Pro - dashboard.js (fixed) =====
+// ===== Crypto Analyzer Pro - dashboard.js (Netlify proxy edition) =====
+
+// Config base URLs (via Netlify Functions to bypass CORS & cert issues)
+const CG = "/.netlify/functions/cg";
+const BZ = "/.netlify/functions/binance";
 
 // Boot
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,14 +26,14 @@ function logout() {
   location.href = "auth.html";
 }
 
-// ===== Market Fundamentals (CoinGecko) =====
+// ===== Market Fundamentals (CoinGecko via proxy) =====
 async function loadMarketFundamentals() {
   const el = document.getElementById("marketFundamentals") || document.getElementById("market-cards");
   if (!el) return;
   el.textContent = "Loading...";
 
   try {
-    const res = await fetch("https://api.coingecko.com/api/v3/global");
+    const res = await fetch(`${CG}/api/v3/global`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     const d = json?.data || {};
@@ -48,23 +52,22 @@ async function loadMarketFundamentals() {
   }
 }
 
-// ===== Trending Coins (CoinGecko) =====
+// ===== Trending Coins (CoinGecko via proxy) =====
 async function fetchTrendingCoins() {
   const container = document.getElementById("trendingList");
   if (!container) return;
   container.textContent = "Loading...";
 
   try {
-    const res = await fetch("https://api.coingecko.com/api/v3/search/trending");
+    const res = await fetch(`${CG}/api/v3/search/trending`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const top = (data?.coins || []).slice(0, 7);
 
-    // Fetch detail sequentially (bisa di-parallel kalau mau)
     container.innerHTML = "";
     for (const item of top) {
       try {
-        const detRes = await fetch(`https://api.coingecko.com/api/v3/coins/${item.item.id}`);
+        const detRes = await fetch(`${CG}/api/v3/coins/${item.item.id}`);
         if (!detRes.ok) throw new Error(`HTTP ${detRes.status}`);
         const c = await detRes.json();
         const price = c?.market_data?.current_price?.usd;
@@ -88,12 +91,12 @@ async function fetchTrendingCoins() {
   }
 }
 
-// ===== Top 25 Coins (Binance + fallback CoinGecko) =====
+// ===== Top 25 Coins (Binance + fallback CoinGecko via proxy) =====
 let binanceSymbols = [];
 
 async function fetchBinanceSymbols() {
   try {
-    const res = await fetch("https://api.binance.com/api/v3/exchangeInfo");
+    const res = await fetch(`${BZ}/api/v3/exchangeInfo`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const arr = data?.symbols;
@@ -112,7 +115,7 @@ async function loadTopCoins() {
   tbody.innerHTML = `<tr><td colspan="8">Loading...</td></tr>`;
 
   try {
-    const url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=7d";
+    const url = `${CG}/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=7d`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const coins = await res.json();
@@ -175,12 +178,12 @@ function fmtPct(v) {
   return `${x.toFixed(2)}%`;
 }
 
-// ===== Charts (Chart.js) =====
+// ===== Charts (Chart.js) via proxy =====
 async function renderCoingeckoChart() {
   const el = document.getElementById("coingeckoChart");
   if (!el) return;
   try {
-    const res = await fetch("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7");
+    const res = await fetch(`${CG}/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const labels = (data?.prices || []).map(p => new Date(p[0]).toLocaleDateString());
@@ -200,7 +203,7 @@ async function renderBinanceChart() {
   const el = document.getElementById("binanceChart");
   if (!el) return;
   try {
-    const res = await fetch("https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=30");
+    const res = await fetch(`${BZ}/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=30`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (!Array.isArray(data)) throw new Error("Format klines bukan array");
@@ -218,7 +221,7 @@ async function renderBinanceChart() {
   }
 }
 
-// ===== TradingView (optional) =====
+// ===== TradingView (optional, client-side) =====
 function loadChart(symbol = "BINANCE:BTCUSDT") {
   const cont = document.getElementById("tv_chart_container");
   if (!cont || !window.TradingView) return;
