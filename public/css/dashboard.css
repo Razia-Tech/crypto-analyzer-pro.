@@ -167,6 +167,21 @@ a {
   border: 1px solid #FFD700;
   color: #FFD700;
 }
+.chart-controls select {
+  background: black;
+  color: gold;
+  border: 1px solid gold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.chart-controls select:focus {
+  outline: none;
+  border-color: #ffd700;
+  box-shadow: 0 0 5px #ffd700;
+}
+
 
 /* FOOTER */
 .footer {
