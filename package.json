@@ -4,18 +4,6 @@
   "description": "Crypto Analyzer Pro - Web App for crypto market fundamentals and analytics",
   "main": "index.js",
   "scripts": {
-    "build": "echo \"No build step required\""
-  },
-  "author": "Your Name",
-  "license": "MIT",
-  "devDependencies": {}
-}
-{
-  "name": "crypto-analyzer-pro",
-  "version": "1.0.0",
-  "description": "Crypto Analyzer Pro - Web App for crypto market fundamentals and analytics",
-  "main": "index.js",
-  "scripts": {
     "build": ""
   },
   "author": "Your Name",
@@ -23,5 +11,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.39.7",
     "node-fetch": "^3.3.2"
-  }
+  },
+  "devDependencies": {}
 }
+
