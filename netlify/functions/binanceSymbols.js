@@ -1,10 +1,9 @@
 export async function handler() {
   try {
-    // Proxy publik
-    const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl = "https://api.binance.com/api/v3/exchangeInfo";
+    const proxy = "https://corsproxy.io/?";
+    const url = "https://api.binance.com/api/v3/exchangeInfo";
 
-    const res = await fetch(proxyUrl + encodeURIComponent(targetUrl), {
+    const res = await fetch(proxy + encodeURIComponent(url), {
       headers: {
         "X-MBX-APIKEY": process.env.BINANCE_API_KEY || ""
       }
@@ -32,4 +31,5 @@ export async function handler() {
     };
   }
 }
+
 
