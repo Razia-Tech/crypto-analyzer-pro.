@@ -1,9 +1,32 @@
-Netlify
 [build]
-  publish = "public"
-  command = "npm run build"
+  publish = "public" # Folder tempat file HTML, CSS, JS kamu
+  command = "npm run build" # Kalau tidak ada proses build, ganti dengan "" atau hapus
 
+# Redirect default hanya untuk halaman utama
 [[redirects]]
-  from = "/*"
+  from = "/"
   to = "/index.html"
   status = 200
+
+# Pastikan halaman auth bisa diakses langsung
+[[redirects]]
+  from = "/auth"
+  to = "/auth.html"
+  status = 200
+
+# Pastikan halaman dashboard bisa diakses langsung
+[[redirects]]
+  from = "/dashboard"
+  to = "/dashboard.html"
+  status = 200
+
+# Fungsi Netlify (Serverless Functions)
+[functions]
+  directory = "js/netlify/functions"
+
+# Redirect API ke fungsi serverless
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
