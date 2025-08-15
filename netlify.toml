@@ -22,7 +22,7 @@
 
 # Fungsi Netlify (Serverless Functions)
 [functions]
-  directory = "js/netlify/functions"
+  directory = "netlify/functions"
 
 # Redirect API ke fungsi serverless
 [[redirects]]
