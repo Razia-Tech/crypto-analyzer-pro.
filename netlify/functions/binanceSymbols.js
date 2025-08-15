@@ -1,6 +1,6 @@
 export async function handler() {
   try {
-    // Pakai proxy agar IP request bukan IP Netlify
+    // Proxy publik
     const proxyUrl = "https://corsproxy.io/?";
     const targetUrl = "https://api.binance.com/api/v3/exchangeInfo";
 
@@ -32,3 +32,4 @@ export async function handler() {
     };
   }
 }
+
