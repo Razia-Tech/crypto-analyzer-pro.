@@ -1,8 +1,15 @@
+# Netlify config to enable serverless proxy functions
 [build]
-  publish = "public"
-  command = "npm run build"
+  functions = "netlify/functions"
+  publish = "."  # adjust if your site root is different (e.g., "dist" or "public")
+
+# Optional: prevent SPA rewrites from intercepting static assets (keeps .js/.css intact)
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
+  status = 200
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/js/*"
+  to = "/js/:splat"
   status = 200
