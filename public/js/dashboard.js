@@ -27,24 +27,40 @@ function setupLogout() {
 setupLogout();
 
 // ==========================
-// MARKET FUNDAMENTALS (Dummy)
+// MARKET FUNDAMENTALS (Live dari CoinGecko)
 // ==========================
-function loadMarketFundamentals() {
+async function loadMarketFundamentals() {
   const container = document.getElementById('market-cards');
   if (!container) return;
-  const dummyData = [
-    { title: 'BTC Dominance', value: '48.5%' },
-    { title: '24h Volume', value: '$65.2B' },
-    { title: 'Total Market Cap', value: '$1.9T' },
-    { title: 'Fear & Greed Index', value: 'Greed (74)' }
-  ];
-  container.innerHTML = '';
-  dummyData.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `<h3>${item.title}</h3><p>${item.value}</p>`;
-    container.appendChild(card);
-  });
+  container.innerHTML = `<p>Loading...</p>`;
+
+  try {
+    const res = await fetch("https://api.coingecko.com/api/v3/global");
+    const data = await res.json();
+    const m = data.data.market_cap_percentage;
+    const btcDom = m.btc ? `${m.btc.toFixed(1)}%` : "N/A";
+    const totalCap = data.data.total_market_cap.usd ? `$${(data.data.total_market_cap.usd / 1e12).toFixed(2)}T` : "N/A";
+    const volume24h = data.data.total_volume.usd ? `$${(data.data.total_volume.usd / 1e9).toFixed(2)}B` : "N/A";
+    const fgIndex = "—"; // bisa diambil dari API Fear & Greed gratis jika mau
+
+    const fundamentals = [
+      { title: 'BTC Dominance', value: btcDom },
+      { title: '24h Volume', value: volume24h },
+      { title: 'Total Market Cap', value: totalCap },
+      { title: 'Fear & Greed Index', value: fgIndex }
+    ];
+
+    container.innerHTML = '';
+    fundamentals.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<h3>${item.title}</h3><p>${item.value}</p>`;
+      container.appendChild(card);
+    });
+  } catch (err) {
+    console.error("Gagal load market fundamentals:", err);
+    container.innerHTML = `<p>Failed to load data</p>`;
+  }
 }
 loadMarketFundamentals();
 
@@ -95,17 +111,20 @@ if (globalSearchInput) {
 }
 
 // ==========================
-// TOP 25 COINS TABLE
+// TOP 25 COINS TABLE (Binance + Fallback CoinGecko)
 // ==========================
 let binanceSymbols = [];
 
-// Ambil semua simbol Binance via proxy (bypass blokir)
 async function fetchBinanceSymbols() {
   try {
-    const url = `https://api.allorigins.win/raw?url=${encodeURIComponent("https://api.binance.com/api/v3/exchangeInfo")}`;
-    const res = await fetch(url);
+    const res = await fetch("https://api.binance.com/api/v3/exchangeInfo");
     const data = await res.json();
-    binanceSymbols = data.symbols.map(s => s.symbol);
+    if (data.symbols && Array.isArray(data.symbols)) {
+      binanceSymbols = data.symbols.map(s => s.symbol);
+    } else {
+      console.warn("Format data Binance tidak sesuai, fallback CoinGecko");
+      binanceSymbols = [];
+    }
   } catch (err) {
     console.error("Gagal ambil data Binance:", err);
     binanceSymbols = [];
@@ -121,16 +140,6 @@ async function loadTopCoins() {
   try {
     const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=7d");
     const coins = await res.json();
-
-      <tr>
-        <td>${coin.symbol}</td>
-        <td>$${parseFloat(coin.lastPrice).toLocaleString()}</td>
-        <td style="color:${change >= 0 ? 'lime' : 'red'}">${change.toFixed(2)}%</td>
-      </tr>
-    `;
-  });
-}
-
 
     tableBody.innerHTML = '';
     coins.forEach((coin, index) => {
@@ -192,5 +201,6 @@ function loadChart(symbol) {
   });
 }
 loadChart("BINANCE:BTCUSDT");
+
 
 
