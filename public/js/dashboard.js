@@ -113,21 +113,14 @@ async function fetchBinanceSymbols() {
 }
 
 async function loadTopCoins() {
-  const coins = await fetchBinanceSymbols();
-  const table = document.getElementById("topCoinsTable");
-  table.innerHTML = "";
+  await fetchBinanceSymbols();
+  const tableBody = document.querySelector("#topCoinsTable tbody");
+  if (!tableBody) return;
+  tableBody.innerHTML = `<tr><td colspan="8">Loading...</td></tr>`;
 
-  coins.slice(0, 25).forEach(coin => {
-    const change = parseFloat(coin.priceChangePercent);
-    table.innerHTML += `
-      <tr>
-        <td>${coin.symbol}</td>
-        <td>$${parseFloat(coin.lastPrice).toLocaleString()}</td>
-        <td style="color:${change >= 0 ? 'lime' : 'red'}">${change.toFixed(2)}%</td>
-      </tr>
-    `;
-  });
-}
+  try {
+    const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=7d");
+    const coins = await res.json();
 
 
     tableBody.innerHTML = '';
