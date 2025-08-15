@@ -1,11 +1,30 @@
-async function fetchBinanceSymbols() {
+export async function handler() {
   try {
-    const res = await fetch("/.netlify/functions/binanceSymbols");
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const res = await fetch("https://api.binance.com/api/v3/exchangeInfo", {
+      headers: {
+        "X-MBX-APIKEY": process.env.BINANCE_API_KEY // pastikan env ini sudah di-set di Netlify
+      }
+    });
+
+    if (!res.ok) {
+      return {
+        statusCode: res.status,
+        body: JSON.stringify({ error: `Binance API error: ${res.status}` })
+      };
+    }
+
     const data = await res.json();
-    binanceSymbols = data.symbols?.map(s => s.symbol) || [];
+    const symbols = data.symbols?.map(s => s.symbol) || [];
+
+    return {
+      statusCode: 200,
+      headers: { "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify({ symbols })
+    };
   } catch (err) {
-    console.error("Gagal ambil data Binance:", err);
-    binanceSymbols = [];
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message })
+    };
   }
 }
