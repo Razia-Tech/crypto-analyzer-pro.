@@ -97,11 +97,14 @@ if (globalSearchInput) {
 // ==========================
 // TOP 25 COINS TABLE
 // ==========================
+let binanceSymbols = [];
+
+// Ambil semua simbol Binance via proxy (bypass blokir)
 async function fetchBinanceSymbols() {
   try {
-    const res = await fetch('/.netlify/functions/binance');
+    const res = await fetch("https://api.allorigins.win/raw?url=https://api.binance.com/api/v3/exchangeInfo");
     const data = await res.json();
-    console.log(data); // data.symbols berisi semua pair trading
+    binanceSymbols = data.symbols.map(s => s.symbol);
   } catch (err) {
     console.error("Gagal ambil data Binance:", err);
   }
