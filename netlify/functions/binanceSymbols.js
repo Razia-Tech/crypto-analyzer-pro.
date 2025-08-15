@@ -2,9 +2,11 @@ import fetch from 'node-fetch';
 
 export async function handler() {
   try {
-    const url = "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://api.binance.com/api/v3/exchangeInfo");
-    const res = await fetch(url);
+    // Gunakan proxy gratis untuk bypass blokir Binance (HTTP 451)
+    const proxyUrl = "https://api.allorigins.win/raw?url=" +
+      encodeURIComponent("https://api.binance.com/api/v3/exchangeInfo");
 
+    const res = await fetch(proxyUrl);
     if (!res.ok) {
       return {
         statusCode: res.status,
@@ -27,6 +29,7 @@ export async function handler() {
     };
   }
 }
+
 
 
 
