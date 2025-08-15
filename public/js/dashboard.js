@@ -19,7 +19,7 @@ function setupLogout() {
   const sidebarLogout = document.getElementById('sidebarLogout');
   const logoutAction = () => {
     console.log("User logged out");
-    window.location.href = 'auth/login.html';
+    window.location.href = '/index.html';
   };
   if (headerLogout) headerLogout.addEventListener('click', logoutAction);
   if (sidebarLogout) sidebarLogout.addEventListener('click', logoutAction);
