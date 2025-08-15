@@ -1,121 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Crypto Analyzer Pro</title>
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Analyzer Pro - Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <!-- TradingView -->
+  <script src="https://s3.tradingview.com/tv.js"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
 </head>
 <body>
-  <!-- HEADER -->
+  <!-- Header -->
   <header class="header">
-    <div class="logo">
-      <img src="../assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="logo-img">
-      <span>CryptoAnalyzerPro</span>
-    </div>
-    <div class="welcome" id="welcomeMessage">Welcome to Crypto Analyzer Pro</div>
-    <div class="header-actions">
-      <input type="text" placeholder="Search..." class="search-box">
-      <button id="logout-btn" class="btn-logout">Logout</button>
-    </div>
+    <div class="logo">Crypto Analyzer Pro</div>
+    <input type="text" id="coinSearch" placeholder="Search coin...">
+    <div id="welcomeMessage"></div>
+    <button id="logout-btn">Logout</button>
   </header>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <ul>
-      <li><a href="#" class="active"><img src="../assets/icons/home.svg" class="icon"> Home</a></li>
-      <li><a href="#"><img src="../assets/icons/features.svg" class="icon"> Features</a></li>
-      <li><a href="#"><img src="../assets/icons/chart.svg" class="icon"> Market Fundamentals</a></li>
-      <li><a href="#"><img src="../assets/icons/settings.svg" class="icon"> Settings</a></li>
-      <li><a id="sidebarLogout" href="#"><img src="../assets/icons/logout.svg" class="icon"> Logout</a></li>
-    </ul>
-  </aside>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <ul>
+        <li><a href="#"><img src="icons/home.svg" class="icon"> Home</a></li>
+        <li><a href="#"><img src="icons/features.svg" class="icon"> Features</a></li>
+        <li><a href="#"><img src="icons/chart.svg" class="icon"> Market Fundamentals</a></li>
+        <li><a href="#"><img src="icons/settings.svg" class="icon"> Settings</a></li>
+        <li id="sidebarLogout"><a href="#"><img src="icons/logout.svg" class="icon"> Logout</a></li>
+      </ul>
+    </aside>
 
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
+    <!-- Main content -->
+    <main class="main-content">
+      <!-- Market Fundamentals -->
+      <section>
+        <h2>Market Fundamentals</h2>
+        <div id="market-cards" class="card-container"></div>
+      </section>
 
-    <!-- MARKET FUNDAMENTALS -->
-    <section id="marketFundamentals" class="card-section">
-      <h2>Market Fundamentals</h2>
-      <div id="market-cards" class="card-container">
-        <!-- Dummy data akan diisi dari dashboard.js -->
-      </div>
-    </section>
+      <!-- Top Coins Table -->
+      <section>
+        <h2>Top 25 Coins</h2>
+        <table id="topCoinsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>24h %</th>
+              <th>Market Cap</th>
+              <th>Short Term</th>
+              <th>Long Term</th>
+              <th>Chart</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
 
-    <!-- TOP 25 COINS -->
-    <section id="topCoins" class="card-section">
-      <h2>Top 25 Coins</h2>
-      <table id="topCoinsTable">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Coin</th>
-            <th>Price</th>
-            <th>24h Change</th>
-            <th>Market Cap</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Dummy data akan diisi dari dashboard.js -->
-        </tbody>
-      </table>
-    </section>
+      <!-- Chart Section -->
+      <section>
+        <h2>Live Chart</h2>
+        <select id="pairSelect">
+          <option value="BINANCE:BTCUSDT">BTC/USDT</option>
+          <option value="BINANCE:ETHUSDT">ETH/USDT</option>
+        </select>
+        <div id="tv_chart_container" style="height:500px;"></div>
+      </section>
 
-    <!-- LIVE CHART -->
-    <section class="live-chart">
-      <!-- Tambahkan di dashboard.html di tempat chart -->
-<div id="tv_chart_container" style="height: 500px;"></div>
-      
-<!-- TradingView Widget -->
-<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-<script>
-  new TradingView.widget({
-    "container_id": "tv_chart_container",
-    "symbol": "BINANCE:BTCUSDT",
-    "interval": "60",
-    "timezone": "Etc/UTC",
-    "theme": "dark",
-    "style": "1",
-    "locale": "en",
-    "toolbar_bg": "#000000",
-    "enable_publishing": false,
-    "hide_top_toolbar": false,
-    "hide_legend": false,
-    "save_image": false,
-    "studies": ["RSI@tv-basicstudies", "MACD@tv-basicstudies"]
-  });
-<!-- Live Candlestick Chart -->
-<section class="chart-section">
-  <h3>📊 Live Candlestick Chart</h3>
-  <div class="chart-controls">
-    <select id="pairSelect">
-      <option value="BINANCE:BTCUSDT">BTC/USDT</option>
-      <option value="BINANCE:ETHUSDT">ETH/USDT</option>
-      <option value="BINANCE:BNBUSDT">BNB/USDT</option>
-      <option value="BINANCE:ADAUSDT">ADA/USDT</option>
-      <option value="BINANCE:XRPUSDT">XRP/USDT</option>
-    </select>
+      <!-- Candlestick Chart -->
+      <section>
+        <h2>Candlestick Chart (Binance)</h2>
+        <select id="pairSelector">
+          <option value="BTCUSDT">BTC/USDT</option>
+          <option value="ETHUSDT">ETH/USDT</option>
+        </select>
+        <canvas id="candlestickChart" width="100%" height="400"></canvas>
+      </section>
+    </main>
   </div>
-  <div id="tv_chart_container" style="height: 500px; border: 2px solid gold; border-radius: 10px;"></div>
-</section>
 
-<!-- TradingView Widget -->
-<script src="https://s3.tradingview.com/tv.js"></script>
-
-
-  </main>
-
-  <!-- FOOTER -->
+  <!-- Footer -->
   <footer class="footer">
-    <p>&copy; 2025 Crypto Analyzer Pro. All rights reserved.</p>
+    <p>© 2025 Crypto Analyzer Pro | Support</p>
   </footer>
 
-  <script src="js/dashboard.js"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
 
