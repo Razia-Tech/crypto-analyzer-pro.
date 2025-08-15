@@ -1,7 +1,6 @@
-// netlify/functions/binanceSymbols.js
 export async function handler() {
   try {
-    // Gunakan proxy agar terhindar dari blokir
+    // Pakai proxy agar IP request bukan IP Netlify
     const proxyUrl = "https://corsproxy.io/?";
     const targetUrl = "https://api.binance.com/api/v3/exchangeInfo";
 
