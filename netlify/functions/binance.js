@@ -6,7 +6,7 @@ export async function handler(event) {
     const interval = event.queryStringParameters.interval || "1h";
     const limit = event.queryStringParameters.limit || "100";
 
-    const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
+    const url = `https://cryptoanalyzerpro.netlify.app/.netlify/functions/binance?symbol=BTCUSDT&interval=1h&limit=100}`;
     const res = await fetch(url);
 
     if (!res.ok) {
