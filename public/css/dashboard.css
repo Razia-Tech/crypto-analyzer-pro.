@@ -72,15 +72,6 @@ button {
   gap: 15px;
 }
 
-.header-search {
-  border: 1px solid #FFD700;
-  background: transparent;
-  color: #FFD700;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
-
 .header-right button,
 .header-right .icon-btn {
   background: transparent;
@@ -94,10 +85,18 @@ button {
   filter: drop-shadow(0 0 4px gold);
 }
 
-.header-logo {
+.header-search {
+  border: 1px solid #FFD700;
+  background: transparent;
+  color: #FFD700;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+/*.header-logo {
   height: 30px;
   filter: drop-shadow(0 0 4px gold);
-}
+}*/
 
 /* ==========================
    LAYOUT
