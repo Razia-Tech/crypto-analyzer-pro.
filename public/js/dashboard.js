@@ -27,26 +27,58 @@ function setupLogout() {
 setupLogout();
 
 // ==========================
-// MARKET FUNDAMENTALS (Dummy)
+// MARKET FUNDAMENTALS (REAL)
 // ==========================
-function loadMarketFundamentals() {
-  const container = document.getElementById('market-cards');
-  if (!container) return;
-  const dummyData = [
-    { title: 'BTC Dominance', value: '48.5%' },
-    { title: '24h Volume', value: '$65.2B' },
-    { title: 'Total Market Cap', value: '$1.9T' },
-    { title: 'Fear & Greed Index', value: 'Greed (74)' }
-  ];
-  container.innerHTML = '';
-  dummyData.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `<h3>${item.title}</h3><p>${item.value}</p>`;
-    container.appendChild(card);
-  });
+async function loadMarketFundamentals() {
+  try {
+    const res = await fetch("https://api.coingecko.com/api/v3/global");
+    const data = await res.json();
+    const stats = data.data;
+
+    document.getElementById("btcDominance").innerText = stats.market_cap_percentage.btc.toFixed(1) + "%";
+    document.getElementById("totalVolume").innerText = "$" + (stats.total_volume.usd / 1e9).toFixed(1) + "B";
+    document.getElementById("totalMarketCap").innerText = "$" + (stats.total_market_cap.usd / 1e12).toFixed(1) + "T";
+  } catch (err) {
+    console.error("Error load fundamentals:", err);
+  }
+
+  // Fear & Greed
+  try {
+    const res = await fetch("https://api.alternative.me/fng/");
+    const data = await res.json();
+    const index = data.data[0];
+    document.getElementById("fearGreed").innerText = index.value_classification + " (" + index.value + ")";
+  } catch (err) {
+    console.error("Error load F&G:", err);
+  }
 }
+
+// ==========================
+// TRENDING COIN (REAL)
+// ==========================
+async function loadTrendingCoins() {
+  try {
+    const res = await fetch("https://api.coingecko.com/api/v3/search/trending");
+    const data = await res.json();
+    const list = document.getElementById("trendingList");
+    list.innerHTML = "";
+
+    data.coins.slice(0, 7).forEach((coin) => {
+      const li = document.createElement("li");
+      li.textContent = coin.item.name + " (" + coin.item.symbol.toUpperCase() + ")";
+      li.addEventListener("click", () => {
+        loadChart("BINANCE:" + coin.item.symbol.toUpperCase() + "USDT");
+      });
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error("Error load trending:", err);
+  }
+}
+
+// Call on page load
 loadMarketFundamentals();
+loadTrendingCoins();
 
 // ==========================
 // REKOMENDASI RULE
