@@ -36,9 +36,7 @@ button {
   border-bottom: 2px solid gold;
 }
 
-.dashboard-header .logo {
-  height: 40px;
-}
+
 
 .header-center h2 {
   color: gold;
@@ -113,6 +111,10 @@ button {
 /* ==========================
    SIDEBAR
 ========================== */
+.dashboard-sidebar .logo {
+  height: 40px;
+}
+
 .sidebar {
   width: 220px;
   background-color: #000;
@@ -132,6 +134,7 @@ button {
   color: #FFD700;
   transition: background 0.3s;
 }
+
 
 .sidebar a:hover,
 .sidebar a.active {
