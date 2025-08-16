@@ -27,16 +27,35 @@ button {
 /* ==========================
    HEADER
 ========================== */
-.header {
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #FFD700;
-  padding: 10px 20px;
+.dashboard-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid #FFD700;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 10px 20px;
+  border-bottom: 2px solid gold;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-left input {
+  padding: 6px 10px;
+  border: 1px solid gold;
+  border-radius: 6px;
+  background: transparent;
+  color: gold;
+  font-size: 14px;
+}
+
+.header-left input:focus {
+  outline: none;
+  border-color: #ffcc00;
+  box-shadow: 0 0 5px gold;
+}
 
 .dashboard-header .logo {
   height: 40px;
