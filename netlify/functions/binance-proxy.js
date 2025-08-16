@@ -1,12 +1,10 @@
-import fetch from "node-fetch";
-
 export async function handler(event, context) {
   try {
     const symbol = event.queryStringParameters.symbol || "BTCUSDT";
     const interval = event.queryStringParameters.interval || "1h";
     const limit = event.queryStringParameters.limit || "100";
 
-    // Target Binance API (candlesticks)
+    // URL Binance API
     const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
 
     const res = await fetch(url, {
@@ -28,7 +26,7 @@ export async function handler(event, context) {
     return {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin": "*",  // penting untuk frontend
+        "Access-Control-Allow-Origin": "*", // penting untuk frontend
         "Access-Control-Allow-Methods": "GET, OPTIONS"
       },
       body: JSON.stringify(data)
@@ -40,3 +38,4 @@ export async function handler(event, context) {
     };
   }
 }
+
