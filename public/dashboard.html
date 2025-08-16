@@ -7,37 +7,40 @@
   <link rel="stylesheet" href="css/dashboard.css">
   <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
   <script src="https://s3.tradingview.com/tv.js"></script>
-  
 </head>
 <body>
 
   <!-- HEADER -->
-  <!-- Logo -->
-  <div class="logo">
-    <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="logo-img">
-<!-- Search -->
-  <div class="header-left">
-    <input type="text" id="globalSearch" placeholder="Search coin...">
-    <div id="searchResults" class="search-results"></div>
-  </div>
-  </div>
-  <!-- Welcome text -->
-  <div class="welcome" id="welcomeMessage">
-    Welcome to Crypto Analyzer Pro (MEMBER FREE)
-  </div>
-    <!-- Header icons -->
-  <div class="header-right">
-    <button class="icon-btn" id="notif-btn">
-      <img src="assets/icons/bell.svg" alt="Notifications" class="icon">
-    </button>
-    <div class="profile-menu">
-      <img src="assets/icons/profile.svg" alt="Profile" class="icon">
+  <header class="header">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="assets/logos/CryptoAnalyzerPro-logo.png" alt="Logo" class="logo-img">
     </div>
-    <button id="logout-btn" class="icon-btn">
-      <img src="assets/icons/logout.svg" alt="Logout" class="icon">
-    </button>
-  </div>
-</header>
+
+    <!-- Search -->
+    <div class="header-left">
+      <input type="text" id="globalSearch" placeholder="Search coin...">
+      <div id="searchResults" class="search-results"></div>
+    </div>
+
+    <!-- Welcome text -->
+    <div class="welcome" id="welcomeMessage">
+      Welcome to Crypto Analyzer Pro (MEMBER FREE)
+    </div>
+
+    <!-- Header icons -->
+    <div class="header-right">
+      <button class="icon-btn" id="notif-btn">
+        <img src="assets/icons/bell.svg" alt="Notifications" class="icon">
+      </button>
+      <div class="profile-menu">
+        <img src="assets/icons/profile.svg" alt="Profile" class="icon">
+      </div>
+      <button id="logout-btn" class="icon-btn">
+        <img src="assets/icons/logout.svg" alt="Logout" class="icon">
+      </button>
+    </div>
+  </header>
 
   <!-- WRAPPER -->
   <div class="dashboard-wrapper">
@@ -69,8 +72,7 @@
         </select>
        
         <!-- TradingView Chart -->
-       <div id="tv_chart_container" style="height: 500px; margin-bottom: 20px;"></div>
-
+        <div id="tv_chart_container" style="height: 500px; margin-bottom: 20px;"></div>
       </section>
 
       <!-- TOP 25 COINS TABLE -->
