@@ -27,46 +27,41 @@ button {
 /* ==========================
    HEADER
 ========================== */
+/* HEADER */
 .header {
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #FFD700;
-  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid #FFD700;
+  background: #000;
+  padding: 10px 20px;
+  border-bottom: 2px solid gold;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header .logo img {
+  height: 40px;
 }
 
 .header-left {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 15px;
+  margin-left: 20px;
 }
 
-.header-left input {
-  padding: 6px 10px;
+#globalSearch {
+  padding: 5px 10px;
   border: 1px solid gold;
-  border-radius: 6px;
-  background: transparent;
+  border-radius: 5px;
+  background: #111;
   color: gold;
-  font-size: 14px;
 }
 
-.header-left input:focus {
-  outline: none;
-  border-color: #ffcc00;
-  box-shadow: 0 0 5px gold;
-}
-
-.header-logo {
-  height: 30px;
-  filter: drop-shadow(0 0 4px gold);
-}
-
-.header-center {
-  flex: 1;
+.welcome {
+  flex: 2;
   text-align: center;
-  font-size: 18px;
   font-weight: bold;
   color: gold;
 }
@@ -77,27 +72,17 @@ button {
   gap: 15px;
 }
 
-.header-right button,
-.header-right .icon-btn {
-  background: transparent;
-  border: none;
+.icon-btn img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
-.header-right .icon {
-  width: 22px;
-  height: 22px;
-  fill: gold;
-  filter: drop-shadow(0 0 4px gold);
+.profile-menu img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
 }
-
-.header-search {
-  border: 1px solid #FFD700;
-  background: transparent;
-  color: #FFD700;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
 /* ==========================
    LAYOUT
 ========================== */
