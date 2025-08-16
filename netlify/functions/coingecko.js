@@ -1,30 +1,25 @@
-import fetch from "node-fetch";
-
-export async function handler(event) {
+export async function handler(event, context) {
   try {
-    const { path } = event.queryStringParameters;
-    if (!path) {
-      return { statusCode: 400, body: "Missing path param" };
+    const { url } = event.queryStringParameters;
+    if (!url) {
+      return { statusCode: 400, body: JSON.stringify({ error: "Missing url param" }) };
     }
 
-    const url = `https://api.coingecko.com/api/v3/${path}`;
-    const res = await fetch(url);
-    const text = await res.text();
+    const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+    if (!res.ok) {
+      return {
+        statusCode: res.status,
+        body: JSON.stringify({ error: `CoinGecko API error: ${res.status}` }),
+      };
+    }
 
+    const data = await res.text();
     return {
-      statusCode: res.status,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, OPTIONS"
-      },
-      body: text
+      statusCode: 200,
+      headers: { "Access-Control-Allow-Origin": "*" },
+      body: data,
     };
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
-      headers: { "Access-Control-Allow-Origin": "*" }
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 }
