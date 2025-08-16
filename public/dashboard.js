@@ -1,183 +1,140 @@
-// v3 with search-driven symbol updates
-const state = { tvSymbol:'BTCUSDT', binanceSymbol:'BTCUSDT', ws:null };
+// dashboard.js
 
-function showSection(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
+// Utility
+function showSection(id) {
+  document.querySelectorAll(".section").forEach(s => s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+
+  // Load data sesuai section
+  if (id === "fundamentals") loadFundamentals();
+  if (id === "trending") loadTrending();
+  if (id === "top25") loadTop25();
+  if (id === "tvchart") loadTradingView();
+  if (id === "binanceChart") loadBinanceCandles();
 }
 
-function refreshData(){ main(); }
+// ========== 1. Market Fundamentals (Bitcoin example) ==========
+async function loadFundamentals() {
+  const res = await fetch("https://api.coingecko.com/api/v3/coins/bitcoin");
+  const data = await res.json();
 
-// ===== Helpers
-function fmtMoneyUSD(n){ try{return '$'+Number(n).toLocaleString('en-US',{maximumFractionDigits:2});}catch{return '$'+n;} }
-function fmtPct(n){ if(n==null) return '-'; const x=Number(n); return (x>=0?'+':'')+x.toFixed(2)+'%'; }
-
-// ===== Fundamentals
-async function loadFundamentals(){
-  const el=document.getElementById('fundamentalsData'); el.innerHTML='Loading...';
-  try{
-    const r=await fetch('https://api.coingecko.com/api/v3/global'); const d=await r.json(); const g=d.data;
-    el.innerHTML = `
-      <div>Total Market Cap: ${fmtMoneyUSD(g.total_market_cap.usd)}</div>
-      <div>24h Volume: ${fmtMoneyUSD(g.total_volume.usd)}</div>
-      <div>BTC Dominance: ${g.market_cap_percentage.btc.toFixed(2)}%</div>
-      <div>ETH Dominance: ${g.market_cap_percentage.eth.toFixed(2)}%</div>
-      <div>Active Cryptos: ${g.active_cryptocurrencies}</div>
-      <div>Markets: ${g.markets}</div>`;
-  }catch(e){ el.innerHTML='Failed to load fundamentals'; console.error(e); }
+  document.getElementById("fundamentalsData").innerHTML = `
+    <p><b>${data.name} (${data.symbol.toUpperCase()})</b></p>
+    <p>Price: $${data.market_data.current_price.usd.toLocaleString()}</p>
+    <p>Market Cap: $${data.market_data.market_cap.usd.toLocaleString()}</p>
+    <p>Volume 24h: $${data.market_data.total_volume.usd.toLocaleString()}</p>
+    <p>Community Score: ${data.community_score}</p>
+    <p>Developer Score: ${data.developer_score}</p>
+  `;
 }
 
-// ===== Trending
-async function loadTrending(){
-  const wrap=document.getElementById('trendingList'); wrap.innerHTML='Loading...';
-  try{
-    const r=await fetch('https://api.coingecko.com/api/v3/search/trending'); const d=await r.json();
-    wrap.innerHTML='';
-    d.coins.slice(0,12).forEach((c,i)=>{
-      const coin=c.item;
-      const div=document.createElement('div'); div.className='trending-coin';
-      div.innerHTML=`<span>${i+1}. <img src="${coin.thumb}" width="18" height="18" style="vertical-align:middle;border-radius:50%;"> ${coin.name} (${coin.symbol.toUpperCase()})</span>
-                     <span class="badge">Rank ${coin.market_cap_rank??'-'}</span>`;
-      div.addEventListener('click',()=> setActiveSymbol(coin.symbol.toUpperCase()+'USDT', coin.id));
-      wrap.appendChild(div);
-    });
-  }catch(e){ wrap.innerHTML='Failed to load trending'; console.error(e); }
-}
+// ========== 2. Trending Coins ==========
+async function loadTrending() {
+  const res = await fetch("https://api.coingecko.com/api/v3/search/trending");
+  const data = await res.json();
 
-// ===== Top 25
-async function loadTop25(){
-  const tbody=document.getElementById('top25Table'); tbody.innerHTML='<tr><td colspan="6">Loading...</td></tr>';
-  try{
-    const r=await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=24h');
-    const data=await r.json(); tbody.innerHTML='';
-    data.forEach((c,i)=>{
-      const tr=document.createElement('tr'); const pc=c.price_change_percentage_24h;
-      tr.innerHTML=`<td>${c.market_cap_rank??(i+1)}</td>
-        <td><img src="${c.image}" width="18" height="18" style="vertical-align:middle;border-radius:50%;"> ${c.name} (${c.symbol.toUpperCase()})</td>
-        <td>${fmtMoneyUSD(c.current_price)}</td>
-        <td class="${pc>=0?'up':'down'}">${fmtPct(pc)}</td>
-        <td>${fmtMoneyUSD(c.market_cap)}</td>
-        <td>${fmtMoneyUSD(c.total_volume)}</td>`;
-      tr.addEventListener('click',()=> setActiveSymbol(c.symbol.toUpperCase()+'USDT', c.id));
-      tbody.appendChild(tr);
-    });
-  }catch(e){ tbody.innerHTML='<tr><td colspan="6">Failed to load</td></tr>'; console.error(e); }
-}
-
-// ===== TradingView
-function mountTradingView(symbol='BTCUSDT'){
-  const container=document.getElementById('tradingview');
-  container.innerHTML='';
-  new TradingView.widget({
-    container_id:'tradingview',
-    autosize:true,
-    symbol:'BINANCE:'+symbol,
-    interval:'60',
-    theme:'dark',
-    timezone:'Etc/UTC',
-    style:'1',
-    locale:'en',
-    allow_symbol_change:true
+  const list = document.getElementById("trendingList");
+  list.innerHTML = "";
+  data.coins.forEach((c, i) => {
+    list.innerHTML += `
+      <div class="trending-coin">
+        <span>${i + 1}. <img src="${c.item.thumb}" width="16"/> ${c.item.name} (${c.item.symbol})</span>
+        <span class="badge">Rank: ${c.item.market_cap_rank}</span>
+      </div>`;
   });
 }
 
-// ===== Binance Candlestick (Lightweight-Charts + WS)
-let binanceChart, binanceSeries;
-function mountBinance(symbol='BTCUSDT'){
-  const container=document.getElementById('binanceCandleContainer');
-  container.innerHTML='';
-  // Close old WS
-  if(state.ws){ try{ state.ws.close(); }catch{} state.ws=null; }
-  // Create chart
-  binanceChart = LightweightCharts.createChart(container, {
-    width: container.clientWidth, height: 420,
-    layout:{ background:{ color:'#0f141b' }, textColor:'#e5e7eb' },
-    grid:{ vertLines:{ color:'#1f2937' }, horzLines:{ color:'#1f2937' } },
-    rightPriceScale:{ borderVisible:false }, timeScale:{ borderVisible:false }
+// ========== 3. Top 25 Coins ==========
+async function loadTop25() {
+  const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false");
+  const data = await res.json();
+
+  const tbody = document.getElementById("top25Table");
+  tbody.innerHTML = "";
+  data.forEach((coin, i) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${i + 1}</td>
+        <td><img src="${coin.image}" width="16"/> ${coin.name} (${coin.symbol.toUpperCase()})</td>
+        <td>$${coin.current_price.toLocaleString()}</td>
+        <td class="${coin.price_change_percentage_24h >= 0 ? 'up':'down'}">
+          ${coin.price_change_percentage_24h.toFixed(2)}%
+        </td>
+        <td>$${coin.market_cap.toLocaleString()}</td>
+        <td>$${coin.total_volume.toLocaleString()}</td>
+      </tr>`;
   });
-  binanceSeries = binanceChart.addCandlestickSeries();
-  // Prefetch some history
-  fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=1m&limit=400`)
-    .then(r=>r.json())
-    .then(kl=>{
-      const candles = kl.map(k=>({ time: Math.floor(k[0]/1000), open:+k[1], high:+k[2], low:+k[3], close:+k[4] }));
-      binanceSeries.setData(candles);
-      binanceChart.timeScale().fitContent();
-    }).catch(console.error);
-  // Live WS
-  const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@kline_1m`);
-  state.ws = ws;
-  ws.onmessage = (ev)=>{
-    const msg = JSON.parse(ev.data);
-    if(!msg.k) return;
-    const k = msg.k;
-    binanceSeries.update({ time: Math.floor(k.t/1000), open:+k.o, high:+k.h, low:+k.l, close:+k.c });
-  };
 }
 
-// ===== Search Chart (30D, CoinGecko ID)
-let searchChart, searchLine;
-function ensureSearchChart(){
-  const container=document.getElementById('searchChartContainer');
-  container.innerHTML='';
-  searchChart = LightweightCharts.createChart(container, {
-    width: container.clientWidth, height: 420,
-    layout:{ background:{ color:'#0f141b' }, textColor:'#e5e7eb' },
-    grid:{ vertLines:{ color:'#1f2937' }, horzLines:{ color:'#1f2937' } },
+// ========== 4. TradingView Chart ==========
+function loadTradingView() {
+  if (window.tvWidget) return; // biar gak double
+  window.tvWidget = new TradingView.widget({
+    container_id: "tradingview",
+    autosize: true,
+    symbol: "BINANCE:BTCUSDT",
+    interval: "60",
+    theme: "dark",
+    style: "1",
+    locale: "en",
+    hide_top_toolbar: false,
+    hide_side_toolbar: false
   });
-  searchLine = searchChart.addLineSeries();
 }
-async function loadSearchChart(coinId='bitcoin'){
-  if(!searchChart) ensureSearchChart();
-  try{
-    const r=await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=30&interval=daily`);
-    const d=await r.json();
-    const series=d.prices.map(([ts,price])=>({ time:Math.floor(ts/1000), value:+price }));
-    searchLine.setData(series);
-    searchChart.timeScale().fitContent();
-  }catch(e){
-    const container=document.getElementById('searchChartContainer');
-    container.innerHTML='Failed to load search chart'; console.error(e);
+
+// ========== 5. Binance Candlesticks ==========
+async function loadBinanceCandles(symbol = "BTCUSDT", interval = "1h", limit = 100) {
+  const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`);
+  const data = await res.json();
+
+  const container = document.getElementById("binanceCandleContainer");
+  container.innerHTML = ""; // reset
+
+  const chart = LightweightCharts.createChart(container, { width: container.clientWidth, height: 400 });
+  const candleSeries = chart.addCandlestickSeries();
+  candleSeries.setData(data.map(c => ({
+    time: c[0] / 1000,
+    open: parseFloat(c[1]),
+    high: parseFloat(c[2]),
+    low: parseFloat(c[3]),
+    close: parseFloat(c[4])
+  })));
+}
+
+// ========== 6. Search Chart (30D) ==========
+async function loadSearchChart(coin = "bitcoin") {
+  const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=30`);
+  if (!res.ok) {
+    alert("Coin tidak ditemukan!");
+    return;
   }
+  const data = await res.json();
+
+  const container = document.getElementById("searchChartContainer");
+  container.innerHTML = "";
+
+  const chart = LightweightCharts.createChart(container, { width: container.clientWidth, height: 400 });
+  const lineSeries = chart.addLineSeries();
+  lineSeries.setData(data.prices.map(p => ({ time: Math.floor(p[0] / 1000), value: p[1] })));
 }
 
-// ===== Search input -> update all charts
-function wireSearch(){
-  const input=document.getElementById('searchInput');
-  input.addEventListener('keydown', async (e)=>{
-    if(e.key!=='Enter') return;
-    const q=input.value.trim().toLowerCase(); if(!q) return;
-    try{
-      const r=await fetch(`https://api.coingecko.com/api/v3/search?query=${encodeURIComponent(q)}`);
-      const s=await r.json();
-      const hit=s.coins?.[0];
-      if(!hit){ alert('Coin not found'); return; }
-      // Update all
-      setActiveSymbol(hit.symbol.toUpperCase()+'USDT', hit.id);
-      showSection('tvchart');
-    }catch(err){
-      console.error(err); alert('Search failed');
+// ========== Search Input ==========
+document.getElementById("searchInput").addEventListener("keypress", e => {
+  if (e.key === "Enter") {
+    const val = e.target.value.trim().toLowerCase();
+    if (val) {
+      showSection("searchChart");
+      loadSearchChart(val);
     }
-  });
-}
+  }
+});
 
-// ===== Single entry point to switch symbol
-function setActiveSymbol(symbolUSDT, coingeckoId){
-  state.tvSymbol = symbolUSDT;
-  state.binanceSymbol = symbolUSDT;
-  mountTradingView(symbolUSDT);
-  mountBinance(symbolUSDT);
-  if(coingeckoId) loadSearchChart(coingeckoId);
-}
+// ========== Refresh Button ==========
+document.getElementById("refreshBtn").addEventListener("click", () => {
+  const active = document.querySelector(".section:not(.hidden)");
+  if (active) showSection(active.id);
+});
 
-// ===== Main
-async function main(){
-  document.getElementById('refreshBtn').addEventListener('click', refreshData);
-  wireSearch();
-  await Promise.all([loadFundamentals(), loadTrending(), loadTop25()]);
-  // initial
-  mountTradingView(state.tvSymbol);
-  mountBinance(state.binanceSymbol);
-  loadSearchChart('bitcoin');
-}
-main();
+// Default load
+showSection("fundamentals");
+
