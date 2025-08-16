@@ -2,115 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Crypto Analyzer Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Style -->
-  <link rel="stylesheet" href="dashboard.css">
-
-  <!-- Lightweight Charts -->
-  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+  <title>Crypto Analyzer Pro</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
-  <!-- Sidebar -->
   <div class="sidebar">
     <h2>Crypto Analyzer</h2>
     <ul>
-      <li onclick="showSection('fundamentalsSection')">Market Fundamentals</li>
-      <li onclick="showSection('trendingSection')">Trending</li>
-      <li onclick="showSection('top25Section')">Top 25 Coins</li>
-      <li onclick="showSection('binanceSection')">Binance Chart</li>
-      <li onclick="showSection('coingeckoSection')">CoinGecko Chart</li>
-      <li onclick="showSection('comparisonSection')">Charts Comparison</li>
+      <li><a href="#fundamentals">Market Fundamentals</a></li>
+      <li><a href="#trending">Trending</a></li>
+      <li><a href="#top25">Top 25 Coins</a></li>
+      <li><a href="#binance">Binance Chart</a></li>
+      <li><a href="#coingecko">CoinGecko Chart</a></li>
+      <li><a href="#comparison">Charts Comparison</a></li>
     </ul>
   </div>
 
-  <!-- Main -->
   <div class="main">
-    <!-- Topbar -->
-    <div class="topbar">
-      <input id="searchInput" placeholder="Search coin (e.g. bitcoin, ethereum) and press Enter"/>
-      <button id="refreshBtn">Refresh</button>
+    <div class="header">
+      <input type="text" id="search" placeholder="Search coin (e.g. bitcoin, ethereum)">
+      <button id="refresh">Refresh</button>
     </div>
 
-    <!-- Fundamentals -->
-    <div id="fundamentalsSection" class="section">
-      <h3>Market Fundamentals</h3>
-      <pre id="fundamentals"></pre>
-    </div>
+    <section id="fundamentals">
+      <h2>Market Fundamentals</h2>
+      <div id="fundamentals-data"></div>
+    </section>
 
-    <!-- Trending -->
-    <div id="trendingSection" class="section hidden">
-      <h3>Trending Coins</h3>
-      <pre id="trending"></pre>
-    </div>
+    <section id="trending">
+      <h2>Trending Coins</h2>
+      <table id="trending-table">
+        <thead>
+          <tr>
+            <th>Logo</th><th>Name</th><th>Symbol</th><th>Rank</th><th>Price (BTC)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
 
-    <!-- Top 25 -->
-    <div id="top25Section" class="section hidden">
-      <h3>Top 25 Coins (Market Cap)</h3>
-      <pre id="top25"></pre>
-    </div>
+    <section id="top25">
+      <h2>Top 25 Coins (Market Cap)</h2>
+      <table id="top25-table">
+        <thead>
+          <tr>
+            <th>Logo</th><th>Name</th><th>Symbol</th><th>Price (USD)</th><th>24h %</th><th>Market Cap</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
 
-    <!-- Binance Candlestick Chart -->
-    <div id="binanceSection" class="section hidden">
-      <h3>Binance Candlestick Chart</h3>
-      <div id="binanceChart" style="height:420px"></div>
-    </div>
+    <section id="binance">
+      <h2>Binance Candlestick Chart</h2>
+      <div id="binance-chart" style="height:400px;"></div>
+    </section>
 
-    <!-- CoinGecko Candlestick Chart -->
-    <div id="coingeckoSection" class="section hidden">
-      <h3>CoinGecko Candlestick Chart</h3>
-      <div id="coingeckoChart" style="height:420px"></div>
-    </div>
+    <section id="coingecko">
+      <h2>CoinGecko Candlestick Chart</h2>
+      <div id="coingecko-chart" style="height:400px;"></div>
+    </section>
 
-    <!-- Charts Comparison -->
-    <div id="comparisonSection" class="section hidden">
-      <h3>Charts Comparison (Binance vs CoinGecko)</h3>
-      <div style="margin-bottom:12px">
-        <label><b>Select Coin:</b></label>
-        <select id="coinSelector">
-          <option value="BTCUSDT|bitcoin">Bitcoin (BTC)</option>
-          <option value="ETHUSDT|ethereum">Ethereum (ETH)</option>
-          <option value="BNBUSDT|binancecoin">Binance Coin (BNB)</option>
-          <option value="SOLUSDT|solana">Solana (SOL)</option>
-          <option value="XRPUSDT|ripple">XRP</option>
-          <option value="ADAUSDT|cardano">Cardano (ADA)</option>
-          <option value="DOGEUSDT|dogecoin">Dogecoin (DOGE)</option>
+    <section id="comparison">
+      <h2>Charts Comparison (Binance vs CoinGecko)</h2>
+      <label>Select Coin: 
+        <select id="compare-coin">
+          <option value="bitcoin">Bitcoin (BTC)</option>
+          <option value="ethereum">Ethereum (ETH)</option>
+          <option value="dogecoin">Dogecoin (DOGE)</option>
         </select>
-
-        <label style="margin-left:10px"><b>Interval:</b></label>
-        <select id="intervalSelector">
-          <option value="1m">1m</option>
-          <option value="5m">5m</option>
-          <option value="1h" selected>1h</option>
+      </label>
+      <label>Interval: 
+        <select id="compare-interval">
+          <option value="1h">1h</option>
           <option value="4h">4h</option>
           <option value="1d">1d</option>
         </select>
-        <button onclick="updateComparison()">Load Chart</button>
-      </div>
-
-      <div id="binanceChart" style="height:400px; margin-bottom:20px"></div>
-      <div id="coingeckoChart" style="height:400px"></div>
-    </div>
+      </label>
+      <button id="load-comparison">Load Chart</button>
+      <div id="comparison-chart" style="height:400px;"></div>
+    </section>
   </div>
 
-  <!-- Scripts -->
   <script src="dashboard.js"></script>
-  <script>
-    // Simple show/hide logic for sections
-    function showSection(id) {
-      document.querySelectorAll(".section").forEach(sec => sec.classList.add("hidden"));
-      document.getElementById(id).classList.remove("hidden");
-    }
-
-    // Comparison update function
-    function updateComparison() {
-      const val = document.getElementById("coinSelector").value;
-      const interval = document.getElementById("intervalSelector").value;
-      const [binanceSymbol, cgId] = val.split("|");
-      loadBinanceCandles(binanceSymbol, interval, 100);
-      loadCoinGeckoCandlesInto(cgId, 30);
-    }
-  </script>
 </body>
 </html>
