@@ -174,23 +174,14 @@ button {
   font-weight: bold;
 }
 
-/* CHART SECTION */
-.chart-section {
-  background: rgba(20, 20, 20, 0.85);
-  border: 1px solid gold;
-  border-radius: 8px;
-  padding: 10px;
+/* ==========================
+   CHART
+========================== */
+#tv_chart_container {
   margin-top: 20px;
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
-}
-
-.chart-section select {
-  background: #000;
-  color: gold;
-  border: 1px solid gold;
-  padding: 5px;
-  margin-bottom: 10px;
-  border-radius: 5px;
+  border: 2px solid gold;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 /* TABLE */
