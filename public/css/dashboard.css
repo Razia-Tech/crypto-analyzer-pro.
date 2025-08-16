@@ -36,27 +36,6 @@ button {
   border-bottom: 2px solid gold;
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.header-left input {
-  padding: 6px 10px;
-  border: 1px solid gold;
-  border-radius: 6px;
-  background: transparent;
-  color: gold;
-  font-size: 14px;
-}
-
-.header-left input:focus {
-  outline: none;
-  border-color: #ffcc00;
-  box-shadow: 0 0 5px gold;
-}
-
 .dashboard-header .logo {
   height: 40px;
 }
