@@ -112,15 +112,15 @@
         <button onclick="loadBinanceCandles(AppState.currentSymbol, AppState.currentInterval)">Binance</button>
         <button onclick="loadCoinGeckoCandlesInto('coingeckoChartContainer', AppState.currentCoinId)">CoinGecko</button>
       </div>
-      <div id="binanceCandleContainer" style="height:420px; margin-bottom:20px"></div>
+      <div id="binanceComparisonContainer" style="height:420px; margin-bottom:20px"></div>
       <div id="coingeckoChartContainer" style="height:420px"></div>
     </div>
   </div>
 
   <!-- Script -->
   <script src="dashboard.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
   <script>
     // Tambahan untuk selector
     function updateComparison() {
@@ -132,11 +132,12 @@
       AppState.currentCoinId = cgId;
       AppState.currentInterval = interval;
 
-      loadBinanceCandles(binanceSymbol, interval);
+      loadBinanceCandles(binanceSymbol, interval, "binanceComparisonContainer");
       loadCoinGeckoCandlesInto("coingeckoChartContainer", cgId);
     }
   </script>
 </body>
 </html>
+
 
 
