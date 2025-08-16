@@ -36,6 +36,12 @@ button {
   border-bottom: 2px solid gold;
 }
 
+.header-left input:focus {
+  outline: none;
+  border-color: #ffcc00;
+  box-shadow: 0 0 5px gold;
+}
+
 .header-center {
   flex: 1;
   text-align: center;
