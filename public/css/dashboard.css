@@ -1,7 +1,6 @@
 /* ==========================
-   DASHBOARD LAYOUT & THEME
-   ========================== */
-
+   GLOBAL STYLES
+========================== */
 body {
   margin: 0;
   font-family: 'Orbitron', sans-serif;
@@ -9,19 +8,19 @@ body {
   color: #FFD700;
 }
 
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: bold;
+}
+
 a {
   text-decoration: none;
-  color: #FFD700;
+  color: inherit;
 }
 
-a:hover {
-  color: #00ffff;
+button {
+  cursor: pointer;
 }
-
-h1, h2, h3 {
-  margin: 0 0 10px;
-}
-
 
 /* ==========================
    HEADER
@@ -39,118 +38,49 @@ h1, h2, h3 {
 .header-left {
   display: flex;
   align-items: center;
+  gap: 15px;
 }
 
-.header-left img {
-  height: 40px;
-  margin-right: 10px;
-}
-
-.header-search {
-  border: 1px solid #FFD700;
-  background: transparent;
-  color: #FFD700;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
-.header button {
-  background-color: transparent;
-  color: #FFD700;
-  border: 1px solid #FFD700;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.header button:hover {
-  background-color: #FFD700;
-  color: #000;
-}
-
-.dashboard-header .logo {
-  height: 40px;
-}
-
-.header-center h2 {
-  color: gold;
-  font-weight: bold;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.header-search {
-  position: relative;
-}
-
-.header-search input {
-  padding: 6px 8px;
+.header-left input {
+  padding: 6px 10px;
   border: 1px solid gold;
-  border-radius: 5px;
+  border-radius: 6px;
   background: transparent;
-  color: #fff;
+  color: gold;
+  font-size: 14px;
 }
 
-.header-search input:focus {
+.header-left input:focus {
   outline: none;
   border-color: #ffcc00;
   box-shadow: 0 0 5px gold;
 }
 
-/* ==========================
-   LAYOUT
-========================== */
-.container {
+.header-center {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: gold;
+}
+
+.header-right {
   display: flex;
-  min-height: calc(100vh - 50px);
+  align-items: center;
+  gap: 15px;
 }
 
-.search-results {
-  position: absolute;
-  top: 36px;
-  left: 0;
-  right: 0;
-  background: #1a1a1a;
-  border: 1px solid gold;
-  border-radius: 5px;
-  max-height: 250px;
-  overflow-y: auto;
-  display: none;
-  z-index: 999;
-}
-
-.search-results div {
-  padding: 8px;
-  cursor: pointer;
-  border-bottom: 1px solid #333;
-}
-
-.search-results div:hover {
-  background: rgba(255, 215, 0, 0.2);
-}
-
-/* ICON BUTTONS */
-.icon-btn {
+.header-right button,
+.header-right .icon-btn {
   background: transparent;
   border: none;
-  cursor: pointer;
 }
 
-.icon {
+.header-right .icon {
   width: 22px;
   height: 22px;
   fill: gold;
   filter: drop-shadow(0 0 4px gold);
-}
-
-/* WRAPPER */
-.dashboard-wrapper {
-  display: flex;
-  min-height: calc(100vh - 50px);
 }
 
 /* ==========================
@@ -158,77 +88,55 @@ h1, h2, h3 {
 ========================== */
 .sidebar {
   width: 220px;
-  background-color: rgba(0, 0, 0, 0.85);
-  border-right: 2px solid #FFD700;
+  background-color: #000;
+  border-right: 2px solid gold;
+  min-height: 100vh;
   padding-top: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .sidebar a {
-  display: block;
-  padding: 12px 20px;
-  font-size: 16px;
-}
-
-.sidebar a.active,
-.sidebar a:hover {
-  background-color: rgba(255, 215, 0, 0.2);
-  color: #00ffff;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar li {
-  padding: 12px 20px;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #ccc;
+  padding: 12px 20px;
+  font-size: 16px;
+  color: #FFD700;
+  transition: background 0.3s;
 }
 
-.sidebar li:hover, .sidebar li.active {
-  background: rgba(255, 215, 0, 0.15);
-  color: gold;
+.sidebar a:hover,
+.sidebar a.active {
+  background: rgba(255, 215, 0, 0.2);
+}
+
+.sidebar .icon {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
 }
 
 /* ==========================
    MAIN CONTENT
 ========================== */
 .main-content {
-  flex: 1;
+  margin-left: 220px;
   padding: 20px;
 }
 
-#welcomeMessage {
-  font-size: 20px;
-  margin-bottom: 20px;
-  font-weight: bold;
-}
-
-/* CARDS */
-.card-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 15px;
-}
-
 .card {
-  background: rgba(20, 20, 20, 0.85);
-  padding: 15px;
-  border: 1px solid gold;
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid gold;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
   text-align: center;
-  color: #fff;
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
 }
 
 .card h3 {
-  font-size: 14px;
-  color: #ffcc00;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .card p {
@@ -237,98 +145,24 @@ h1, h2, h3 {
 }
 
 /* ==========================
-   TRADINGVIEW CHART
-========================== */
-#tv_chart_container {
-  border: 2px solid #FFD700;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-.chart-section {
-  background: rgba(20, 20, 20, 0.85);
-  border: 1px solid gold;
-  border-radius: 8px;
-  padding: 10px;
-  margin-top: 20px;
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
-}
-
-.chart-section select {
-  background: #000;
-  color: gold;
-  border: 1px solid gold;
-  padding: 5px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-
-/* ==========================
    TABLE
 ========================== */
-.table-container {
-  margin-top: 20px;
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-th, td {
-  padding: 10px;
-  text-align: left;
-}
-
-th {
-  border-bottom: 2px solid #FFD700;
-}
-
-tr:nth-child(even) {
-  background-color: rgba(255, 215, 0, 0.05);
-}
-
-.active-row {
-  background-color: rgba(0, 255, 255, 0.2) !important;
-}
-
-.coins-table-section {
-  background: rgba(20, 20, 20, 0.85);
-  padding: 15px;
-  margin-top: 20px;
-  border-radius: 8px;
-  border: 1px solid gold;
-}
-
-.coins-table-section h3 {
-  color: gold;
-}
-
-#coinSearch {
-  margin-bottom: 10px;
-  padding: 5px;
-  width: 200px;
-  background: #000;
-  color: gold;
-  border: 1px solid gold;
-  border-radius: 5px;
-}
-
 #topCoinsTable {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 15px;
 }
 
-#topCoinsTable th, #topCoinsTable td {
-  border-bottom: 1px solid #333;
+#topCoinsTable th, 
+#topCoinsTable td {
+  border: 1px solid gold;
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 #topCoinsTable th {
   background: rgba(255, 215, 0, 0.1);
-  color: gold;
+  font-size: 14px;
 }
 
 #topCoinsTable tr:hover {
@@ -336,37 +170,27 @@ tr:nth-child(even) {
 }
 
 .active-row {
-  background: rgba(255, 215, 0, 0.25) !important;
+  background: rgba(255, 215, 0, 0.3) !important;
+}
+
+/* ==========================
+   CHART
+========================== */
+#tv_chart_container {
+  margin-top: 20px;
+  border: 2px solid gold;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 /* ==========================
    FOOTER
 ========================== */
-.footer {
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #FFD700;
+footer {
+  margin-left: 220px;
+  padding: 15px;
   text-align: center;
-  padding: 10px;
-  border-top: 2px solid #FFD700;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .dashboard-wrapper {
-    flex-direction: column;
-  }
-  .sidebar {
-    width: 100%;
-    display: flex;
-    overflow-x: auto;
-  }
-  .sidebar ul {
-    display: flex;
-    flex-direction: row;
-  }
-  .sidebar li {
-    flex: 1;
-    justify-content: center;
-  }
+  border-top: 2px solid gold;
+  font-size: 14px;
 }
 
