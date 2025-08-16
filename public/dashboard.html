@@ -94,12 +94,22 @@
           <option value="DOGEUSDT|dogecoin">Dogecoin (DOGE)</option>
           <option value="MATICUSDT|matic-network">Polygon (MATIC)</option>
         </select>
+
+        <label for="intervalSelector" style="margin-left:10px"><b>Interval:</b></label>
+        <select id="intervalSelector">
+          <option value="1m">1m</option>
+          <option value="5m">5m</option>
+          <option value="1h" selected>1h</option>
+          <option value="4h">4h</option>
+          <option value="1d">1d</option>
+        </select>
+
         <button onclick="updateComparison()">Load Chart</button>
       </div>
 
       <!-- Chart containers -->
       <div style="margin-bottom:12px">
-        <button onclick="loadBinanceCandles(AppState.currentSymbol)">Binance</button>
+        <button onclick="loadBinanceCandles(AppState.currentSymbol, AppState.currentInterval)">Binance</button>
         <button onclick="loadCoinGeckoCandlesInto('coingeckoChartContainer', AppState.currentCoinId)">CoinGecko</button>
       </div>
       <div id="binanceCandleContainer" style="height:420px; margin-bottom:20px"></div>
@@ -113,13 +123,18 @@
     // Tambahan untuk selector
     function updateComparison() {
       const val = document.getElementById("coinSelector").value;
+      const interval = document.getElementById("intervalSelector").value;
       const [binanceSymbol, cgId] = val.split("|");
+
       AppState.currentSymbol = binanceSymbol;
       AppState.currentCoinId = cgId;
-      loadBinanceCandles(binanceSymbol);
+      AppState.currentInterval = interval;
+
+      loadBinanceCandles(binanceSymbol, interval);
       loadCoinGeckoCandlesInto("coingeckoChartContainer", cgId);
     }
   </script>
 </body>
 </html>
+
 
