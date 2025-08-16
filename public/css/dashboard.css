@@ -256,18 +256,4 @@ footer {
   .dashboard-wrapper {
     flex-direction: column;
   }
-  .sidebar {
-    width: 100%;
-    display: flex;
-    overflow-x: auto;
-  }
-  .sidebar ul {
-    display: flex;
-    flex-direction: row;
-  }
-  .sidebar li {
-    flex: 1;
-    justify-content: center;
-  }
-}
 
