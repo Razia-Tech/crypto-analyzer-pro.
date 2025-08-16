@@ -1,79 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Crypto Analyzer Dashboard</title>
-  <link rel="stylesheet" href="./dashboard.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="dashboard.css">
+  <!-- Charts -->
   <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+  <!-- TradingView Widget -->
   <script src="https://s3.tradingview.com/tv.js"></script>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">Crypto Analyzer</div>
-      <nav>
-        <a href="#fundamentals" class="active">Market Fundamentals</a>
-        <a href="#trending">Trending 12</a>
-        <a href="#top25">Top 25 Coins</a>
-        <a href="#tv-chart">TradingView Chart</a>
-        <a href="#binance-candles">Binance Candles</a>
-        <a href="#search-chart">Search Chart</a>
-      </nav>
-    </aside>
-    <main class="main">
-      <header class="header">
-        <input id="searchInput" placeholder="Search coin (e.g. bitcoin, ethereum)…" />
-        <div class="actions">
-          <select id="baseCurrency">
-            <option value="usd" selected>USD</option>
-            <option value="idr">IDR</option>
-            <option value="eur">EUR</option>
-          </select>
-          <button id="refreshBtn">Refresh</button>
-        </div>
-      </header>
+  <div class="sidebar">
+    <h2>Crypto Analyzer</h2>
+    <ul>
+      <li onclick="showSection('fundamentals')">Market Fundamentals</li>
+      <li onclick="showSection('trending')">Trending 12</li>
+      <li onclick="showSection('top25')">Top 25 Coins</li>
+      <li onclick="showSection('tvchart')">TradingView Chart</li>
+      <li onclick="showSection('binanceChart')">Binance Candles</li>
+      <li onclick="showSection('searchChart')">Search Chart</li>
+    </ul>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <input id="searchInput" placeholder="Search coin (e.g. bitcoin, ethereum) and press Enter"/>
+      <button id="refreshBtn">Refresh</button>
+    </div>
 
-      <section id="fundamentals" class="section">
-        <h2>Market Fundamentals</h2>
-        <div class="cards" id="fundamentalsCards"></div>
-      </section>
+    <div id="fundamentals" class="section">
+      <h3>Market Fundamentals</h3>
+      <div id="fundamentalsData"></div>
+    </div>
 
-      <section id="trending" class="section">
-        <h2>Trending 12 (Top Gainers 24h)</h2>
-        <div class="grid-12" id="trendingGrid"></div>
-      </section>
+    <div id="trending" class="section hidden">
+      <h3>Trending 12 (CoinGecko)</h3>
+      <div id="trendingList"></div>
+    </div>
 
-      <section id="top25" class="section">
-        <h2>Top 25 Coins</h2>
-        <div class="table-wrap">
-          <table id="top25Table">
-            <thead>
-              <tr><th>#</th><th>Coin</th><th>Price</th><th>24h %</th><th>MC</th><th>Vol 24h</th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </section>
+    <div id="top25" class="section hidden">
+      <h3>Top 25 Coins</h3>
+      <table>
+        <thead><tr><th>#</th><th>Coin</th><th>Price</th><th>24h %</th><th>MC</th><th>Vol 24h</th></tr></thead>
+        <tbody id="top25Table"></tbody>
+      </table>
+    </div>
 
-      <section id="tv-chart" class="section">
-        <h2>TradingView Chart</h2>
-        <div id="tvWidget" class="tv-widget"></div>
-      </section>
+    <div id="tvchart" class="section hidden">
+      <h3>TradingView Chart</h3>
+      <div id="tradingview" style="height:420px"></div>
+    </div>
 
-      <section id="binance-candles" class="section">
-        <h2>Binance Candlestick (BTCUSDT, 1m)</h2>
-        <div id="binanceChart" class="chart"></div>
-      </section>
+    <div id="binanceChart" class="section hidden">
+      <h3>Binance Candlesticks</h3>
+      <div id="binanceCandleContainer" style="height:420px"></div>
+    </div>
 
-      <section id="search-chart" class="section">
-        <h2>Search Chart (30D)</h2>
-        <div id="searchChart" class="chart"></div>
-      </section>
-    </main>
+    <div id="searchChart" class="section hidden">
+      <h3>Search Chart (30D)</h3>
+      <div id="searchChartContainer" style="height:420px"></div>
+    </div>
   </div>
 
-  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
-  <script src="./dashboard.js" type="module"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
