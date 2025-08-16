@@ -111,9 +111,6 @@ button {
 /* ==========================
    SIDEBAR
 ========================== */
-.dashboard-sidebar .logo {
-  height: 40px;
-}
 
 .sidebar {
   width: 220px;
@@ -150,6 +147,10 @@ button {
 /* ==========================
    MAIN CONTENT
 ========================== */
+.dashboard-sidebar .logo {
+  height: 40px;
+}
+
 .main-content {
   margin-left: 220px;
   padding: 20px;
