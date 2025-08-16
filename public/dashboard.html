@@ -4,13 +4,17 @@
   <meta charset="UTF-8">
   <title>Crypto Analyzer Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Style -->
   <link rel="stylesheet" href="dashboard.css">
-  <!-- Charts -->
+
+  <!-- Lightweight Charts -->
   <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
   <!-- TradingView Widget -->
   <script src="https://s3.tradingview.com/tv.js"></script>
 </head>
 <body>
+  <!-- Sidebar -->
   <div class="sidebar">
     <h2>Crypto Analyzer</h2>
     <ul>
@@ -18,50 +22,74 @@
       <li onclick="showSection('trending')">Trending 12</li>
       <li onclick="showSection('top25')">Top 25 Coins</li>
       <li onclick="showSection('tvchart')">TradingView Chart</li>
-      <li onclick="showSection('binanceChart')">Binance Candles</li>
+      <li onclick="showSection('binanceChart')">Binance Candlesticks</li>
       <li onclick="showSection('searchChart')">Search Chart</li>
+      <li onclick="showSection('charts')">Charts Comparison</li>
     </ul>
   </div>
+
+  <!-- Main -->
   <div class="main">
+    <!-- Topbar -->
     <div class="topbar">
       <input id="searchInput" placeholder="Search coin (e.g. bitcoin, ethereum) and press Enter"/>
       <button id="refreshBtn">Refresh</button>
     </div>
 
+    <!-- Fundamentals -->
     <div id="fundamentals" class="section">
       <h3>Market Fundamentals</h3>
       <div id="fundamentalsData"></div>
     </div>
 
+    <!-- Trending -->
     <div id="trending" class="section hidden">
       <h3>Trending 12 (CoinGecko)</h3>
       <div id="trendingList"></div>
     </div>
 
+    <!-- Top 25 -->
     <div id="top25" class="section hidden">
       <h3>Top 25 Coins</h3>
       <table>
-        <thead><tr><th>#</th><th>Coin</th><th>Price</th><th>24h %</th><th>MC</th><th>Vol 24h</th></tr></thead>
+        <thead>
+          <tr><th>#</th><th>Coin</th><th>Price</th><th>24h %</th><th>MC</th><th>Vol 24h</th></tr>
+        </thead>
         <tbody id="top25Table"></tbody>
       </table>
     </div>
 
+    <!-- TradingView -->
     <div id="tvchart" class="section hidden">
       <h3>TradingView Chart</h3>
       <div id="tradingview" style="height:420px"></div>
     </div>
 
+    <!-- Binance Candlesticks -->
     <div id="binanceChart" class="section hidden">
       <h3>Binance Candlesticks</h3>
       <div id="binanceCandleContainer" style="height:420px"></div>
     </div>
 
+    <!-- Search Chart -->
     <div id="searchChart" class="section hidden">
-      <h3>Search Chart (30D)</h3>
+      <h3>Search Chart (30D, CoinGecko)</h3>
       <div id="searchChartContainer" style="height:420px"></div>
+    </div>
+
+    <!-- Charts Comparison -->
+    <div id="charts" class="section hidden">
+      <h3>Charts Comparison (Binance vs CoinGecko)</h3>
+      <div style="margin-bottom:12px">
+        <button onclick="loadBinanceCandles()">Binance</button>
+        <button onclick="loadCoinGeckoCandlesInto('coingeckoChartContainer', AppState.currentCoinId)">CoinGecko</button>
+      </div>
+      <div id="binanceCandleContainer" style="height:420px; margin-bottom:20px"></div>
+      <div id="coingeckoChartContainer" style="height:420px"></div>
     </div>
   </div>
 
+  <!-- Script -->
   <script src="dashboard.js"></script>
 </body>
 </html>
