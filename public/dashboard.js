@@ -7,10 +7,11 @@ const DEFAULT_SYMBOL = "BTCUSDT";
 const DEFAULT_INTERVAL = "1h";
 const DEFAULT_LIMIT = 100;
 const DEFAULT_CG_COIN = "bitcoin";
-const BINANCE_PROXY_URL = "/.netlify/functions/binance"; // ganti ke Cloudflare Worker / proxy lain bila perlu
-const BINANCE_MIRROR_BASE = "https://api1.binance.com/api/v3/klines";
 
-// State kecil untuk menyimpan pilihan terakhir
+// Ganti ini dengan URL Worker Anda
+const BINANCE_PROXY_URL = "https://binance-proxy.yourname.workers.dev";
+
+// ---- State ----
 const AppState = {
   currentCoinId: DEFAULT_CG_COIN,
   tvLoaded: false,
@@ -41,18 +42,16 @@ function renderCandles(container, candles) {
   const width = container.clientWidth || 800;
   const chart = LightweightCharts.createChart(container, { width, height: 400 });
   const series = chart.addCandlestickSeries();
-  series.setData(
-    candles.map((c) => ({
-      time: Math.floor(c.time),
-      open: Number(c.open),
-      high: Number(c.high),
-      low: Number(c.low),
-      close: Number(c.close),
-    }))
+  series.setData(candles.map(c => ({
+    time: Math.floor(c.time),
+    open: Number(c.open),
+    high: Number(c.high),
+    low: Number(c.low),
+    close: Number(c.close),
+  })));
+  window.addEventListener("resize", () =>
+    chart.applyOptions({ width: container.clientWidth || width })
   );
-  // Resize on window resize
-  const onResize = () => chart.applyOptions({ width: container.clientWidth || width });
-  window.addEventListener("resize", onResize, { passive: true });
 }
 
 // ---- Section Switcher ----
@@ -151,11 +150,6 @@ async function loadTop25() {
 function loadTradingView() {
   if (AppState.tvLoaded) return;
   AppState.tvLoaded = true;
-  // TradingView global dari <script src="https://s3.tradingview.com/tv.js"></script>
-  // Hindari state aneh: cukup minimal config
-  // Note: gunakan simbol yang valid untuk region Anda
-  // Contoh: "BINANCE:BTCUSDT"
-  // Jika widget error, itu dari TradingView, bukan syntax JS di sini.
   // eslint-disable-next-line no-undef
   new TradingView.widget({
     container_id: "tradingview",
@@ -168,21 +162,11 @@ function loadTradingView() {
   });
 }
 
-// ========== 5) Binance Candlestick (Proxy → Mirror → Fallback CG) ==========
+// ========== 5) Binance Candlestick (via Cloudflare Proxy, fallback CG) ==========
 async function loadBinanceCandles(symbol = DEFAULT_SYMBOL, interval = DEFAULT_INTERVAL, limit = DEFAULT_LIMIT) {
   const container = $("binanceCandleContainer");
   setHTML(container, `<p style="color:gray">Loading Binance candles...</p>`);
-  // Helper to map klines array
-  const mapKlines = (arr) =>
-    arr.map((c) => ({
-      time: Number(c[0]) / 1000,
-      open: parseFloat(c[1]),
-      high: parseFloat(c[2]),
-      low: parseFloat(c[3]),
-      close: parseFloat(c[4]),
-    }));
 
-  // 1) Coba via proxy (Netlify/Worker)
   try {
     const res = await fetch(
       `${BINANCE_PROXY_URL}?symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(
@@ -191,35 +175,20 @@ async function loadBinanceCandles(symbol = DEFAULT_SYMBOL, interval = DEFAULT_IN
     );
     if (!res.ok) throw new Error(`Proxy HTTP ${res.status}`);
     const data = await res.json();
-    renderCandles(
-      container,
-      mapKlines(Array.isArray(data) ? data : [])
-    );
+    const candles = (Array.isArray(data) ? data : []).map(c => ({
+      time: Number(c[0]) / 1000,
+      open: parseFloat(c[1]),
+      high: parseFloat(c[2]),
+      low: parseFloat(c[3]),
+      close: parseFloat(c[4]),
+    }));
+    renderCandles(container, candles);
     return;
-  } catch (e1) {
-    console.warn("Binance via proxy gagal:", e1.message);
+  } catch (err) {
+    console.warn("Binance via proxy gagal:", err.message);
+    setHTML(container, `<p style="color:#f59e0b">Binance tidak tersedia. Menampilkan data CoinGecko (30D)...</p>`);
+    await loadCoinGeckoCandlesInto(container, AppState.currentCoinId);
   }
-
-  // 2) Coba mirror domain
-  try {
-    const mirrorUrl = `${BINANCE_MIRROR_BASE}?symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(
-      interval
-    )}&limit=${encodeURIComponent(String(limit))}`;
-    const res2 = await fetch(mirrorUrl);
-    if (!res2.ok) throw new Error(`Mirror HTTP ${res2.status}`);
-    const data2 = await res2.json();
-    renderCandles(
-      container,
-      mapKlines(Array.isArray(data2) ? data2 : [])
-    );
-    return;
-  } catch (e2) {
-    console.warn("Binance mirror gagal:", e2.message);
-  }
-
-  // 3) Fallback final: pakai CoinGecko OHLC 30D, render di container yang sama
-  setHTML(container, `<p style="color:#f59e0b">Binance tidak tersedia. Menampilkan data CoinGecko (30D)...</p>`);
-  await loadCoinGeckoCandlesInto(container, AppState.currentCoinId);
 }
 
 // ========== 6) CoinGecko Candlestick (OHLC 30D) ==========
@@ -232,7 +201,7 @@ async function loadCoinGeckoCandlesInto(target, coinId) {
     const url = `https://api.coingecko.com/api/v3/coins/${encodeURIComponent(coinId)}/ohlc?vs_currency=usd&days=30`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json(); // [[t,o,h,l,c],...]
+    const data = await res.json();
 
     const candles = (Array.isArray(data) ? data : []).map((row) => ({
       time: Math.floor(Number(row[0]) / 1000),
@@ -247,27 +216,21 @@ async function loadCoinGeckoCandlesInto(target, coinId) {
   }
 }
 
-// ========== Search handling (Enter → cari slug → render di searchChartContainer) ==========
+// ========== Search (CoinGecko resolve) ==========
 async function resolveCoinId(query) {
   const q = String(query || "").trim().toLowerCase();
   if (!q) return DEFAULT_CG_COIN;
-  // Jika user memasukkan slug yang sudah benar (bitcoin, ethereum, solana, dll), coba langsung
   try {
     const test = await fetch(`https://api.coingecko.com/api/v3/coins/${encodeURIComponent(q)}`);
     if (test.ok) return q;
-  } catch {
-    // ignore
-  }
-  // Gunakan endpoint search
+  } catch {}
   try {
     const res = await fetch(`https://api.coingecko.com/api/v3/search?query=${encodeURIComponent(q)}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const first = (data.coins || [])[0];
     if (first && first.id) return first.id;
-  } catch {
-    // ignore
-  }
+  } catch {}
   return DEFAULT_CG_COIN;
 }
 
@@ -280,12 +243,12 @@ $("searchInput").addEventListener("keypress", async (e) => {
   }
 });
 
-// Refresh button: muat ulang section aktif
+// Refresh button
 $("refreshBtn").addEventListener("click", () => {
   const active = document.querySelector(".section:not(.hidden)");
   if (active) showSection(active.id);
 });
 
-// Default: buka fundamentals
+// Default section
 showSection("fundamentals");
 
