@@ -105,7 +105,7 @@ function loadTradingView(symbol = "BTCUSDT") {
 // =====================
 // Binance Candlesticks
 // =====================
-const BINANCE_PROXY = "https://binance-proxy.username.workers.dev";
+const BINANCE_PROXY = "https://binance-proxy.kaiosiddik.workers.dev";
 
 async function loadBinanceCandles(symbol="BTCUSDT", interval="1h", limit=100) {
   try {
