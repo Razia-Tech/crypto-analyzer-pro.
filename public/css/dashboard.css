@@ -258,6 +258,26 @@ button {
   background: #FFD700;
   color: #111;
 }
+/* --- Trending coins --- */
+.coins-trend{ margin:20px; }
+.coins-trend h2{ color:#FFD700; margin-bottom:10px; }
+#trendingList{
+  list-style:none; padding:0; display:flex; flex-wrap:wrap; gap:10px;
+}
+#trendingList li{
+  background:#111; border:1px solid #FFD700; border-radius:10px;
+  padding:10px 14px; color:#FFD700; cursor:pointer;
+  display:flex; align-items:center; gap:8px;
+  transition:0.25s;
+}
+#trendingList li:hover{ background:#FFD700; color:#111; }
+.badge{
+  font-size:10px; padding:2px 6px; border-radius:6px;
+  background:#222; border:1px solid #FFD700; color:#FFD700;
+}
+.not-binance{ opacity:.6; cursor:not-allowed; }
+.not-binance:hover{ background:#111 !important; color:#FFD700 !important; }
+
 /* ==========================
    CHART
 ========================== */
@@ -267,24 +287,20 @@ button {
   border-radius: 10px;
   overflow: hidden;
 }
-
-.search-results div:hover {
-  background: rgba(255, 215, 0, 0.2);
+/* --- Search dropdown --- */
+.search-results{
+  position:absolute; z-index:30; width:320px; max-height:360px;
+  overflow:auto; background:#0b0b0b; border:1px solid #FFD700;
+  border-radius:10px; margin-top:6px; display:none;
 }
-
-.search-results {
-  position: absolute;
-  top: 36px;
-  left: 0;
-  right: 0;
-  background: #1a1a1a;
-  border: 1px solid gold;
-  border-radius: 5px;
-  max-height: 250px;
-  overflow-y: auto;
-  display: none;
-  z-index: 999;
+.search-results.visible{ display:block; }
+.search-results .item{
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px; cursor:pointer; color:#FFD700;
 }
+.search-results .item:hover{ background:#1a1a1a; }
+.search-results .item img{ width:20px; height:20px; }
+
 /* ==========================
    TABLE
 ========================== */
