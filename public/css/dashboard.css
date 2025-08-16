@@ -36,15 +36,18 @@ button {
   border-bottom: 2px solid gold;
 }
 
-.header-center h2 {
-  color: gold;
+.header-center {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
   font-weight: bold;
+  color: gold;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .header-search {
@@ -70,7 +73,7 @@ button {
 }
 
 .header-logo {
-  height: 30px;
+  height: 10px;
   filter: drop-shadow(0 0 4px gold);
 }
 
