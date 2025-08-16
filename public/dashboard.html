@@ -80,8 +80,26 @@
     <!-- Charts Comparison -->
     <div id="charts" class="section hidden">
       <h3>Charts Comparison (Binance vs CoinGecko)</h3>
+
+      <!-- Selector -->
       <div style="margin-bottom:12px">
-        <button onclick="loadBinanceCandles()">Binance</button>
+        <label for="coinSelector"><b>Select Coin:</b></label>
+        <select id="coinSelector">
+          <option value="BTCUSDT|bitcoin">Bitcoin (BTC)</option>
+          <option value="ETHUSDT|ethereum">Ethereum (ETH)</option>
+          <option value="BNBUSDT|binancecoin">Binance Coin (BNB)</option>
+          <option value="SOLUSDT|solana">Solana (SOL)</option>
+          <option value="XRPUSDT|ripple">XRP</option>
+          <option value="ADAUSDT|cardano">Cardano (ADA)</option>
+          <option value="DOGEUSDT|dogecoin">Dogecoin (DOGE)</option>
+          <option value="MATICUSDT|matic-network">Polygon (MATIC)</option>
+        </select>
+        <button onclick="updateComparison()">Load Chart</button>
+      </div>
+
+      <!-- Chart containers -->
+      <div style="margin-bottom:12px">
+        <button onclick="loadBinanceCandles(AppState.currentSymbol)">Binance</button>
         <button onclick="loadCoinGeckoCandlesInto('coingeckoChartContainer', AppState.currentCoinId)">CoinGecko</button>
       </div>
       <div id="binanceCandleContainer" style="height:420px; margin-bottom:20px"></div>
@@ -91,5 +109,17 @@
 
   <!-- Script -->
   <script src="dashboard.js"></script>
+  <script>
+    // Tambahan untuk selector
+    function updateComparison() {
+      const val = document.getElementById("coinSelector").value;
+      const [binanceSymbol, cgId] = val.split("|");
+      AppState.currentSymbol = binanceSymbol;
+      AppState.currentCoinId = cgId;
+      loadBinanceCandles(binanceSymbol);
+      loadCoinGeckoCandlesInto("coingeckoChartContainer", cgId);
+    }
+  </script>
 </body>
 </html>
+
