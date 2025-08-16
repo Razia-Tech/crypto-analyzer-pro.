@@ -36,6 +36,15 @@ button {
   border-bottom: 2px solid gold;
 }
 
+.header-left input {
+  padding: 6px 10px;
+  border: 1px solid gold;
+  border-radius: 6px;
+  background: transparent;
+  color: gold;
+  font-size: 14px;
+}
+
 .header-left input:focus {
   outline: none;
   border-color: #ffcc00;
