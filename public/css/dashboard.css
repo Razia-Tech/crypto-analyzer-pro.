@@ -76,6 +76,10 @@ button {
   filter: drop-shadow(0 0 4px gold);
 }
 
+.logo {
+  height: 30px;
+  filter: drop-shadow(0 0 4px gold);
+}
 
 /* ==========================
    LAYOUT
@@ -124,9 +128,6 @@ button {
 /* ==========================
    MAIN CONTENT
 ========================== */
-.dashboard-sidebar .logo {
-  height: 40px;
-}
 
 .main-content {
   margin-left: 220px;
