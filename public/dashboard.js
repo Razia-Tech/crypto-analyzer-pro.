@@ -105,38 +105,18 @@ function loadTradingView(symbol = "BTCUSDT") {
 // =====================
 // Binance Candlesticks
 // =====================
-async function loadBinanceCandles(symbol = "BTCUSDT", interval = "1h") {
+const BINANCE_PROXY = "https://binance-proxy.username.workers.dev";
+
+async function loadBinanceCandles(symbol="BTCUSDT", interval="1h", limit=100) {
   try {
-    const url = `/.netlify/functions/binance-proxy?symbol=${symbol}&interval=${interval}&limit=100`;
+    const url = `${BINANCE_PROXY}?symbol=${symbol}&interval=${interval}&limit=${limit}`;
     const res = await fetch(url);
+    if (!res.ok) throw new Error(`Binance proxy error: ${res.status}`);
     const data = await res.json();
-
-    if (!Array.isArray(data)) {
-      console.error("Invalid Binance data", data);
-      return;
-    }
-
-    const candles = data.map(d => ({
-      time: d[0] / 1000,
-      open: parseFloat(d[1]),
-      high: parseFloat(d[2]),
-      low: parseFloat(d[3]),
-      close: parseFloat(d[4])
-    }));
-
-    const container = document.getElementById("binanceCandleContainer");
-    container.innerHTML = "";
-    const chart = LightweightCharts.createChart(container, {
-      width: container.clientWidth,
-      height: 420,
-      layout: { background: { color: "#111" }, textColor: "#DDD" },
-      grid: { vertLines: { color: "#333" }, horzLines: { color: "#333" } }
-    });
-
-    const candleSeries = chart.addCandlestickSeries();
-    candleSeries.setData(candles);
+    console.log("Binance candles:", data);
+    // lanjut render chart...
   } catch (err) {
-    console.error("Binance fetch error", err);
+    console.error("Binance via proxy gagal:", err.message);
   }
 }
 
