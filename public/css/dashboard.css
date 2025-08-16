@@ -76,8 +76,11 @@ button {
   filter: drop-shadow(0 0 4px gold);
 }
 
-/* WRAPPER */
-.dashboard-wrapper {
+
+/* ==========================
+   LAYOUT
+========================== */
+.container {
   display: flex;
   min-height: calc(100vh - 50px);
 }
