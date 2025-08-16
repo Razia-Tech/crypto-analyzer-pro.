@@ -1,142 +1,155 @@
 /* ==========================
-   GLOBAL STYLES
-========================== */
+   DASHBOARD LAYOUT & THEME
+   ========================== */
+
 body {
   margin: 0;
-  font-family: 'Orbitron', sans-serif;
-  background-color: #000;
-  color: #FFD700;
+  font-family: Arial, sans-serif;
+  background: #0d0d0d;
+  color: #f5f5f5;
 }
 
-h1, h2, h3, h4 {
-  margin: 0;
-  font-weight: bold;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-/* ==========================
-   HEADER
-========================== */
-.header {
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #FFD700;
-  padding: 10px 20px;
+/* HEADER */
+.dashboard-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid #FFD700;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 10px 20px;
+  border-bottom: 2px solid gold;
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+.dashboard-header .logo {
+  height: 40px;
 }
 
-.header-left input {
-  padding: 6px 10px;
-  border: 1px solid gold;
-  border-radius: 6px;
-  background: transparent;
+.header-center h2 {
   color: gold;
-  font-size: 14px;
-}
-
-.header-left input:focus {
-  outline: none;
-  border-color: #ffcc00;
-  box-shadow: 0 0 5px gold;
-}
-
-.header-center {
-  flex: 1;
-  text-align: center;
-  font-size: 18px;
   font-weight: bold;
-  color: gold;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
-.header-right button,
-.header-right .icon-btn {
+.header-search {
+  position: relative;
+}
+
+.header-search input {
+  padding: 6px 8px;
+  border: 1px solid gold;
+  border-radius: 5px;
+  background: transparent;
+  color: #fff;
+}
+
+.header-search input:focus {
+  outline: none;
+  border-color: #ffcc00;
+  box-shadow: 0 0 5px gold;
+}
+
+.search-results {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid gold;
+  border-radius: 5px;
+  max-height: 250px;
+  overflow-y: auto;
+  display: none;
+  z-index: 999;
+}
+
+.search-results div {
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #333;
+}
+
+.search-results div:hover {
+  background: rgba(255, 215, 0, 0.2);
+}
+
+/* ICON BUTTONS */
+.icon-btn {
   background: transparent;
   border: none;
+  cursor: pointer;
 }
 
-.header-right .icon {
+.icon {
   width: 22px;
   height: 22px;
   fill: gold;
   filter: drop-shadow(0 0 4px gold);
 }
 
-/* ==========================
-   SIDEBAR
-========================== */
-.sidebar {
-  width: 220px;
-  background-color: #000;
-  border-right: 2px solid gold;
-  min-height: 100vh;
-  padding-top: 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
+/* WRAPPER */
+.dashboard-wrapper {
+  display: flex;
+  min-height: calc(100vh - 50px);
 }
 
-.sidebar a {
+/* SIDEBAR */
+.sidebar {
+  width: 230px;
+  background: rgba(20, 20, 20, 0.95);
+  border-right: 2px solid gold;
+  padding-top: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  padding: 12px 20px;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 12px 20px;
-  font-size: 16px;
-  color: #FFD700;
-  transition: background 0.3s;
+  gap: 10px;
+  color: #ccc;
 }
 
-.sidebar a:hover,
-.sidebar a.active {
-  background: rgba(255, 215, 0, 0.2);
+.sidebar li:hover, .sidebar li.active {
+  background: rgba(255, 215, 0, 0.15);
+  color: gold;
 }
 
-.sidebar .icon {
-  margin-right: 10px;
-  width: 20px;
-  height: 20px;
-}
-
-/* ==========================
-   MAIN CONTENT
-========================== */
+/* MAIN CONTENT */
 .main-content {
-  margin-left: 220px;
+  flex: 1;
   padding: 20px;
+}
+
+/* CARDS */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
 }
 
 .card {
-  background: rgba(0, 0, 0, 0.7);
-  border: 2px solid gold;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
+  background: rgba(20, 20, 20, 0.85);
+  padding: 15px;
+  border: 1px solid gold;
+  border-radius: 8px;
   text-align: center;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
 }
 
 .card h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 14px;
+  color: #ffcc00;
 }
 
 .card p {
@@ -144,25 +157,62 @@ button {
   font-weight: bold;
 }
 
-/* ==========================
-   TABLE
-========================== */
+/* CHART SECTION */
+.chart-section {
+  background: rgba(20, 20, 20, 0.85);
+  border: 1px solid gold;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 20px;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+.chart-section select {
+  background: #000;
+  color: gold;
+  border: 1px solid gold;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+/* TABLE */
+.coins-table-section {
+  background: rgba(20, 20, 20, 0.85);
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 8px;
+  border: 1px solid gold;
+}
+
+.coins-table-section h3 {
+  color: gold;
+}
+
+#coinSearch {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 200px;
+  background: #000;
+  color: gold;
+  border: 1px solid gold;
+  border-radius: 5px;
+}
+
 #topCoinsTable {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
 }
 
-#topCoinsTable th, 
-#topCoinsTable td {
-  border: 1px solid gold;
+#topCoinsTable th, #topCoinsTable td {
+  border-bottom: 1px solid #333;
   padding: 8px;
-  text-align: center;
+  text-align: left;
 }
 
 #topCoinsTable th {
   background: rgba(255, 215, 0, 0.1);
-  font-size: 14px;
+  color: gold;
 }
 
 #topCoinsTable tr:hover {
@@ -170,27 +220,36 @@ button {
 }
 
 .active-row {
-  background: rgba(255, 215, 0, 0.3) !important;
+  background: rgba(255, 215, 0, 0.25) !important;
 }
 
-/* ==========================
-   CHART
-========================== */
-#tv_chart_container {
-  margin-top: 20px;
-  border: 2px solid gold;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-/* ==========================
-   FOOTER
-========================== */
-footer {
-  margin-left: 220px;
-  padding: 15px;
+/* FOOTER */
+.footer {
+  background: rgba(0, 0, 0, 0.95);
+  padding: 10px;
   text-align: center;
   border-top: 2px solid gold;
-  font-size: 14px;
+  color: #ccc;
+  font-size: 12px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .dashboard-wrapper {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+  }
+  .sidebar ul {
+    display: flex;
+    flex-direction: row;
+  }
+  .sidebar li {
+    flex: 1;
+    justify-content: center;
+  }
 }
 
