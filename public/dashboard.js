@@ -105,20 +105,32 @@ function loadTradingView(symbol = "BTCUSDT") {
 // =====================
 // Binance Candlesticks
 // =====================
+// Worker proxy kamu
 const BINANCE_PROXY = "https://binance-proxy.kaiosiddik.workers.dev";
 
-async function loadBinanceCandles(symbol="BTCUSDT", interval="1h", limit=100) {
+// Fungsi ambil candlestick Binance
+async function loadBinanceCandles(symbol = "BTCUSDT", interval = "1h", limit = 100) {
   try {
-    const url = `${BINANCE_PROXY}?symbol=${symbol}&interval=${interval}&limit=${limit}`;
+    const url = `${BINANCE_PROXY}/?symbol=${symbol}&interval=${interval}&limit=${limit}`;
     const res = await fetch(url);
-    if (!res.ok) throw new Error(`Binance proxy error: ${res.status}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    console.log("Binance candles:", data);
-    // lanjut render chart...
+
+    // Convert ke format chart
+    const candles = data.map(d => ({
+      time: d[0] / 1000,
+      open: parseFloat(d[1]),
+      high: parseFloat(d[2]),
+      low: parseFloat(d[3]),
+      close: parseFloat(d[4]),
+    }));
+
+    renderBinanceChart(candles);
   } catch (err) {
-    console.error("Binance via proxy gagal:", err.message);
+    console.error("Binance fetch error:", err);
   }
 }
+
 
 // =====================
 // CoinGecko 30D Chart
