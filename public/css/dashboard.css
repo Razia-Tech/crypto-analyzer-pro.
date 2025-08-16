@@ -58,6 +58,11 @@ button {
   box-shadow: 0 0 5px gold;
 }
 
+.header-logo {
+  height: 30px;
+  filter: drop-shadow(0 0 4px gold);
+}
+
 .header-center {
   flex: 1;
   text-align: center;
