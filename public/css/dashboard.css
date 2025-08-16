@@ -27,13 +27,14 @@ button {
 /* ==========================
    HEADER
 ========================== */
-.dashboard-header {
+.header {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #FFD700;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(0, 0, 0, 0.9);
-  padding: 10px 20px;
-  border-bottom: 2px solid gold;
+  border-bottom: 2px solid #FFD700;
 }
 
 .header-left {
@@ -93,10 +94,7 @@ button {
   filter: drop-shadow(0 0 4px gold);
 }
 
-.header-logo {
-  height: 10px;
-  filter: drop-shadow(0 0 4px gold);
-}
+
 
 /* ==========================
    LAYOUT
