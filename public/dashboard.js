@@ -17,8 +17,7 @@ async function loadFundamentals(){
     {label:'BTC Dominance',value:pct(g.market_cap_percentage.btc)},
     {label:'ETH Dominance',value:pct(g.market_cap_percentage.eth)},
   ];
-  for(const it of items){ const el=document.createElement('div'); el.className='card'; el.innerHTML=`<div>${it.label}</div><div>${it.value}</div>`; dom.appendChild(el); }
-}
+  for(const it of items){ const el=document.createElement('div'); el.className='card'; el.innerHTML=`<div>${it.label}</div><div>${it.value}</div>`; dom.appendChild(el); }}
 
 async function loadTop25(){
   const vc=state.vsCurrency; const rows=await getJSON(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${vc}&order=market_cap_desc&per_page=25&page=1&price_change_percentage=24h`);
@@ -32,10 +31,21 @@ async function loadTop25(){
 function mountTradingView(symbol){ state.tvSymbol=symbol; $('#tvWidget').innerHTML=''; new TradingView.widget({symbol,interval:'60',container_id:'tvWidget',autosize:true,theme:'dark'}); }
 
 let binanceChart,binanceSeries;
-function ensureBinance(){ if(binanceChart) return; binanceChart=LightweightCharts.createChart($('#binanceChart'),{layout:{background:{type:'solid',color:'#121826'},textColor:'#e5e7eb'}}); binanceSeries=binanceChart.addCandlestickSeries(); }
-function mountBinance(symbol){ ensureBinance(); fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=1m&limit=100`).then(r=>r.json()).then(kl=>{binanceSeries.setData(kl.map(k=>({time:Math.floor(k[0]/1000),open:+k[1],high:+k[2],low:+k[3],close:+k[4]})));}); }
+function mountBinance(symbol="BTCUSDT") {
+  const container = document.getElementById('binanceChart');
+  container.innerHTML = "";
+  const chart = LightweightCharts.createChart(container, {
+    width: container.clientWidth,
+    height: 400,
+    layout: { background: { color: "#0d1117" }, textColor: "#d1d4dc" },
+    grid: { vertLines: { color: "#222" }, horzLines: { color: "#222" } },
+  });
+  const candleSeries = chart.addCandlestickSeries();
 
-function bindUI(){ $('#refreshBtn').addEventListener('click',()=>{loadFundamentals();loadTop25();}); }
+  // Binance WebSocket
+  const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@kline_1m`);
+  ws.onmessage = (event) => {const msg = JSON.parse(event.data);const k = msg.k;candleSeries.update({time: k.t / 1000,open: parseFloat(k.o),high: parseFloat(k.h),low: parseFloat(k.l),close: parseFloat(k.c),});};}
+
 
 async function main(){ bindUI(); await loadFundamentals(); await loadTop25(); mountTradingView(state.tvSymbol); mountBinance('BTCUSDT'); }
 main().catch(console.error);
