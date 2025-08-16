@@ -1,102 +1,89 @@
-// =============================
-// STATE
-// =============================
+// =====================
+// Global State
+// =====================
 const AppState = {
   currentSymbol: "BTCUSDT",
+  currentInterval: "1h",
   currentCoinId: "bitcoin",
-  currentInterval: "1h"
+  charts: {},
 };
 
-// =============================
-// SECTION HANDLER
-// =============================
+// =====================
+// Helpers
+// =====================
 function showSection(id) {
   document.querySelectorAll(".section").forEach(sec => sec.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
 
-// =============================
-// MARKET FUNDAMENTALS (CoinGecko)
-// =============================
-async function loadFundamentals(coinId = "bitcoin") {
+function formatNumber(num) {
+  if (!num) return "-";
+  return Number(num).toLocaleString();
+}
+
+// =====================
+// Fundamentals
+// =====================
+async function loadFundamentals() {
   try {
-    const url = `https://api.coingecko.com/api/v3/coins/${coinId}`;
-    const res = await fetch(url);
+    const res = await fetch("https://api.coingecko.com/api/v3/global");
     const data = await res.json();
+    const d = data.data;
 
-    const html = `
-      <p><b>Name:</b> ${data.name} (${data.symbol.toUpperCase()})</p>
-      <p><b>Price:</b> $${data.market_data.current_price.usd.toLocaleString()}</p>
-      <p><b>Market Cap:</b> $${data.market_data.market_cap.usd.toLocaleString()}</p>
-      <p><b>Volume 24h:</b> $${data.market_data.total_volume.usd.toLocaleString()}</p>
-      <p><b>Community Score:</b> ${data.community_score}</p>
-      <p><b>Developer Score:</b> ${data.developer_score}</p>
+    document.getElementById("fundamentalsData").innerHTML = `
+      <p>Active Cryptos: ${d.active_cryptocurrencies}</p>
+      <p>Markets: ${d.markets}</p>
+      <p>BTC Dominance: ${d.market_cap_percentage.btc.toFixed(2)}%</p>
+      <p>Total Market Cap: $${formatNumber(d.total_market_cap.usd)}</p>
     `;
-
-    document.getElementById("fundamentalsData").innerHTML = html;
   } catch (err) {
-    document.getElementById("fundamentalsData").innerHTML = "Failed to load fundamentals.";
-    console.error(err);
+    console.error("Fundamentals error", err);
   }
 }
 
-// =============================
-// TRENDING (CoinGecko)
-// =============================
+// =====================
+// Trending
+// =====================
 async function loadTrending() {
   try {
-    const url = "https://api.coingecko.com/api/v3/search/trending";
-    const res = await fetch(url);
+    const res = await fetch("https://api.coingecko.com/api/v3/search/trending");
     const data = await res.json();
-
-    let html = "<ul>";
-    data.coins.slice(0, 12).forEach(c => {
-      html += `<li>${c.item.name} (${c.item.symbol}) - Rank: ${c.item.market_cap_rank}</li>`;
-    });
-    html += "</ul>";
-
-    document.getElementById("trendingList").innerHTML = html;
+    document.getElementById("trendingList").innerHTML = data.coins.map(c =>
+      `<div>${c.item.name} (${c.item.symbol}) Rank: ${c.item.market_cap_rank}</div>`
+    ).join("");
   } catch (err) {
-    document.getElementById("trendingList").innerHTML = "Failed to load trending.";
-    console.error(err);
+    console.error("Trending error", err);
   }
 }
 
-// =============================
-// TOP 25 (CoinGecko)
-// =============================
+// =====================
+// Top 25
+// =====================
 async function loadTop25() {
   try {
-    const url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false";
-    const res = await fetch(url);
+    const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false");
     const data = await res.json();
 
-    let rows = "";
-    data.forEach((coin, i) => {
-      rows += `
-        <tr>
-          <td>${i + 1}</td>
-          <td>${coin.name} (${coin.symbol.toUpperCase()})</td>
-          <td>$${coin.current_price.toLocaleString()}</td>
-          <td style="color:${coin.price_change_percentage_24h >= 0 ? 'lime' : 'red'}">
-            ${coin.price_change_percentage_24h.toFixed(2)}%
-          </td>
-          <td>$${coin.market_cap.toLocaleString()}</td>
-          <td>$${coin.total_volume.toLocaleString()}</td>
-        </tr>
-      `;
-    });
-
-    document.getElementById("top25Table").innerHTML = rows;
+    document.getElementById("top25Table").innerHTML = data.map((c, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${c.name} (${c.symbol.toUpperCase()})</td>
+        <td>$${formatNumber(c.current_price)}</td>
+        <td style="color:${c.price_change_percentage_24h >= 0 ? 'green':'red'}">
+          ${c.price_change_percentage_24h.toFixed(2)}%
+        </td>
+        <td>$${formatNumber(c.market_cap)}</td>
+        <td>$${formatNumber(c.total_volume)}</td>
+      </tr>
+    `).join("");
   } catch (err) {
-    document.getElementById("top25Table").innerHTML = "<tr><td colspan='6'>Failed to load</td></tr>";
-    console.error(err);
+    console.error("Top25 error", err);
   }
 }
 
-// =============================
-// TRADINGVIEW WIDGET
-// =============================
+// =====================
+// TradingView Widget
+// =====================
 function loadTradingView(symbol = "BTCUSDT") {
   document.getElementById("tradingview").innerHTML = "";
   new TradingView.widget({
@@ -110,112 +97,112 @@ function loadTradingView(symbol = "BTCUSDT") {
     locale: "en",
     toolbar_bg: "#f1f3f6",
     enable_publishing: false,
-    hide_side_toolbar: false,
-    allow_symbol_change: true
+    allow_symbol_change: true,
+    hide_side_toolbar: false
   });
 }
 
-// =============================
-// BINANCE CANDLESTICKS via Proxy
-// =============================
-async function loadBinanceCandles(symbol = "BTCUSDT", interval = "1h", containerId = "binanceCandleContainer") {
+// =====================
+// Binance Candlesticks
+// =====================
+async function loadBinanceCandles(symbol = "BTCUSDT", interval = "1h") {
   try {
-    const url = `https://binance-proxy.kaiosiddik.workers.dev/?symbol=${symbol}&interval=${interval}&limit=100`;
+    const url = `/.netlify/functions/binance-proxy?symbol=${symbol}&interval=${interval}&limit=100`;
     const res = await fetch(url);
-    if (!res.ok) throw new Error("Binance Proxy failed");
-    const raw = await res.json();
+    const data = await res.json();
 
-    const data = raw.map(c => ({
-      time: c[0] / 1000,
-      open: parseFloat(c[1]),
-      high: parseFloat(c[2]),
-      low: parseFloat(c[3]),
-      close: parseFloat(c[4])
-    }));
-
-    // render lightweight-charts
-    const container = document.getElementById(containerId);
-    container.innerHTML = ""; // reset
-    const chart = LightweightCharts.createChart(container, { width: container.clientWidth, height: 420 });
-    const candleSeries = chart.addCandlestickSeries();
-    candleSeries.setData(data);
-  } catch (err) {
-    console.error("Binance error:", err);
-    document.getElementById(containerId).innerHTML = "Failed to load Binance chart.";
-  }
-}
-
-// =============================
-// COINGECKO CANDLESTICKS
-// =============================
-async function loadCoinGeckoCandlesInto(containerId, coinId = "bitcoin", days = 30) {
-  try {
-    const url = `https://api.coingecko.com/api/v3/coins/${coinId}/ohlc?vs_currency=usd&days=${days}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("CoinGecko failed");
-    const raw = await res.json();
-
-    const data = raw.map(c => ({
-      time: c[0] / 1000,
-      open: c[1],
-      high: c[2],
-      low: c[3],
-      close: c[4]
-    }));
-
-    const container = document.getElementById(containerId);
-    container.innerHTML = ""; // reset
-    const chart = LightweightCharts.createChart(container, { width: container.clientWidth, height: 420 });
-    const candleSeries = chart.addCandlestickSeries();
-    candleSeries.setData(data);
-  } catch (err) {
-    console.error("CoinGecko error:", err);
-    document.getElementById(containerId).innerHTML = "Failed to load Coingecko chart.";
-  }
-}
-
-// =============================
-// SEARCH CHART (CoinGecko, 30D)
-// =============================
-async function loadSearchChart(coinId = "bitcoin") {
-  await loadCoinGeckoCandlesInto("searchChartContainer", coinId, 30);
-}
-
-// =============================
-// REFRESH BTN
-// =============================
-document.getElementById("refreshBtn").addEventListener("click", () => {
-  loadFundamentals(AppState.currentCoinId);
-  loadTrending();
-  loadTop25();
-});
-
-// =============================
-// SEARCH INPUT (Enter untuk cari)
-// =============================
-document.getElementById("searchInput").addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    const val = e.target.value.trim().toLowerCase();
-    if (val) {
-      AppState.currentCoinId = val;
-      loadFundamentals(val);
-      loadSearchChart(val);
-      showSection("searchChart");
+    if (!Array.isArray(data)) {
+      console.error("Invalid Binance data", data);
+      return;
     }
-  }
-});
 
-// =============================
-// INIT PAGE
-// =============================
-window.addEventListener("load", () => {
-  loadFundamentals("bitcoin");
+    const candles = data.map(d => ({
+      time: d[0] / 1000,
+      open: parseFloat(d[1]),
+      high: parseFloat(d[2]),
+      low: parseFloat(d[3]),
+      close: parseFloat(d[4])
+    }));
+
+    const container = document.getElementById("binanceCandleContainer");
+    container.innerHTML = "";
+    const chart = LightweightCharts.createChart(container, {
+      width: container.clientWidth,
+      height: 420,
+      layout: { background: { color: "#111" }, textColor: "#DDD" },
+      grid: { vertLines: { color: "#333" }, horzLines: { color: "#333" } }
+    });
+
+    const candleSeries = chart.addCandlestickSeries();
+    candleSeries.setData(candles);
+  } catch (err) {
+    console.error("Binance fetch error", err);
+  }
+}
+
+// =====================
+// CoinGecko 30D Chart
+// =====================
+async function loadCoinGeckoCandlesInto(containerId, coinId = "bitcoin") {
+  try {
+    const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=30`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const prices = data.prices.map(p => ({
+      time: Math.floor(p[0] / 1000),
+      value: p[1]
+    }));
+
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+    const chart = LightweightCharts.createChart(container, {
+      width: container.clientWidth,
+      height: 420,
+      layout: { background: { color: "#111" }, textColor: "#DDD" },
+      grid: { vertLines: { color: "#333" }, horzLines: { color: "#333" } }
+    });
+
+    const lineSeries = chart.addLineSeries({ color: "#2962FF" });
+    lineSeries.setData(prices);
+  } catch (err) {
+    console.error("CoinGecko chart error", err);
+  }
+}
+
+// =====================
+// Search Chart
+// =====================
+async function handleSearch(e) {
+  if (e.key === "Enter") {
+    const q = document.getElementById("searchInput").value.toLowerCase().trim();
+    if (!q) return;
+
+    loadCoinGeckoCandlesInto("searchChartContainer", q);
+    showSection("searchChart");
+  }
+}
+
+// =====================
+// Init
+// =====================
+window.addEventListener("DOMContentLoaded", () => {
+  loadFundamentals();
   loadTrending();
   loadTop25();
-  loadTradingView("BTCUSDT");
-  loadBinanceCandles("BTCUSDT", "1h");
-  loadSearchChart("bitcoin");
+  loadTradingView(AppState.currentSymbol);
+  loadBinanceCandles(AppState.currentSymbol, AppState.currentInterval);
+
+  // Events
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) searchInput.addEventListener("keydown", handleSearch);
+
+  const refreshBtn = document.getElementById("refreshBtn");
+  if (refreshBtn) refreshBtn.addEventListener("click", () => {
+    loadFundamentals();
+    loadTrending();
+    loadTop25();
+    loadBinanceCandles(AppState.currentSymbol, AppState.currentInterval);
+    loadCoinGeckoCandlesInto("coingeckoChartContainer", AppState.currentCoinId);
+  });
 });
-
-
-
