@@ -4,19 +4,68 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0d0d0d;
-  color: #f5f5f5;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #000;
+  color: #FFD700;
 }
 
-/* HEADER */
-.dashboard-header {
+a {
+  text-decoration: none;
+  color: #FFD700;
+}
+
+a:hover {
+  color: #00ffff;
+}
+
+h1, h2, h3 {
+  margin: 0 0 10px;
+}
+
+
+/* ==========================
+   HEADER
+========================== */
+.header {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #FFD700;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(0, 0, 0, 0.9);
-  padding: 10px 20px;
-  border-bottom: 2px solid gold;
+  border-bottom: 2px solid #FFD700;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-left img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.header-search {
+  border: 1px solid #FFD700;
+  background: transparent;
+  color: #FFD700;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.header button {
+  background-color: transparent;
+  color: #FFD700;
+  border: 1px solid #FFD700;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.header button:hover {
+  background-color: #FFD700;
+  color: #000;
 }
 
 .dashboard-header .logo {
@@ -50,6 +99,14 @@ body {
   outline: none;
   border-color: #ffcc00;
   box-shadow: 0 0 5px gold;
+}
+
+/* ==========================
+   LAYOUT
+========================== */
+.container {
+  display: flex;
+  min-height: calc(100vh - 50px);
 }
 
 .search-results {
@@ -96,12 +153,26 @@ body {
   min-height: calc(100vh - 50px);
 }
 
-/* SIDEBAR */
+/* ==========================
+   SIDEBAR
+========================== */
 .sidebar {
-  width: 230px;
-  background: rgba(20, 20, 20, 0.95);
-  border-right: 2px solid gold;
+  width: 220px;
+  background-color: rgba(0, 0, 0, 0.85);
+  border-right: 2px solid #FFD700;
   padding-top: 20px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 12px 20px;
+  font-size: 16px;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+  background-color: rgba(255, 215, 0, 0.2);
+  color: #00ffff;
 }
 
 .sidebar ul {
@@ -124,10 +195,18 @@ body {
   color: gold;
 }
 
-/* MAIN CONTENT */
+/* ==========================
+   MAIN CONTENT
+========================== */
 .main-content {
   flex: 1;
   padding: 20px;
+}
+
+#welcomeMessage {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 /* CARDS */
@@ -157,7 +236,14 @@ body {
   font-weight: bold;
 }
 
-/* CHART SECTION */
+/* ==========================
+   TRADINGVIEW CHART
+========================== */
+#tv_chart_container {
+  border: 2px solid #FFD700;
+  border-radius: 5px;
+  margin-top: 20px;
+}
 .chart-section {
   background: rgba(20, 20, 20, 0.85);
   border: 1px solid gold;
@@ -176,7 +262,37 @@ body {
   border-radius: 5px;
 }
 
-/* TABLE */
+/* ==========================
+   TABLE
+========================== */
+.table-container {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  border-bottom: 2px solid #FFD700;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 215, 0, 0.05);
+}
+
+.active-row {
+  background-color: rgba(0, 255, 255, 0.2) !important;
+}
+
 .coins-table-section {
   background: rgba(20, 20, 20, 0.85);
   padding: 15px;
@@ -223,14 +339,15 @@ body {
   background: rgba(255, 215, 0, 0.25) !important;
 }
 
-/* FOOTER */
+/* ==========================
+   FOOTER
+========================== */
 .footer {
-  background: rgba(0, 0, 0, 0.95);
-  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #FFD700;
   text-align: center;
-  border-top: 2px solid gold;
-  color: #ccc;
-  font-size: 12px;
+  padding: 10px;
+  border-top: 2px solid #FFD700;
 }
 
 /* RESPONSIVE */
