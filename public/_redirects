@@ -1,0 +1,11 @@
+# Halaman utama
+/    /index.html   200
+
+# Auth page
+/auth    /auth.html   200
+
+# Dashboard
+/dashboard    /dashboard.html   200
+
+# Semua API request diarahkan ke serverless functions
+/api/*   /.netlify/functions/:splat   200
