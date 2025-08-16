@@ -50,43 +50,13 @@ button {
 }
 
 .header-search {
-  position: relative;
-}
-
-.header-search input {
-  padding: 6px 8px;
-  border: 1px solid gold;
-  border-radius: 5px;
+  border: 1px solid #FFD700;
   background: transparent;
-  color: #fff;
-}
-
-.header-search input:focus {
-  outline: none;
-  border-color: #ffcc00;
-  box-shadow: 0 0 5px gold;
-}
-
-.search-results div {
-  padding: 8px;
-  cursor: pointer;
-  border-bottom: 1px solid #333;
-}
-
-}
-.search-results {
-  position: absolute;
-  top: 36px;
-  left: 0;
-  right: 0;
-  background: #1a1a1a;
-  border: 1px solid gold;
+  color: #FFD700;
+  padding: 5px 10px;
   border-radius: 5px;
-  max-height: 250px;
-  overflow-y: auto;
-  display: none;
-  z-index: 999;
 }
+
 
 /* ICON BUTTONS */
 .icon-btn {
@@ -175,7 +145,32 @@ button {
   font-weight: bold;
 }
 
+.header-search input:focus {
+  outline: none;
+  border-color: #ffcc00;
+  box-shadow: 0 0 5px gold;
+}
 
+.search-results div {
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #333;
+}
+
+}
+.search-results {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid gold;
+  border-radius: 5px;
+  max-height: 250px;
+  overflow-y: auto;
+  display: none;
+  z-index: 999;
+}
 /* ==========================
    CHART
 ========================== */
