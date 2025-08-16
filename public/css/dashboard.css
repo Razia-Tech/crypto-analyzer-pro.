@@ -240,14 +240,15 @@ button {
   border-radius: 5px;
 }
 
-/* FOOTER */
-.footer {
-  background: rgba(0, 0, 0, 0.95);
-  padding: 10px;
+/* ==========================
+   FOOTER
+========================== */
+footer {
+  margin-left: 220px;
+  padding: 15px;
   text-align: center;
   border-top: 2px solid gold;
-  color: #ccc;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* RESPONSIVE */
