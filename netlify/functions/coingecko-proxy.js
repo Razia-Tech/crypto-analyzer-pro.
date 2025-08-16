@@ -1,25 +1,18 @@
-export async function handler(event, context) {
+async function loadCoinGeckoCandlesInto(containerId, coinId="bitcoin") {
   try {
-    const { url } = event.queryStringParameters;
-    if (!url) {
-      return { statusCode: 400, body: JSON.stringify({ error: "Missing url param" }) };
-    }
+    const url = `/api/coingecko-proxy?url=${encodeURIComponent(
+      `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=30`
+    )}`;
 
-    const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
-    if (!res.ok) {
-      return {
-        statusCode: res.status,
-        body: JSON.stringify({ error: `CoinGecko API error: ${res.status}` }),
-      };
-    }
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
 
-    const data = await res.text();
-    return {
-      statusCode: 200,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: data,
-    };
+    console.log("CoinGecko chart data:", data);
+
+    // render chart di containerId ...
   } catch (err) {
-    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+    console.error("CoinGecko chart error", err);
   }
 }
+
