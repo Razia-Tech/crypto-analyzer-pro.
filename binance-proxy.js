@@ -7,7 +7,7 @@ export async function handler(event) {
     // arahkan ke Cloudflare Worker
     const workerUrl = `https://binance-proxy.kaiosiddik.workers.dev/?symbol=${symbol}&interval=${interval}&limit=${limit}`;
 
-    const res = await fetch(workerUrl);
+    const res = await fetch(workerUrl); // pakai fetch native Netlify
     if (!res.ok) {
       return {
         statusCode: res.status,
@@ -16,7 +16,7 @@ export async function handler(event) {
       };
     }
 
-    const data = await res.text(); // Binance return array JSON
+    const data = await res.text(); // Binance balikin array JSON
     return {
       statusCode: 200,
       headers: {
@@ -34,3 +34,4 @@ export async function handler(event) {
     };
   }
 }
+
