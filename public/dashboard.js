@@ -97,7 +97,7 @@ function showChart(type) {
 
 // Binance Candlestick (proxy + fallback)
 async function loadBinanceCandles(symbol = "BTCUSDT", interval = "1h", limit = 100) {
-  const container = document.getElementById("binanceChartContainer");
+  const res = await fetch(`/.netlify/functions/binance?symbol=BTCUSDT&interval=1h&limit=100`);
   container.innerHTML = "<p style='color:gray'>Loading Binance data...</p>";
 
   try {
@@ -139,29 +139,20 @@ function renderBinanceChart(container, data) {
 }
 
 // CoinGecko Candlestick (30D)
-async function loadCoinGeckoCandles(coin = "bitcoin") {
-  const container = document.getElementById("coingeckoChartContainer");
-  container.innerHTML = "<p style='color:gray'>Loading CoinGecko data...</p>";
-
+async function loadBinanceCandles(...) {
   try {
-    const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coin}/ohlc?vs_currency=usd&days=30`);
-    if (!res.ok) throw new Error("CoinGecko fetch error");
+    const res = await fetch(`/.netlify/functions/binance?...`);
+    if (!res.ok) throw new Error("Binance blocked");
     const data = await res.json();
-
-    container.innerHTML = "";
-    const chart = LightweightCharts.createChart(container, { width: container.clientWidth, height: 400 });
-    const candleSeries = chart.addCandlestickSeries();
-    candleSeries.setData(data.map(c => ({
-      time: Math.floor(c[0] / 1000),
-      open: c[1],
-      high: c[2],
-      low: c[3],
-      close: c[4]
-    })));
-  } catch (err) {
-    container.innerHTML = `<p style='color:red'>CoinGecko error: ${err.message}</p>`;
+    renderBinanceChart(data);
+  } catch (e) {
+    console.warn("Binance fetch failed:", e.message);
+    document.getElementById("binanceChartContainer").innerHTML =
+      "<p style='color:red'>Binance chart unavailable, showing CoinGecko instead</p>";
+    loadCoinGeckoCandles();
   }
 }
+
 
 // ========== Search Input ==========
 document.getElementById("searchInput").addEventListener("keypress", e => {
