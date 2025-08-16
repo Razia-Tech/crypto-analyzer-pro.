@@ -184,17 +184,33 @@ button {
   overflow: hidden;
 }
 
-/* TABLE */
-.coins-table-section {
-  background: rgba(20, 20, 20, 0.85);
-  padding: 15px;
-  margin-top: 20px;
-  border-radius: 8px;
-  border: 1px solid gold;
+/* ==========================
+   TABLE
+========================== */
+#topCoinsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
 }
 
-.coins-table-section h3 {
-  color: gold;
+#topCoinsTable th, 
+#topCoinsTable td {
+  border: 1px solid gold;
+  padding: 8px;
+  text-align: center;
+}
+
+#topCoinsTable th {
+  background: rgba(255, 215, 0, 0.1);
+  font-size: 14px;
+}
+
+#topCoinsTable tr:hover {
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.active-row {
+  background: rgba(255, 215, 0, 0.3) !important;
 }
 
 #coinSearch {
@@ -207,25 +223,6 @@ button {
   border-radius: 5px;
 }
 
-#topCoinsTable {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-#topCoinsTable th, #topCoinsTable td {
-  border-bottom: 1px solid #333;
-  padding: 8px;
-  text-align: left;
-}
-
-#topCoinsTable th {
-  background: rgba(255, 215, 0, 0.1);
-  color: gold;
-}
-
-#topCoinsTable tr:hover {
-  background: rgba(255, 215, 0, 0.1);
-}
 
 .active-row {
   background: rgba(255, 215, 0, 0.25) !important;
