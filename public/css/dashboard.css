@@ -55,28 +55,21 @@ button {
   border-radius: 5px;
 }
 
-.header button {
-  background-color: transparent;
-  color: #FFD700;
-  border: 1px solid #FFD700;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
+
+.header-right button,
+.header-right .icon-btn {
+  background: transparent;
+  border: none;
 }
 
-.header button:hover {
-  background-color: #FFD700;
-  color: #000;
-}
-
-.icon {
+.header-right .icon {
   width: 22px;
   height: 22px;
   fill: gold;
   filter: drop-shadow(0 0 4px gold);
 }
 
-.logo {
+.header-logo {
   height: 30px;
   filter: drop-shadow(0 0 4px gold);
 }
@@ -192,6 +185,7 @@ button {
 .search-results div:hover {
   background: rgba(255, 215, 0, 0.2);
 }
+
 .search-results {
   position: absolute;
   top: 36px;
@@ -257,7 +251,12 @@ footer {
   border-top: 2px solid gold;
   font-size: 14px;
 }
-
+.icon {
+  width: 22px;
+  height: 22px;
+  fill: gold;
+  filter: drop-shadow(0 0 4px gold);
+}
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .dashboard-wrapper {
