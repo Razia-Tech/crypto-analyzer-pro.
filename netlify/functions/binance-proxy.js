@@ -1,35 +1,24 @@
-import fetch from "node-fetch";
-
 export async function handler(event, context) {
   try {
-    const symbol = event.queryStringParameters.symbol || "BTCUSDT";
-    const interval = event.queryStringParameters.interval || "1h";
-    const limit = event.queryStringParameters.limit || "100";
+    const { symbol = "BTCUSDT", interval = "1h", limit = 50 } = event.queryStringParameters;
 
-    // Proxy ke Cloudflare Worker kamu agar tidak kena error 451
-    const proxyUrl = `https://binance-proxy.kaiosiddik.workers.dev/?symbol=${symbol}&interval=${interval}&limit=${limit}`;
+    const targetUrl = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
 
-    const res = await fetch(proxyUrl);
-
+    const res = await fetch(targetUrl, { headers: { "User-Agent": "Mozilla/5.0" } });
     if (!res.ok) {
       return {
         statusCode: res.status,
-        body: JSON.stringify({ error: `Proxy error: ${res.status}` })
+        body: JSON.stringify({ error: `Binance API error: ${res.status}` }),
       };
     }
 
-    const data = await res.text();
-
+    const data = await res.json();
     return {
       statusCode: 200,
       headers: { "Access-Control-Allow-Origin": "*" },
-      body: data
+      body: JSON.stringify(data),
     };
-
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: err.message })
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 }
