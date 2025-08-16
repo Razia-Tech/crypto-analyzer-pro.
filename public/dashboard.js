@@ -83,11 +83,22 @@ function mountTradingView(symbol='BTCUSDT'){
 
 // ===== Binance Candlestick (Lightweight-Charts + WS)
 let binanceChart, binanceSeries;
-function mountBinance(symbol='BTCUSDT'){
-  const container=document.getElementById('binanceCandleContainer');
-  container.innerHTML='';
+function mountBinance(symbol = 'BTCUSDT') {
+  const container = document.getElementById('binanceCandleContainer');
+  if (!container) {
+    console.error('mountBinance: container not found (id=binanceCandleContainer)');
+    return;
+  }
+
+   // Pastikan library ada
+  if (!window.LightweightCharts || typeof LightweightCharts.createChart !== 'function') {
+    console.error('mountBinance: LightweightCharts library not loaded.');
+    container.innerHTML = '<div style="padding:16px;color:#f88">Charts library missing. Check script include.</div>';
+    return;
+  }
+  
   // Close old WS
-  if(state.ws){ try{ state.ws.close(); }catch{} state.ws=null; }
+ //* if(state.ws){ try{ state.ws.close(); }catch{} state.ws=null; } *//
   // Create chart
   binanceChart = LightweightCharts.createChart(container, {
     width: container.clientWidth, height: 420,
@@ -95,38 +106,59 @@ function mountBinance(symbol='BTCUSDT'){
     grid:{ vertLines:{ color:'#1f2937' }, horzLines:{ color:'#1f2937' } },
     rightPriceScale:{ borderVisible:false }, timeScale:{ borderVisible:false }
   });
-  binanceSeries = binanceChart.addCandlestickSeries();
-  // Prefetch some history
-  fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=1m&limit=400`)
-    .then(r=>r.json())
-    .then(kl=>{
-      const candles = kl.map(k=>({ time: Math.floor(k[0]/1000), open:+k[1], high:+k[2], low:+k[3], close:+k[4] }));
-      binanceSeries.setData(candles);
-      binanceChart.timeScale().fitContent();
-    }).catch(console.error);
-  // Live WS
-  const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@kline_1m`);
-  state.ws = ws;
-  ws.onmessage = (ev)=>{
-    const msg = JSON.parse(ev.data);
-    if(!msg.k) return;
-    const k = msg.k;
-    binanceSeries.update({ time: Math.floor(k.t/1000), open:+k.o, high:+k.h, low:+k.l, close:+k.c });
-  };
-}
+ window.__binanceChart = chart;
+  window.__binanceSeries = series;
 
-// ===== Search Chart (30D, CoinGecko ID)
-let searchChart, searchLine;
-function ensureSearchChart(){
-  const container=document.getElementById('searchChartContainer');
-  container.innerHTML='';
-  searchChart = LightweightCharts.createChart(container, {
-    width: container.clientWidth, height: 420,
-    layout:{ background:{ color:'#0f141b' }, textColor:'#e5e7eb' },
-    grid:{ vertLines:{ color:'#1f2937' }, horzLines:{ color:'#1f2937' } },
+  // load history (graceful)
+  fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=1m&limit=400`)
+    .then(res => res.json())
+    .then(kl => {
+      const candles = kl.map(k => ({
+        time: Math.floor(k[0] / 1000),
+        open: +k[1], high: +k[2], low: +k[3], close: +k[4]
+      }));
+      series.setData(candles);
+      chart.timeScale().fitContent();
+    })
+    .catch(err => {
+      console.warn('mountBinance: failed to load history', err);
+    });
+
+  / // websocket live
+  try {
+    const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@kline_1m`);
+    state.ws = ws;
+    ws.onopen = () => console.log('Binance WS open', symbol);
+    ws.onerror = (e) => console.warn('Binance WS error', e);
+    ws.onmessage = (ev) => {
+      try {
+        const msg = JSON.parse(ev.data);
+        if (!msg.k) return;
+        const k = msg.k;
+        series.update({
+          time: Math.floor(k.t / 1000),
+          open: +k.o, high: +k.h, low: +k.l, close: +k.c
+        });
+      } catch (e) { console.error('WS parse/update error', e); }
+    };
+    ws.onclose = () => console.log('Binance WS closed');
+  } catch (e) {
+    console.error('mountBinance: websocket failed', e);
+  }
+
+
+// Bersihkan container & buat chart baru
+  container.innerHTML = '';
+  const chart = LightweightCharts.createChart(container, {
+    width: Math.max(300, container.clientWidth),
+    height: 420,
+    layout: { background: { color: '#0f141b' }, textColor: '#e5e7eb' },
+    grid: { vertLines: { color: '#1f2937' }, horzLines: { color: '#1f2937' } },
+    rightPriceScale: { borderVisible: false },
+    timeScale: { borderVisible: false }
   });
-  searchLine = searchChart.addLineSeries();
-}
+  const series = chart.addCandlestickSeries();
+
 async function loadSearchChart(coinId='bitcoin'){
   if(!searchChart) ensureSearchChart();
   try{
