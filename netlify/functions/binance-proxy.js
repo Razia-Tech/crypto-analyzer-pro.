@@ -2,7 +2,8 @@ export async function handler(event, context) {
   try {
     const { symbol = "BTCUSDT", interval = "1h", limit = 50 } = event.queryStringParameters;
 
-    const targetUrl = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
+    // Gunakan mirror api1.binance.com
+    const targetUrl = `https://api1.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`;
 
     const res = await fetch(targetUrl, { headers: { "User-Agent": "Mozilla/5.0" } });
     if (!res.ok) {
