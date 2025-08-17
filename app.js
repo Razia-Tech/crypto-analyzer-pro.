@@ -1,1 +1,0 @@
-console.log('Crypto Analyzer Pro Loaded');
