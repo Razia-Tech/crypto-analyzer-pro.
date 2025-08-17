@@ -3,148 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <title>Crypto Analyzer Pro</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Style -->
-  <link rel="stylesheet" href="./dashboard.css">
-
-  <!-- Lightweight Charts -->
-  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
-  <!-- TradingView Widget -->
-  <script src="https://s3.tradingview.com/tv.js"></script>
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="header">
-    <div class="logo">
-      <img src="../assets/logos/cryptoAnalyzerPro.png" alt="Crypto Analyzer Pro">
-    </div>
-    <div class="welcome">🚀 Crypto Analyzer Pro Dashboard</div>
-    <div class="header-right">
-      <button class="icon-btn"><img src="../assets/icons/notification.svg" alt="Notifications"></button>
-      <button class="icon-btn"><img src="../icons/settings.svg" alt="Settings"></button>
-      <button class="profile-menu"><img src="../assets/icons/profile.svg" alt="Profile"></button>
-      <button class="icon-btn"><img src="../icons/logout.svg" alt="Logout"></button>
-    </div>
-  </header>
-
-  <!-- CONTAINER -->
-  <div class="container">
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <a href="#" onclick="showSection('overview')">
-        <img class="icon" src="../assets/icons/market.svg" alt="Market"> Market Fundamentals
-      </a>
-      <div class="submenu">
-        <a href="#" onclick="showSection('overview')">📊 Overview</a>
-        <a href="#" onclick="showSection('trending')">🔥 Trending 12</a>
-        <a href="#" onclick="showSection('top25')">🏆 Top 25 Coins</a>
-        <a href="#" onclick="showSection('comparison')">📈 Chart Comparison</a>
-        <a href="#" onclick="showSection('news')">📰 News</a>
-      </div>
-
-      <a href="#" onclick="showSection('newlistings')">🆕 New Listings</a>
-
-      <div class="sidebar-footer">
-        <a href="#" onclick="showSection('settings')">
-          <img class="icon" src="../icons/settings.svg" alt="Settings"> Settings
-        </a>
-        <a href="#" onclick="logout()">
-          <img class="icon" src="../icons/logout.svg" alt="Logout"> Logout
-        </a>
-      </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-
-      <!-- MARKET FUNDAMENTALS OVERVIEW -->
-      <section id="overview" class="section">
-        <h2>📊 Market Fundamentals Overview</h2>
-        <div class="card-container">
-          <div class="card"><h4>BTC Dominance</h4><p id="btcDominance">--%</p></div>
-          <div class="card"><h4>Market Cap</h4><p id="marketCap">--</p></div>
-          <div class="card"><h4>24H Volume</h4><p id="volume24h">--</p></div>
-          <div class="card"><h4>Fear & Greed</h4><p id="fearGreed">--</p></div>
-          <div class="card"><h4>Dev Score</h4><p id="devScore">--</p></div>
-          <div class="card"><h4>Supply</h4><p id="supplyData">--</p></div>
-        </div>
-      </section>
-
-      <!-- TRENDING 12 -->
-      <section id="trending" class="section hidden">
-        <h2>🔥 Trending 12 Coins</h2>
-        <table id="trendingTable">
-          <thead>
-            <tr><th>Logo</th><th>Name</th><th>Price</th><th>Rank</th><th>Volume</th><th>Signal</th><th>Action</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
-
-      <!-- TOP 25 -->
-      <section id="top25" class="section hidden">
-        <h2>🏆 Top 25 Coins</h2>
-        <div class="table-header">
-          <input id="coinSearch" placeholder="🔍 Search coin...">
-        </div>
-        <table id="topCoinsTable">
-          <thead>
-            <tr><th>Logo</th><th>Name</th><th>Price</th><th>24H%</th><th>Market Cap</th><th>Signal</th><th>Action</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
-
-      <!-- CHART COMPARISON -->
-      <section id="comparison" class="section hidden">
-        <h2>📈 Chart Comparison</h2>
-        <div class="controls">
-          <select id="coinSelector">
-            <option value="BTCUSDT|bitcoin">Bitcoin (BTC)</option>
-            <option value="ETHUSDT|ethereum">Ethereum (ETH)</option>
-            <option value="BNBUSDT|binancecoin">Binance Coin (BNB)</option>
-            <option value="SOLUSDT|solana">Solana (SOL)</option>
-            <option value="XRPUSDT|ripple">XRP</option>
-            <option value="ADAUSDT|cardano">Cardano (ADA)</option>
-            <option value="DOGEUSDT|dogecoin">Dogecoin (DOGE)</option>
-          </select>
-          <select id="intervalSelector">
-            <option value="1m">1m</option>
-            <option value="5m">5m</option>
-            <option value="1h" selected>1h</option>
-            <option value="4h">4h</option>
-            <option value="1d">1d</option>
-          </select>
-          <button onclick="updateComparison()">Load Chart</button>
-          <input id="searchChart" placeholder="🔍 Search chart...">
-        </div>
-        <div id="binanceChart" style="height:400px; margin-bottom:20px;"></div>
-        <div id="coingeckoChart" style="height:400px;"></div>
-      </section>
-
-      <!-- NEWS -->
-      <section id="news" class="section hidden">
-        <h2>📰 Crypto News (24h)</h2>
-        <div id="newsContainer" class="news-list"></div>
-      </section>
-
-      <!-- NEW LISTINGS -->
-      <section id="newlistings" class="section hidden">
-        <h2>🆕 New Listings</h2>
-        <div id="newListingsData">Loading...</div>
-      </section>
-
-    </main>
+  <div class="sidebar">
+    <h2>Crypto Analyzer Pro</h2>
+    <ul>
+      <li class="active">Market Fundamentals</li>
+      <li>Trending 12</li>
+      <li>Top 25 Coins</li>
+      <li>Chart Comparison</li>
+      <li>News</li>
+      <li>New Listings</li>
+      <li>Settings</li>
+      <li>Logout</li>
+    </ul>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2025 Crypto Analyzer Pro | Dev Otong Hamandong</p>
-  </footer>
+  <div class="main-content">
+    <h1>Welcome to Crypto Analyzer Pro</h1>
 
-  <!-- JS -->
+    <!-- Market Fundamentals Overview -->
+    <section class="fundamentals">
+      <h2>Market Fundamentals</h2>
+      <div class="cards">
+        <div class="card"><h3>BTC Dominance</h3><p id="btcDominance">--</p></div>
+        <div class="card"><h3>ETH Dominance</h3><p id="ethDominance">--</p></div>
+        <div class="card"><h3>Market Cap</h3><p id="marketCap">--</p></div>
+        <div class="card"><h3>24h Volume</h3><p id="volume24h">--</p></div>
+        <div class="card"><h3>BTC Supply</h3><p id="btcSupply">--</p></div>
+      </div>
+    </section>
+
+    <!-- Chart -->
+    <section class="chart-section">
+      <h2>Market Chart</h2>
+      <div class="chart-controls">
+        <input type="text" id="coinSearch" placeholder="Search e.g. bitcoin">
+        <button id="searchBtn">Search</button>
+      </div>
+      <canvas id="marketChart" height="250"></canvas>
+    </section>
+
+    <!-- Trending Coins -->
+    <section class="trending">
+      <h2>Trending 12 Coins</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Rank</th>
+            <th>View Chart</th>
+          </tr>
+        </thead>
+        <tbody id="trendingTable"></tbody>
+      </table>
+    </section>
+
+    <!-- Top 25 Coins -->
+    <section class="top-coins">
+      <h2>Top 25 Coins</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Price</th>
+            <th>24h %</th>
+            <th>Market Cap</th>
+            <th>View Chart</th>
+          </tr>
+        </thead>
+        <tbody id="topCoinsTable"></tbody>
+      </table>
+    </section>
+  </div>
+
   <script src="dashboard.js"></script>
 </body>
 </html>
+
 
