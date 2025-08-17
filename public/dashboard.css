@@ -1,125 +1,167 @@
 /* ==========================
-   GLOBAL THEME
-========================== */
+   DASHBOARD THEME FINAL
+   ========================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
 body {
   margin: 0;
   font-family: 'Orbitron', sans-serif;
-  background-color: #000;
+  background: #000;
   color: #FFD700;
+  line-height: 1.6;
 }
 
-h1, h2, h3, h4 {
-  margin: 0 0 10px;
+/* Neon glow effect */
+.neon {
+  text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 20px #FFA500;
+}
+
+/* ==========================
+   HEADER
+========================== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 12px 20px;
+  border-bottom: 2px solid gold;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header .logo img {
+  height: 40px;
+}
+
+.welcome {
+  flex: 1;
+  text-align: center;
   font-weight: bold;
+  font-size: 18px;
+  color: gold;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-button {
+.icon-btn img {
+  width: 22px;
+  height: 22px;
   cursor: pointer;
-  padding: 6px 14px;
-  border-radius: 6px;
-  border: 1px solid gold;
-  background: #111;
-  color: #FFD700;
-  font-weight: bold;
-  transition: 0.3s;
+  filter: drop-shadow(0 0 5px gold);
+  transition: transform 0.2s;
 }
-button:hover {
-  background: #FFD700;
-  color: #111;
+
+.icon-btn img:hover {
+  transform: scale(1.2);
+}
+
+/* ==========================
+   LAYOUT
+========================== */
+.container {
+  display: flex;
+  min-height: calc(100vh - 50px);
 }
 
 /* ==========================
    SIDEBAR
 ========================== */
-.sidebar ul.menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.sidebar {
+  width: 240px;
+  background: rgba(0, 0, 0, 0.9);
+  border-right: 2px solid gold;
+  min-height: 100vh;
+  padding-top: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
-.sidebar .menu-item {
-  border-bottom: 1px solid rgba(255,215,0,0.2);
+.sidebar h2 {
+  color: gold;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 20px;
 }
 
-.sidebar .menu-item a {
+.sidebar a {
   display: flex;
   align-items: center;
   padding: 12px 20px;
-  color: #FFD700;
   font-size: 15px;
-  cursor: pointer;
-}
-
-.sidebar .menu-item a:hover {
-  background: rgba(255,215,0,0.2);
-}
-
-.sidebar .submenu {
-  display: none;
-  list-style: none;
-  padding-left: 40px;
-  background: #0a0a0a;
-}
-
-.sidebar .submenu li a {
-  padding: 8px 20px;
-  font-size: 14px;
-  color: #ccc;
-}
-
-.sidebar .submenu li a:hover {
   color: #FFD700;
+  transition: background 0.3s, transform 0.2s;
 }
 
-/* Expand submenu when active */
-.sidebar .menu-item.active > .submenu {
-  display: block;
+.sidebar a:hover,
+.sidebar a.active {
+  background: rgba(255, 215, 0, 0.15);
+  transform: translateX(5px);
+}
+
+.sidebar .icon {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
 }
 
 /* ==========================
    MAIN CONTENT
 ========================== */
-.main {
-  margin-left: 220px;
+.main-content {
+  margin-left: 240px;
   padding: 20px;
 }
 
-.header {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
+.section {
+  margin-bottom: 30px;
 }
 
-.header input {
-  flex: 1;
-  padding: 6px 10px;
-  border: 1px solid gold;
-  border-radius: 6px;
-  background: #111;
-  color: gold;
+.section h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid gold;
+  padding-bottom: 6px;
+  color: #FFD700;
 }
 
 /* ==========================
-   CARD STYLE
+   CARDS
 ========================== */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
 .card {
-  background: #111;
+  flex: 1;
+  min-width: 180px;
+  background: rgba(17, 17, 17, 0.85);
   border: 2px solid #FFD700;
   border-radius: 10px;
   padding: 15px;
-  margin-bottom: 20px;
+  text-align: center;
   color: #FFD700;
-  box-shadow: 0 0 10px rgba(255,215,0,0.2);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+  transition: transform 0.2s;
 }
 
-.card h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px gold;
+}
+
+.card h4 {
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
 .card p {
@@ -128,74 +170,96 @@ button:hover {
 }
 
 /* ==========================
-   TABLE STYLE
+   TABLES
 ========================== */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
-table th, 
-table td {
+th, td {
   border: 1px solid gold;
   padding: 8px;
   text-align: center;
 }
 
-table th {
+th {
   background: rgba(255, 215, 0, 0.1);
   font-size: 14px;
 }
 
-table tr:hover {
-  background: rgba(255, 215, 0, 0.1);
+tr:hover {
+  background: rgba(255, 215, 0, 0.08);
+}
+
+.badge {
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: #111;
+  border: 1px solid #FFD700;
+  color: #FFD700;
 }
 
 /* ==========================
-   TRENDING COINS
+   CHART CONTAINERS
 ========================== */
-#trending-table td img {
-  border-radius: 50%;
-}
-
-/* ==========================
-   CHARTS
-========================== */
-#binance-chart,
-#coingecko-chart,
-#comparison-chart {
+.chart-container {
   border: 2px solid gold;
   border-radius: 10px;
-  margin-top: 10px;
-  background: #0b0b0b;
+  margin-top: 15px;
   overflow: hidden;
+}
+
+/* ==========================
+   NEWS
+========================== */
+.news-item {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.news-item h4 {
+  font-size: 14px;
+}
+
+.news-item a {
+  color: gold;
+}
+
+.news-item a:hover {
+  text-decoration: underline;
 }
 
 /* ==========================
    FOOTER
 ========================== */
 footer {
-  margin-left: 220px;
+  margin-left: 240px;
   padding: 15px;
   text-align: center;
   border-top: 2px solid gold;
   font-size: 14px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #FFD700;
 }
 
 /* ==========================
    RESPONSIVE
 ========================== */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .sidebar {
-    width: 100%;
-    height: auto;
     position: relative;
-    border-right: none;
-    border-bottom: 2px solid gold;
+    width: 100%;
+    min-height: auto;
   }
-  .main {
+  .main-content {
+    margin-left: 0;
+  }
+  footer {
     margin-left: 0;
   }
 }
+
 
