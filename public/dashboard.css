@@ -36,35 +36,49 @@ button:hover {
 /* ==========================
    SIDEBAR
 ========================== */
-.sidebar {
-  width: 220px;
-  background-color: #000;
-  border-right: 2px solid gold;
-  min-height: 100vh;
-  padding-top: 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
+.sidebar ul.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 20px;
-  color: #FFD700;
+.sidebar .menu-item {
+  border-bottom: 1px solid rgba(255,215,0,0.2);
 }
 
-.sidebar a {
-  display: block;
+.sidebar .menu-item a {
+  display: flex;
+  align-items: center;
   padding: 12px 20px;
-  font-size: 16px;
   color: #FFD700;
-  transition: 0.3s;
+  font-size: 15px;
+  cursor: pointer;
 }
 
-.sidebar a:hover,
-.sidebar a.active {
-  background: rgba(255, 215, 0, 0.2);
+.sidebar .menu-item a:hover {
+  background: rgba(255,215,0,0.2);
+}
+
+.sidebar .submenu {
+  display: none;
+  list-style: none;
+  padding-left: 40px;
+  background: #0a0a0a;
+}
+
+.sidebar .submenu li a {
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.sidebar .submenu li a:hover {
+  color: #FFD700;
+}
+
+/* Expand submenu when active */
+.sidebar .menu-item.active > .submenu {
+  display: block;
 }
 
 /* ==========================
