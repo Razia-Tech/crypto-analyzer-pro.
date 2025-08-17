@@ -1,3 +1,7 @@
+/* ==========================
+   DASHBOARD.JS FINAL
+   ========================== */
+
 // State
 const AppState = {
   currentSymbol: "BTCUSDT",
@@ -5,156 +9,216 @@ const AppState = {
   currentInterval: "1h",
 };
 
-// Section toggle
+// ----------------------------
+// UTILS
+// ----------------------------
+async function fetchJSON(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+function formatNumber(num) {
+  if (!num) return "--";
+  return Intl.NumberFormat("en-US", { notation: "compact" }).format(num);
+}
+
+// ----------------------------
+// NAVIGATION
+// ----------------------------
 function showSection(id) {
   document.querySelectorAll(".section").forEach(s => s.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
 
-// Logout dummy
-function logout() {
-  alert("Logout success!");
-}
-
-// Load Market Fundamentals
+// ----------------------------
+// FUNDAMENTALS
+// ----------------------------
 async function loadFundamentals() {
   try {
-    // Market Global
-    const resGlobal = await fetch("/api/coingecko-proxy?url=https://api.coingecko.com/api/v3/global");
-    const global = await resGlobal.json();
+    const data = await fetchJSON("/api/coingecko-proxy?url=https://api.coingecko.com/api/v3/global");
 
-    // Fear & Greed
-    const resFG = await fetch("https://api.alternative.me/fng/");
-    const fg = await resFG.json();
-
-    // Developer Score & Supply (ambil Bitcoin default)
-    const resBTC = await fetch("/api/coingecko-proxy?url=https://api.coingecko.com/api/v3/coins/bitcoin");
-    const btc = await resBTC.json();
-
-    document.getElementById("fundamentalsData").innerHTML = `
-      <div class="card"><h4>Market Cap</h4><p>$${(global.data.total_market_cap.usd/1e9).toFixed(2)}B</p></div>
-      <div class="card"><h4>24h Volume</h4><p>$${(global.data.total_volume.usd/1e9).toFixed(2)}B</p></div>
-      <div class="card"><h4>BTC Dominance</h4><p>${global.data.market_cap_percentage.btc.toFixed(2)}%</p></div>
-      <div class="card"><h4>Fear & Greed Index</h4><p>${fg.data[0].value} (${fg.data[0].value_classification})</p></div>
-      <div class="card"><h4>Dev Score (BTC)</h4><p>${btc.developer_score.toFixed(2)}</p></div>
-      <div class="card"><h4>Supply</h4>
-        <p>Circulating: ${(btc.market_data.circulating_supply/1e6).toFixed(2)}M</p>
-        <p>Total: ${(btc.market_data.total_supply/1e6).toFixed(2)}M</p>
-      </div>
-    `;
-  } catch (err) {
-    console.error("Fundamentals error", err);
+    document.getElementById("btcDominance").textContent =
+      data.data.market_cap_percentage.btc.toFixed(1) + "%";
+    document.getElementById("marketCap").textContent =
+      "$" + formatNumber(data.data.total_market_cap.usd);
+    document.getElementById("volume24h").textContent =
+      "$" + formatNumber(data.data.total_volume.usd);
+    document.getElementById("fearGreed").textContent = "😐 Neutral"; // placeholder
+    document.getElementById("devScore").textContent = "N/A"; // placeholder
+    document.getElementById("supplyData").textContent = "N/A"; // placeholder
+  } catch (e) {
+    console.error("Fundamentals error", e);
   }
 }
 
-// Load Trending
+// ----------------------------
+// TRENDING 12
+// ----------------------------
 async function loadTrending() {
   try {
-    const res = await fetch("/api/coingecko-proxy?url=https://api.coingecko.com/api/v3/search/trending");
-    const data = await res.json();
-    let html = "<tr><th>Logo</th><th>Name</th><th>Symbol</th><th>Rank</th><th>Action</th></tr>";
-    data.coins.slice(0,12).forEach(c => {
-      html += `<tr>
-        <td><img src="${c.item.thumb}" width="20"></td>
-        <td>${c.item.name}</td>
-        <td>${c.item.symbol}</td>
-        <td>${c.item.market_cap_rank}</td>
-        <td><button onclick="viewChart('${c.item.id}')">View</button></td>
-      </tr>`;
+    const data = await fetchJSON("/api/coingecko-proxy?url=https://api.coingecko.com/api/v3/search/trending");
+    const tbody = document.querySelector("#trendingTable tbody");
+    tbody.innerHTML = "";
+
+    data.coins.slice(0, 12).forEach(c => {
+      const coin = c.item;
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td><img src="${coin.small}" width="20"/></td>
+        <td>${coin.name} (${coin.symbol.toUpperCase()})</td>
+        <td>$${coin.data?.price || "--"}</td>
+        <td>${coin.market_cap_rank || "--"}</td>
+        <td>${coin.data?.total_volume || "--"}</td>
+        <td><span class="badge">Hold</span></td>
+        <td><button onclick="viewChart('${coin.id}')">View</button></td>
+      `;
+      tbody.appendChild(row);
     });
-    document.getElementById("trendingTable").innerHTML = html;
-  } catch (err) {
-    console.error("Trending error", err);
+  } catch (e) {
+    console.error("Trending error", e);
   }
 }
 
-// Load Top 25
+// ----------------------------
+// TOP 25
+// ----------------------------
 async function loadTop25() {
   try {
-    const res = await fetch("/api/coingecko-proxy?url=https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1");
-    const data = await res.json();
-    let html = "<tr><th>Logo</th><th>Name</th><th>Price</th><th>24h %</th><th>MCap</th></tr>";
-    data.forEach(c => {
-      html += `<tr>
-        <td><img src="${c.image}" width="20"></td>
-        <td>${c.name} (${c.symbol.toUpperCase()})</td>
-        <td>$${c.current_price}</td>
-        <td>${c.price_change_percentage_24h.toFixed(2)}%</td>
-        <td>$${(c.market_cap/1e9).toFixed(2)}B</td>
-      </tr>`;
+    const url = "/api/coingecko-proxy?url=" +
+      encodeURIComponent("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1");
+
+    const data = await fetchJSON(url);
+    const tbody = document.querySelector("#topCoinsTable tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(coin => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td><img src="${coin.image}" width="20"/></td>
+        <td>${coin.name} (${coin.symbol.toUpperCase()})</td>
+        <td>$${coin.current_price}</td>
+        <td style="color:${coin.price_change_percentage_24h >= 0 ? 'lime' : 'red'}">
+          ${coin.price_change_percentage_24h.toFixed(2)}%
+        </td>
+        <td>$${formatNumber(coin.market_cap)}</td>
+        <td><span class="badge">${coin.price_change_percentage_24h > 0 ? 'Buy' : 'Sell'}</span></td>
+        <td><button onclick="viewChart('${coin.id}')">View</button></td>
+      `;
+      tbody.appendChild(row);
     });
-    document.getElementById("top25Table").innerHTML = html;
-  } catch (err) {
-    console.error("Top25 error", err);
+  } catch (e) {
+    console.error("Top25 error", e);
   }
 }
 
-// Chart comparison
+// ----------------------------
+// CHARTS
+// ----------------------------
 async function loadBinanceCandles(symbol, interval) {
   try {
-    const res = await fetch(`/api/binance-proxy?symbol=${symbol}&interval=${interval}&limit=100`);
-    const data = await res.json();
-    const chart = LightweightCharts.createChart(document.getElementById("binanceChart"), { width:600, height:300 });
-    const series = chart.addCandlestickSeries();
-    series.setData(data.map(c => ({
-      time: c[0]/1000,
-      open: parseFloat(c[1]),
-      high: parseFloat(c[2]),
-      low: parseFloat(c[3]),
-      close: parseFloat(c[4])
-    })));
-  } catch (err) {
-    console.error("Binance fetch error", err);
+    const url = `/api/binance-proxy?symbol=${symbol}&interval=${interval}&limit=100`;
+    const data = await fetchJSON(url);
+
+    const chartEl = document.getElementById("binanceChart");
+    chartEl.innerHTML = "";
+    const chart = LightweightCharts.createChart(chartEl, { width: chartEl.clientWidth, height: 400 });
+    const candleSeries = chart.addCandlestickSeries();
+
+    const candles = data.map(d => ({
+      time: d[0] / 1000,
+      open: parseFloat(d[1]),
+      high: parseFloat(d[2]),
+      low: parseFloat(d[3]),
+      close: parseFloat(d[4]),
+    }));
+
+    candleSeries.setData(candles);
+  } catch (e) {
+    console.error("Binance fetch error:", e);
   }
 }
 
-async function loadCoinGeckoCandlesInto(id, coinId) {
+async function loadCoinGeckoCandlesInto(containerId, coinId) {
   try {
-    const res = await fetch(`/api/coingecko-proxy?url=https://api.coingecko.com/api/v3/coins/${coinId}/ohlc?vs_currency=usd&days=30`);
-    const data = await res.json();
-    const chart = LightweightCharts.createChart(document.getElementById(id), { width:600, height:300 });
-    const series = chart.addCandlestickSeries();
-    series.setData(data.map(c => ({
-      time: c[0]/1000,
-      open: c[1],
-      high: c[2],
-      low: c[3],
-      close: c[4]
-    })));
-  } catch (err) {
-    console.error("CoinGecko chart error", err);
+    const url = "/api/coingecko-proxy?url=" +
+      encodeURIComponent(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=30&interval=daily`);
+    const data = await fetchJSON(url);
+
+    const chartEl = document.getElementById(containerId);
+    chartEl.innerHTML = "";
+    const chart = LightweightCharts.createChart(chartEl, { width: chartEl.clientWidth, height: 400 });
+    const lineSeries = chart.addLineSeries({ color: 'gold' });
+
+    const prices = data.prices.map(d => ({ time: Math.floor(d[0] / 1000), value: d[1] }));
+    lineSeries.setData(prices);
+
+    console.log("CoinGecko chart:", data);
+  } catch (e) {
+    console.error("CoinGecko chart error", e);
   }
 }
 
 function updateComparison() {
-  loadBinanceCandles(AppState.currentSymbol, AppState.currentInterval);
-  loadCoinGeckoCandlesInto("coingeckoChart", AppState.currentCoinId);
+  const val = document.getElementById("coinSelector").value;
+  const interval = document.getElementById("intervalSelector").value;
+  const [binanceSymbol, cgId] = val.split("|");
+
+  AppState.currentSymbol = binanceSymbol;
+  AppState.currentCoinId = cgId;
+  AppState.currentInterval = interval;
+
+  loadBinanceCandles(binanceSymbol, interval);
+  loadCoinGeckoCandlesInto("coingeckoChart", cgId);
 }
 
-// News
+function viewChart(coinId) {
+  showSection("comparison");
+  AppState.currentCoinId = coinId;
+  loadCoinGeckoCandlesInto("coingeckoChart", coinId);
+}
+
+// ----------------------------
+// NEWS
+// ----------------------------
 async function loadNews() {
   try {
-    const res = await fetch("https://min-api.cryptocompare.com/data/v2/news/?lang=EN");
-    const data = await res.json();
-    let html = "";
-    data.Data.slice(0,10).forEach(n => {
-      html += `<div class="card">
-        <h4>${n.title}</h4>
-        <p>${n.body.substring(0,120)}...</p>
-        <a href="${n.url}" target="_blank">Read more</a>
-      </div>`;
+    const url = "/api/coingecko-proxy?url=" +
+      encodeURIComponent("https://api.coingecko.com/api/v3/news?category=general");
+    const data = await fetchJSON(url);
+
+    const container = document.getElementById("newsContainer");
+    container.innerHTML = "";
+
+    if (!data || !data.data) {
+      container.innerHTML = "<p>No news available</p>";
+      return;
+    }
+
+    data.data.slice(0, 10).forEach(n => {
+      const div = document.createElement("div");
+      div.className = "news-item";
+      div.innerHTML = `
+        <h4><a href="${n.url}" target="_blank">${n.title}</a></h4>
+        <p>${n.source} - ${new Date(n.published_at).toLocaleDateString()}</p>
+      `;
+      container.appendChild(div);
     });
-    document.getElementById("newsList").innerHTML = html;
-  } catch (err) {
-    console.error("News error", err);
+  } catch (e) {
+    console.error("News error", e);
   }
 }
 
-// Auto init
-loadFundamentals();
-loadTrending();
-loadTop25();
-loadNews();
+// ----------------------------
+// INIT
+// ----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  loadFundamentals();
+  loadTrending();
+  loadTop25();
+  updateComparison();
+  loadNews();
+});
 
 
 
